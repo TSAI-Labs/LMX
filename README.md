@@ -12,7 +12,7 @@ git clone https://github.com/TSAI-Labs/LMX.git
 cd LMX
 ```
 
-If you already have the repo in your home directory. Go into it and make sure you have the latest.
+If you already have the repo in your home directory. Go inside it and make sure you have the latest.
 
 ```
 cd LMX
@@ -32,7 +32,8 @@ pip install -r requirements.txt
 
 ## Run Django App Locally:
 
-Please create your .env file
+Please create your .env file or collect it from Admin
+Static and Media files are gitignored. Please add it locally.
 
 ```
 - cd LMX
