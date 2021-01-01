@@ -3,6 +3,7 @@ from django.contrib import admin
 # LMS application imports.
 from .models.student_model import Profile
 from .models.course_model import Course
+from .models.assignment_model import Assignment
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -14,6 +15,13 @@ class ProfileAdmin(admin.ModelAdmin):
 # Registers the student profile model at the admin backend.
 admin.site.register(Profile, ProfileAdmin)
 
+class AssignmentAdmin(admin.ModelAdmin):
+    list_filter = ('user',)
+    search_fields = ('user',)
+    ordering = ['user', ]
+
+# Registers the Assignment model at the admin backend.
+admin.site.register(Assignment, AssignmentAdmin)
 
 class CourseAdmin(admin.ModelAdmin):
 

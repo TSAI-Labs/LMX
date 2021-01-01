@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # third party apps
     'social_django',
     'crispy_forms',
+    'ckeditor',
 
     # My apps
     'lms.apps.LmsConfig',

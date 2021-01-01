@@ -1,0 +1,9 @@
+{% extends 'lms/lms_base.html' %}
+
+
+{% block content %}
+
+<h1 class="text-center">{{ assignment.title }}</h1>
+{{ assignment.content|safe }}
+
+{% endblock content %}
