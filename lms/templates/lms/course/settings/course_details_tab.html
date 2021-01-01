@@ -1,0 +1,17 @@
+{% extends 'lms/lms_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'lms:course_details' object.id %}" class="form-horizontal" method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <h1 class="text-center">Course Details</h1>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="border-top  pt-3 pb-5">
+                <button class="btn btn-outline-info" type="submit">Update Course Details</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

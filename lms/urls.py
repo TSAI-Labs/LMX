@@ -2,24 +2,25 @@
 from django.urls import path
 
 # LMS app imports
-
+from lms.views.account.login_view import UserLoginView
+from lms.views.account.logout_view import UserLogoutView
+from lms.views.account.register_view import (
+    ActivateView,
+    AccountActivationSentView,
+    UserRegisterView,
+)
 from lms.views.course.course_views import (
     CourseListView,
 )
-
+from lms.views.course.settings_view import (
+    CourseDetailsView,
+    CourseSectionsView,
+    CourseSettingsView,
+    CourseStatisticsView,
+)
 from lms.views.dashboard.student.dashboard_views import (
     DashboardHomeView,
 )
-
-from lms.views.account.register_view import \
-    (
-      ActivateView,
-      AccountActivationSentView,
-      UserRegisterView,
-    )
-
-from lms.views.account.logout_view import UserLogoutView
-from lms.views.account.login_view import UserLoginView
 
 # Specifies the app name for name spacing.
 app_name = "lms"
@@ -78,5 +79,26 @@ urlpatterns = [
         name="dashboard_home"
     ),
 
-]
+    # SETTINGS URLS #
 
+    path(
+        route="course/<int:pk>/details/",
+        view=CourseDetailsView.as_view(),
+        name="course_details"
+    ),
+    path(
+        route="course/<int:pk>/sections/",
+        view=CourseSectionsView.as_view(),
+        name="course_sections"
+    ),
+    path(
+        route="course/<int:pk>/settings/",
+        view=CourseSettingsView.as_view(),
+        name="course_settings"
+    ),
+    path(
+        route="course/<int:pk>/statistics/",
+        view=CourseStatisticsView.as_view(),
+        name="course_statistics"
+    ),
+]
