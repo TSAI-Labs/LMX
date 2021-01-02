@@ -14,9 +14,9 @@ from lms.views.course.course_views import (
 )
 from lms.views.course.settings_view import (
     CourseDetailsView,
+    CourseManageView,
     CourseSectionsView,
-    CourseSettingsView,
-    CourseStatisticsView,
+    CourseStatisticsView
 )
 from lms.views.dashboard.student.dashboard_views import (
     DashboardHomeView,
@@ -87,14 +87,14 @@ urlpatterns = [
         name="course_details"
     ),
     path(
+        route="course/<int:pk>/manage",
+        view=CourseManageView.as_view(),
+        name="course_manage"
+    ),
+    path(
         route="course/<int:pk>/sections/",
         view=CourseSectionsView.as_view(),
         name="course_sections"
-    ),
-    path(
-        route="course/<int:pk>/settings/",
-        view=CourseSettingsView.as_view(),
-        name="course_settings"
     ),
     path(
         route="course/<int:pk>/statistics/",

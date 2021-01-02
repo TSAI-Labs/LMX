@@ -1,7 +1,7 @@
-{% extends 'lms/lms_base.html' %}
+{% extends 'lms/course/settings/base.html' %}
 {% load crispy_forms_tags %}
 
-{% block content %}
+{% block main-content %}
     <div class="container">
         <form action="{% url 'lms:course_details' object.id %}" class="form-horizontal" method="POST">
             {% csrf_token %}
@@ -14,4 +14,4 @@
             </div>
         </form>
     </div>
-{% endblock content %}
+{% endblock main-content %}

@@ -2,11 +2,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
-from django.views.generic import ListView
+from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView
 
 # Blog application imports.
-from lms.models.course_model import Course
+from lms.models.course_model import Course, Section
 from lms.models.users_model import Staff
 
 
@@ -31,18 +31,28 @@ class CourseDetailsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageM
 
 
 # todo: full implementation
-class CourseSectionsView(ListView):
-    model = Course
-    template_name = "lms/course/settings/sections_tab.html"
+class CourseSectionsView(UpdateView):
+    model = Section
+    fields = ['name']
+    template_name = "lms/course/settings/course_sections_tab.html"
+
+    # url to redirect to on success
+    def get_success_url(self, **kwargs):
+        return reverse('lms:course_sections', kwargs={'pk': self.object.pk})
 
 
 # todo: full implementation
-class CourseSettingsView(ListView):
+class CourseManageView(UpdateView):
     model = Course
-    template_name = "lms/course/settings/settings_tab.html"
+    fields = ['title']
+    template_name = "lms/course/settings/course_manage_tab.html"
+
+    # url to redirect to on success
+    def get_success_url(self, **kwargs):
+        return reverse('lms:course_sections', kwargs={'pk': self.object.pk})
 
 
 # todo: full implementation
-class CourseStatisticsView(ListView):
+class CourseStatisticsView(DetailView):
     model = Course
-    template_name = "lms/course/settings/statistics_tab.html"
+    template_name = "lms/course/settings/course_statistics_tab.html"
