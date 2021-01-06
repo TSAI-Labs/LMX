@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     # My apps
     'lms.apps.LmsConfig',
+    'assignments'
 ]
 
 AUTHENTICATION_BACKENDS = [

@@ -18,11 +18,7 @@ from lms.views.account.register_view import \
       UserRegisterView,
     )
 
-from lms.views.assignment.teacher.assignment_views import (
-    AssignmentListView,
-    AssignmentDetailView,
-    AssignmentCreateView
-)
+
 
 from lms.views.account.logout_view import UserLogoutView
 from lms.views.account.login_view import UserLoginView
@@ -82,25 +78,7 @@ urlpatterns = [
         route="student/dashboard/home/",
         view=DashboardHomeView.as_view(),
         name="dashboard_home"
-    ),
-
-        path(
-        route="author/assignment/home",
-        view=AssignmentListView.as_view(),
-        name="assignment_home"
-    ),
-
-    path(
-        route="author/assignment/home/<int:pk>",
-        view=AssignmentDetailView.as_view(),
-        name="assignment_detail"
-    ),
-
-    path(
-        route="author/assignment/create",
-        view=AssignmentCreateView.as_view(),
-        name="assignment_create"
-    ),
+    )
 
 ]
 
