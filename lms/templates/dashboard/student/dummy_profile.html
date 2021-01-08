@@ -1,0 +1,15 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+   Profile
+{% endblock title%}
+
+{% block content %}
+    <h1 class="text-center">{{ request.user }} profile</h1>
+    <div class="container-fluid text-justify">
+        <h3 class="display-6">Username: {{ user_profile.username}}</h3>
+        <h3 class="display-6">Email: {{ user_profile.email }}</h3>
+        <h3 class="display-6">First Name: {{ user_profile.first_name }}</h3>
+        <h3 class="display-6">Last Name: {{ user_profile.last_name }}</h3>
+    </div>
+{% endblock content %}

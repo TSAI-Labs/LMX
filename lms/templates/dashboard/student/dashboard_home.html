@@ -5,6 +5,49 @@
 {% endblock %}
 
 {% block content %}
-<h1 class="text-center">Student Dashboard</h1>
+<h1 class="text-center">Dashboard</h1>
+<br>
+<h3 class="mx-5 text-left">Registered Courses</h3>
+<div class="mx-5 container-fluid">
+    <div class="row">
+       {% for course in published_courses %}
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ course.title }}</h5>
+                <p class="card-text">{{ course.description }}</p>
+                <a href="#" class="btn btn-primary">Go</a>
+              </div>
+            </div>
+          </div>
+       {% endfor %}
+    </div>
+</div>
+
+<br>
+<h3 class="mx-5 text-left">Un-Registered Courses</h3>
+<div class="mx-5 container-fluid">
+    <div class="row">
+       {% for course in unpublished_courses %}
+          <div class="col-sm-3">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ course.title }}</h5>
+                <p class="card-text">{{ course.description }}</p>
+                <a href="#" class="btn btn-primary">Go</a>
+              </div>
+            </div>
+          </div>
+       {% endfor %}
+    </div>
+</div>
 {% endblock content %}
 
+{% block todo %}
+<ul class="list-group">
+   {% for assignment in assignments %}
+        <a href="#" class="list-group-item list-group-item-action">{{ assignment.name }} <br><span>Course: </span><span>{{ assignment.for_course }}</span>
+            <br><span>Due Date: </span><span>{{ assignment.available_until }}</span></a>
+   {% endfor %}
+</ul>
+{% endblock todo %}

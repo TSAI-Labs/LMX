@@ -3,6 +3,7 @@ from django.contrib import admin
 # LMS application imports.
 from .models.student_model import Profile
 from .models.course_model import Course
+from .models.assignment_model import Assignment
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -25,3 +26,8 @@ class CourseAdmin(admin.ModelAdmin):
 
 # Registers the article model at the admin backend.
 admin.site.register(Course, CourseAdmin)
+
+
+@admin.register(Assignment)
+class AssignmentAdmin(admin.ModelAdmin):
+    pass

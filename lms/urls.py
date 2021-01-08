@@ -9,6 +9,7 @@ from lms.views.course.course_views import (
 
 from lms.views.dashboard.student.dashboard_views import (
     DashboardHomeView,
+    ProfileView
 )
 
 from lms.views.account.register_view import \
@@ -78,5 +79,10 @@ urlpatterns = [
         name="dashboard_home"
     ),
 
+    path(
+        route="student/profile/",
+        view=ProfileView.as_view(),
+        name="dummy_profile"
+    ),
 ]
 
