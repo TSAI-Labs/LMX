@@ -1,0 +1,29 @@
+{% extends 'assignments/base_assignment.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container">
+</br>
+</br>
+    <h1 class="text-center">Create Assignment</h1>
+</br>
+</br>
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class ="border-bottom mb-2"></legend>
+                {{ form.media}}
+                <table>
+                    {{ form.as_table}}
+                </table>
+            </fieldset>
+        </br>
+    </br>
+            <div class="form-group">
+                <button class="btn btn-secondary">Create Assignment</button>
+            </div>
+        </form>
+</div>
+{% endblock content %}
