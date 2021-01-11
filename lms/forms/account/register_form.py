@@ -21,6 +21,7 @@ class UserRegisterForm(UserCreationForm):
                                               ),
                              help_text='Required. Input a valid email address.'
                              )
+
     password1 = forms.CharField(widget=
                                 forms.PasswordInput(attrs={
                                  "name": "password1", "class": "input100",
@@ -51,3 +52,9 @@ class UserRegisterForm(UserCreationForm):
 
         }
 
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email']

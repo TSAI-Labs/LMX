@@ -1,5 +1,8 @@
 # Core Django imports.
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 # LMS app imports
 
@@ -9,7 +12,7 @@ from lms.views.course.course_views import (
 
 from lms.views.dashboard.student.dashboard_views import (
     DashboardHomeView,
-    ProfileView
+    DashboardProfileView
 )
 
 from lms.views.account.register_view import \
@@ -79,10 +82,13 @@ urlpatterns = [
         name="dashboard_home"
     ),
 
+    # /author/dashboard/profile/
     path(
-        route="student/profile/",
-        view=ProfileView.as_view(),
-        name="dummy_profile"
-    ),
+        route="student/dashboard/profile/",
+        view=DashboardProfileView.as_view(),
+        name="dashboard_profile"
+    )
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

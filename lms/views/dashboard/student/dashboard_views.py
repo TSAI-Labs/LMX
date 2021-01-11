@@ -9,6 +9,9 @@ from lms.models.course_model import Course
 from lms.models.assignment_model import Assignment
 from lms.views.account.login_view import UserLoginView
 
+from lms.forms.account.register_form import UserUpdateForm
+from lms.forms.dashboard.profile_form import ProfileUpdateForm
+
 
 class DashboardHomeView(LoginRequiredMixin, View):
     """
@@ -31,21 +34,36 @@ class DashboardHomeView(LoginRequiredMixin, View):
         else:
             return redirect(UserLoginView.as_view())
 
-
-# TODO: Dummy part
-class ProfileView(LoginRequiredMixin, View):
+class DashboardProfileView(LoginRequiredMixin, View):
     """
-    Display user profile (dummy).
+    Display homepage of the dashboard.
     """
-    context = {}
-    template_name = 'dashboard/student/dummy_profile.html'
+    # context = {}
+    # template_name = 'dashboard/student/dashboard_profile.html'
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            user_profile = User.objects.get(username__iexact=request.user)
-            self.context.update(user_profile=user_profile)
-            self.context.update(is_profile_view=True)
-            print(user_profile.username)
-            return render(request, self.template_name, self.context)
+
+        if request.method == 'POST':
+            u_form = UserUpdateForm(request.POST, instance=request.user)
+            p_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+            if u_form.is_valid() and p_form.is_valid():
+                u_form.save()
+                p_form.save()
+                messages.success(request, f'Your account has been updated!')
+                return redirect('lms:dashboard_profile')
+
         else:
-            return redirect(UserLoginView.as_view())
+            u_form = UserUpdateForm(instance=request.user)
+            p_form = ProfileUpdateForm(instance=request.user.profile)
+
+        context = {
+            'u_form': u_form,
+            'p_form': p_form,
+            'is_profile_view':True
+        }
+
+        template_name = 'dashboard/student/profile.html'
+
+        return render(request, template_name, context)

@@ -44,7 +44,9 @@ class UserRegisterView(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            user.email_user(subject, message)
+
+            print(subject, message)
+            # user.email_user(subject, message)
 
             return redirect('lms:account_activation_sent')
 
