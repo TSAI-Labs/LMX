@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 
 
-class Staff(models.Model):
+class Role(models.Model):
     """
     Model to capture the details of staff users. Admins, teachers and teaching assistants are considered as staff
     """
@@ -12,30 +12,25 @@ class Staff(models.Model):
     is_admin = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
     is_teaching_assistant = models.BooleanField(default=False)
+    is_student = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"Staff - {self.user.username}"
+        return f"{self.user.username} role"
 
     def clean(self):
-        # User must be assigned at least one role - admin, teacher, or teaching assistant
-        if not (self.is_admin or self.is_teacher or self.is_teaching_assistant):
+        # User must be assigned at least one role - admin, teacher, or teaching assistant or student
+        if not (self.is_admin or self.is_teacher or self.is_teaching_assistant or self.is_student):
             raise ValidationError('Make at least one selection')
 
         # Verify if the user is already registered as a student
-        if len(Student.objects.filter(user=self.user)) == 1:
-            raise ValidationError('User is already registered as a student. Students cannot be included into staff')
+        if ((self.is_admin and self.is_student) or
+            (self.is_teacher and self.is_student) or
+            (self.is_teaching_assistant and self.is_student)):
+            raise ValidationError('User can be either teacher or student. Choose one.')
 
-
-class Student(models.Model):
-    """
-    Model to capture the details of students
-    """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"Student - {self.user.username}"
-
-    def clean(self):
-        # Verify if the user is already registered as a teacher
-        if len(Staff.objects.filter(user=self.user)) == 1:
-            raise ValidationError('User is already registered as a staff. Staff cannot be included into students')
+    def save(self, *args, **kwargs):
+        if self.is_admin:
+            user = User.objects.get(username=self.user.username)
+            user.is_staff = True
+            print(user.is_staff)
+        super().save(*args, **kwargs)

@@ -77,14 +77,14 @@ urlpatterns = [
 
     # /author/dashboard/home/
     path(
-        route="student/dashboard/home/",
+        route="dashboard/home/",
         view=DashboardHomeView.as_view(),
         name="dashboard_home"
     ),
 
     # /author/dashboard/profile/
     path(
-        route="student/dashboard/profile/",
+        route="dashboard/profile/",
         view=DashboardProfileView.as_view(),
         name="dashboard_profile"
     )
