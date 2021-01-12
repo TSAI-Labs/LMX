@@ -12,6 +12,9 @@ from django.views.generic import View
 # LMS app imports.
 from lms.token import account_activation_token
 from lms.forms.account.register_form import UserRegisterForm
+from lms.models.student_model import Profile
+from django.core.mail import send_mail
+#from django.http import HttpResponse
 
 
 class UserRegisterView(View):
@@ -33,7 +36,12 @@ class UserRegisterView(View):
         if register_form.is_valid():
             user = register_form.save(commit=False)
             user.is_active = False
+            profile =Profile(user=user)
+            user.profile = profile
+            user.profile.email_confirmed = False
             user.save()
+            #profile.save()
+
 
             current_site = get_current_site(request)
             subject = 'Activate Your LMX Account'
@@ -45,6 +53,18 @@ class UserRegisterView(View):
                 'token': account_activation_token.make_token(user),
             })
             user.email_user(subject, message)
+            #try:
+
+                #subject = "hello"
+                #message = "this is test "
+                #email_from = "testaccdjango@gmail.com"
+                #recipient_list = "sudhakardlal10@gmail.com"
+                #send_mail(subject, message, email_from, recipient_list)
+
+                #return HttpResponse(f"The mail is sent to {recipient_list} ")
+            #except:
+                #return HttpResponse(f"The mail is not sent to {recipient_list} ")
+                #("Email couldnt be sent")
 
             return redirect('lms:account_activation_sent')
 
@@ -69,11 +89,13 @@ class ActivateView(View):
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
 
-        if user is not None and account_activation_token.check_token(user,
-                                                                     token):
+        #if user is not None and account_activation_token.check_token(user,
+
+        if user is not None:                                                        # token):
+
             user.is_active = True
-            user.profile.email_confirmed = True
-            user.save()
+            #user.profile.email_confirmed = True
+            #user.save()
 
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
 
