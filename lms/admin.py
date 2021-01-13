@@ -28,7 +28,7 @@ admin.site.register(Role, RoleAdmin)
 
 class ProfileAdmin(admin.ModelAdmin):
     list_filter = ('user', 'email_confirmed')
-    search_fields = ('user',)
+    search_fields = ('user','user_tz')
     ordering = ['user', ]
 
 # Registers the student profile model at the admin backend.
