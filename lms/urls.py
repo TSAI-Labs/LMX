@@ -15,6 +15,10 @@ from lms.views.dashboard.student.dashboard_views import (
     DashboardProfileView
 )
 
+from lms.views.notification.notification_settings_view import (
+    NotificationSettingsView,
+)
+
 from lms.views.account.register_view import \
     (
       ActivateView,
@@ -87,7 +91,15 @@ urlpatterns = [
         route="dashboard/profile/",
         view=DashboardProfileView.as_view(),
         name="dashboard_profile"
+    ),
+
+    # /author/notification/
+    path(
+        route="notifications/",
+        view=NotificationSettingsView.as_view(),
+        name="notification_settings"
     )
+
 ]
 
 if settings.DEBUG:

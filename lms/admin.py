@@ -7,6 +7,23 @@ from .models.course_model import Course, StudentCourse
 from .models.assignment_model import Assignment
 from .models.users_model import Role
 from .models.files_model import File
+from .models.notification_settings_model import NotificationSetting
+
+class NotificationSettingAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+    list_filter = ('user',)
+    ordering = ['user', ]
+
+# Registers the notification setting model for user at the admin backend.
+admin.site.register(NotificationSetting, NotificationSettingAdmin)
+
+class ProfileAdmin(admin.ModelAdmin):
+    list_filter = ('user', 'email_confirmed')
+    search_fields = ('user','user_tz')
+    ordering = ['user', ]
+
+# Registers the student profile model at the admin backend.
+admin.site.register(Profile, ProfileAdmin)
 
 class StudentCourseAdmin(admin.ModelAdmin):
     list_display = ('user', 'courses', 'registered')
@@ -25,14 +42,6 @@ class RoleAdmin(admin.ModelAdmin):
 
 # Registers the staff profile model at the admin backend.
 admin.site.register(Role, RoleAdmin)
-
-class ProfileAdmin(admin.ModelAdmin):
-    list_filter = ('user', 'email_confirmed')
-    search_fields = ('user','user_tz')
-    ordering = ['user', ]
-
-# Registers the student profile model at the admin backend.
-admin.site.register(Profile, ProfileAdmin)
 
 class CourseAdmin(admin.ModelAdmin):
 
