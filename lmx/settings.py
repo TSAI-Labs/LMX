@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # third party apps
     'social_django',
     'crispy_forms',
+    'django_cleanup',
 
     # My apps
     'lms.apps.LmsConfig',
@@ -155,9 +156,9 @@ LOGOUT_REDIRECT_URL = '/account/logout/'
 
 # Email Settings (Production)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = env('EMAIL_HOST')
-#EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-#EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = 'smtp.gmail.com' #env('EMAIL_HOST')
+EMAIL_HOST_USER = 'somakorada3@gmail.com' #env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = 'Lordganesh@7' #env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

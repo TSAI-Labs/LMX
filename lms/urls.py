@@ -1,5 +1,7 @@
 # Core Django imports.
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 # LMS app imports
 
@@ -9,6 +11,14 @@ from lms.views.course.course_views import (
 
 from lms.views.dashboard.student.dashboard_views import (
     DashboardHomeView,
+)
+
+from lms.views.dashboard.student.dashboard_profile import (
+    DashboardProfileView,
+)
+
+from lms.views.dashboard.student.dashboard_emailadmin import (
+    DashboardEmailAdminView,
 )
 
 from lms.views.account.register_view import \
@@ -45,7 +55,7 @@ urlpatterns = [
         name='login'
     ),
 
-    # /account/login/
+    # /account/register/
     path(
         route='account/register/',
         view=UserRegisterView.as_view(),
@@ -78,5 +88,22 @@ urlpatterns = [
         name="dashboard_home"
     ),
 
+    # /author/dashboard/profile/
+    path(
+        route="student/dashboard/profile/",
+        view=DashboardProfileView.as_view(),
+        name="dashboard_profile"
+    ),
+
+    # /author/dashboard/emailadmin/
+    path(
+        route="student/dashboard/email_admin/",
+        view=DashboardEmailAdminView.as_view(),
+        name="dashboard_emailadmin"
+    ),
+
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

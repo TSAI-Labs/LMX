@@ -37,6 +37,8 @@
                     <div class="navbar-nav ml-auto">
                         {% if request.user.is_authenticated %}
                             <a href="{% url 'lms:home' %}" class="nav-item nav-link active">Home</a>
+                            <a href="{% url 'lms:dashboard_profile' %}" class="nav-item nav-link active">Profile</a>
+                            <a href="{% url 'lms:dashboard_emailadmin' %}" class="nav-item nav-link active">Email Admin</a>
                             <a href="{% url 'lms:logout' %}" class="nav-item nav-link">Sign Out</a>
                         {% endif %}
                     </div>
