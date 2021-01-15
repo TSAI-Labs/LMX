@@ -38,6 +38,7 @@
                         {% if request.user.is_authenticated %}
                             <a href="{% url 'lms:home' %}" class="nav-item nav-link active">Home</a>
                             <a href="{% url 'lms:notification_settings' %}" class="nav-item nav-link active">Notification</a>
+                            <a href="{% url 'lms:blog-home' %}" class="nav-item nav-link active">Blogs</a>
                             <a href="{% url 'lms:logout' %}" class="nav-item nav-link">Sign Out</a>
                         {% endif %}
                     </div>

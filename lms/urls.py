@@ -12,7 +12,7 @@ from lms.views.course.course_views import (
 
 from lms.views.dashboard.student.dashboard_views import (
     DashboardHomeView,
-    DashboardProfileView
+    DashboardProfileView,
 )
 
 from lms.views.notification.notification_settings_view import (
@@ -25,6 +25,15 @@ from lms.views.account.register_view import \
       AccountActivationSentView,
       UserRegisterView,
     )
+
+from lms.views.blog.blog_view import (
+    PostListView,
+    PostDetailView,
+    PostCreateView,
+    PostUpdateView,
+    PostDeleteView,
+    UserPostListView,
+)
 
 from lms.views.account.logout_view import UserLogoutView
 from lms.views.account.login_view import UserLoginView
@@ -43,6 +52,44 @@ urlpatterns = [
         view=CourseListView.as_view(),
         name='home'
     ),
+
+    # Blog URLS #
+    # /home/blog
+    path(
+        route='blog/',
+        view=PostListView.as_view(),
+        name='blog-home'
+        ),
+
+    path(
+        route='blog/user/<str:username>',
+        view=UserPostListView.as_view(),
+        name='user-posts'
+        ),
+
+    path(
+        route='blog/post/<int:pk>/',
+        view=PostDetailView.as_view(),
+        name='post-detail'
+        ),
+
+    path(
+        route='blog/post/new/',
+        view=PostCreateView.as_view(),
+        name='post-create'
+        ),
+
+    path(
+        route='blog/post/<int:pk>/update/',
+        view=PostUpdateView.as_view(),
+        name='post-update'
+        ),
+
+    path(
+        route='blog/post/<int:pk>/delete/',
+        view=PostDeleteView.as_view(),
+        name='post-delete'
+        ),
 
     # ACCOUNT URLS #
 

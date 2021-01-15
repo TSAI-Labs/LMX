@@ -4,6 +4,7 @@ from django.dispatch import receiver
 
 # LMS application imports.
 from .models.student_model import Profile
+from .models.notification_settings_model import NotificationSetting
 
 
 @receiver(post_save, sender=User)
@@ -15,3 +16,14 @@ def create_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+
+@receiver(post_save, sender=User)
+def create_notification_settings(sender, instance, created, **kwargs):
+    if created:
+        NotificationSetting.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_notification_settings(sender, instance, **kwargs):
+    instance.notificationsetting.save()    

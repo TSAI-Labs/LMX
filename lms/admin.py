@@ -7,6 +7,7 @@ from .models.course_model import Course, StudentCourse
 from .models.assignment_model import Assignment
 from .models.users_model import Role
 from .models.files_model import File
+from .models.blog_model import Post
 from .models.notification_settings_model import NotificationSetting
 
 class NotificationSettingAdmin(admin.ModelAdmin):
@@ -72,6 +73,15 @@ class FileAdmin(admin.ModelAdmin):
 
 # Registers the article model at the admin backend.
 admin.site.register(File, FileAdmin)
+
+class PostAdmin(admin.ModelAdmin):
+
+    list_display = ('author', 'title', 'date_posted')
+    list_filter = ('author','date_posted')
+    search_fields = ('author','date_posted')
+
+# Registers the Blog Post model at the admin backend.
+admin.site.register(Post, PostAdmin)
 
 @admin.register(Assignment)
 class AssignmentAdmin(admin.ModelAdmin):

@@ -7,7 +7,7 @@ from django.views.generic import View
 from django.contrib import messages
 
 from lms.forms.notification.notification_settings_form import NotificationSettingUpdateForm
-#TODO Auto object generation
+
 class NotificationSettingsView(LoginRequiredMixin, View):
     """
     Display notification settings of the user.

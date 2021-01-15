@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block content %}
+<br>
 <h1 class="text-center">Dashboard</h1>
 <br>
 {% if is_student_view %}
@@ -84,8 +85,10 @@
 
 {% block todo %}
   {% if is_student_view %}
+      <br>
       <h3>To Do</h3>
   {% else %}
+      <br>
       <h3>Coming Up</h3>
   {% endif %}
 <ul class="list-group">

@@ -43,20 +43,11 @@ class DashboardHomeView(LoginRequiredMixin, View):
                 self.context.update(is_student_view=role[0].is_student)
             else:
                 messages.error(request, "Contact Admin for Role Creation")
-                return redirect(UserLoginView.as_view())
-
-            # assignt = Assignment.objects.all()
-            # # print(assignt)
-            # # print(list(filter(lambda x: x.available_until > now(), assignt)))
-            # courses = Course.objects.filter(user=request.user)
-            #
-            # self.context.update(published_courses=list(filter(lambda x: x.published, courses)))
-            # self.context.update(unpublished_courses=list(filter(lambda x: not x.published, courses)))
-            # self.context.update(assignments=list(filter(lambda x: x.available_until > now(), assignt)))
-            # self.context.update(is_profile_view=False)
+                return redirect('lms:logout')
+                
             return render(request, self.template_name, self.context)
         else:
-            return redirect(UserLoginView.as_view())
+            return redirect('lms:login')
 
 class DashboardProfileView(LoginRequiredMixin, View):
     """
