@@ -10,20 +10,20 @@
     <h1 class="text-center">Create Assignment</h1>
 </br>
 </br>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class ="border-bottom mb-2"></legend>
                 {{ form.media}}
                 <table>
-                    {{ form.as_table}}
+                    {{ form.as_table }}
                 </table>
             </fieldset>
         </br>
     </br>
-            <div class="form-group">
-                <button class="btn btn-secondary">Create Assignment</button>
-            </div>
-        </form>
+    <div class="form-group">
+        <button class="btn btn-secondary" type="submit">Create Assignment</button>
+    </div>
+    </form>
 </div>
 {% endblock content %}

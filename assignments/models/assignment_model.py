@@ -5,9 +5,17 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from lms.models.course_model import Course
 from django import forms
+from image_optimizer.fields import OptimizedImageField
+import os
 
 
+
+def upload_path(instance, filename):
+    # change the filename here is required
+    return os.path.join(instance.title, filename)
+    
 class Assignment(models.Model):
+
     GRADES_DISPLAY = (
         ('percentage', 'Percentage'),
         ('complete/Incomplete', 'Complete/Incomplete'),
@@ -36,7 +44,15 @@ class Assignment(models.Model):
     due_date = models.DateField(blank=True, null=True)
     available_from = models.DateField(blank=True, null=True)
     until = models.DateField(blank=True, null=True)
-    # image = models.ImageField(upload_to='photos/%Y/%m/%d', blank=True, null=True)
+
+    image = models.ImageField(upload_to=upload_path)
+
+    image = OptimizedImageField(
+        upload_to=upload_path,
+        optimized_image_output_size=(900, 900),
+        optimized_image_resize_method='cover',  # 'thumbnail', 'cover' or None
+        
+    )
 
     # teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     # course

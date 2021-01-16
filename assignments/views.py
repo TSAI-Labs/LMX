@@ -26,7 +26,7 @@ class AssignmentDetailView(DetailView):
 class CreateForm(ModelForm):
     class Meta:
         model = Assignment
-        fields = ['title','content', 'date_posted', 'points','display_grades', 'sub_type', 'anonymous_grading', 'assign_to', 'due_date', 'available_from', 'until']
+        fields = ['title','content', 'image', 'date_posted', 'points','display_grades', 'sub_type', 'anonymous_grading', 'assign_to', 'due_date', 'available_from', 'until']
 
 
         widgets = {
@@ -72,7 +72,7 @@ class AssignmentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Assignment
     success_url = '/'
     template_name = "assignments/create_assignment.html"
-    fields = ['title','content', 'date_posted', 'points','display_grades', 'sub_type', 'anonymous_grading', 'assign_to', 'due_date', 'available_from', 'until']
+    fields = ['title','content', 'image','date_posted', 'points','display_grades', 'sub_type', 'anonymous_grading', 'assign_to', 'due_date', 'available_from', 'until']
 
 
     def form_valid(self, form):
