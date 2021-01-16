@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # LMS application imports.
-from .models.course_model import Course, GradingScheme, Section
+from .models.course_model import Course, GradingSchemeName, Section, GradingScheme
 from .models.enrollment_model import Enrollment
 from .models.users_model import Staff, Student
 
@@ -56,11 +56,21 @@ class SectionAdmin(admin.ModelAdmin):
 admin.site.register(Section, SectionAdmin)
 
 
+# Registers the grading scheme name model at the admin backend.
+class GradingSchemeNameAdmin(admin.ModelAdmin):
+    list_filter = ('name',)
+    search_fields = ('name',)
+    ordering = ['name']
+
+
+admin.site.register(GradingSchemeName, GradingSchemeNameAdmin)
+
+
 # Registers the grading scheme model at the admin backend.
 class GradingSchemeAdmin(admin.ModelAdmin):
-    list_filter = ('scheme',)
-    search_fields = ('scheme',)
-    ordering = ['scheme']
+    list_filter = ('scheme_name',)
+    search_fields = ('scheme_name__name', 'grade')
+    ordering = ['scheme_name__name', '-score_range_begin']
 
 
 admin.site.register(GradingScheme, GradingSchemeAdmin)

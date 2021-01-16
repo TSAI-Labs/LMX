@@ -1,0 +1,159 @@
+{% extends 'lms/course/settings/settings_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block main-content %}
+
+    <div class="container">
+        <h1 class="text-center pt-3 pb-3 border-bottom">Update Grading Schemes</h1>
+
+        <div class="pb-3">
+            <h5 class="pt-3 pb-1 text-muted">Switch to creating a new Grading Scheme</h5>
+            <a type="button" class="btn btn-outline-success"
+               href="{% url 'lms:course_grading_scheme_create' object.id %}">
+                Create new Scheme
+            </a>
+        </div>
+
+        <h5 class="pt-3 pb-1">Select an existing grading scheme to Update / Delete:</h5>
+        <form action="{% url 'lms:course_grading_scheme_update' object.id %}" class="form-horizontal" method="POST">
+            {% csrf_token %}
+            {{ existing_grading_schemes|crispy }}
+            <div class="pt-3 pb-3">
+                <button class="btn btn-outline-info" type="submit">Fetch Scheme Details</button>
+            </div>
+        </form>
+
+
+        {% if show_details %}
+
+            <div class="pt-3 pb-1">
+                <h5>Update the fields below (for the scheme selected above): </h5>
+            </div>
+
+            <form action="{% url 'lms:course_grading_scheme_update' object.id %}" class="form-horizontal" method="POST">
+                {% csrf_token %}
+                {{ grade_formset.management_form }}
+
+                <input type="hidden" name="scheme_name_id" value="{{ scheme_name_id }}">
+
+                <fieldset class="form-group">
+
+                    {{ scheme_name|crispy }}
+
+                    <table class="table table-sm">
+                        <caption>Note: Enter complete grade details in each row. Leave blank any additional rows
+                        </caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">Grade</th>
+                            <th scope="col">Score begin range</th>
+                            <th scope="col">Score end range</th>
+                            <th scope="col">Select to delete rows</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for form in grade_formset.forms %}
+                            <div>
+                                <tr>
+                                    {{ form|as_crispy_errors }}
+                                    {{ form.id|as_crispy_field }}
+
+                                    {# fixme: remove the labels from the fields #}
+                                    <td scope="row" class="fieldWrapper">
+                                        {{ form.grade|as_crispy_field }}
+                                    </td>
+                                    <td scope="row" class="fieldWrapper">
+                                        {{ form.score_range_begin|as_crispy_field }}
+                                    </td>
+                                    <td scope="row" class="fieldWrapper">
+                                        {{ form.score_range_end|as_crispy_field }}
+                                    </td>
+                                    <td scope="row" class="fieldWrapper">
+                                        {{ form.DELETE|as_crispy_field }}
+                                    </td>
+                                </tr>
+                            </div>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
+                </fieldset>
+
+                <div class="border-top  pt-3 pb-5">
+
+                    <button class="btn btn-outline-primary" type="submit">Update Scheme</button>
+
+                    <!-- Button trigger modal -->
+                    <button id="delete-scheme-btn" type="button" class="btn btn-outline-danger" data-toggle="modal"
+                            data-target="#deleteConfirmModal">
+                        Delete Scheme
+                    </button>
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog"
+                         aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteConfirmModalLabel">Are you sure that you want
+                                        to
+                                        delete?</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                                            id="modalCloseIcon">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Warning: This will delete the particular grading scheme from all others courses
+                                    as well.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="modalCloseBtn">Close
+                                    </button>
+                                    <button type="submit" class="btn btn-danger" name="delete_record" value="True">
+                                        Yes, Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+        {% endif %}
+
+
+    </div>
+{% endblock main-content %}
+
+{% block scripts %}
+
+    <script src="{% static 'lms/js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.js' %}"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#delete-scheme-btn").click(function () {
+                $("#deleteConfirmModal").modal('show');
+            });
+        });
+
+        $(function () {
+            $('#modalCloseBtn').on('click', function () {
+                $('#deleteConfirmModal').modal('hide');
+            });
+        });
+
+        $(function () {
+            $('#modalCloseIcon').on('click', function () {
+                $('#deleteConfirmModal').modal('hide');
+            });
+        });
+    </script>
+{% endblock scripts %}

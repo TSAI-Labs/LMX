@@ -30,6 +30,17 @@
                 Statistics
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link
+                {% if request.resolver_match.url_name == 'course_grading_scheme_update' %}
+                    active
+                {% elif request.resolver_match.url_name == 'course_grading_scheme_create' %}
+                    active
+                {% endif %}"
+               href="{% url 'lms:course_grading_scheme_update' object.id %}">
+                Manage Grading Schemes
+            </a>
+        </li>
     </ul>
 
     {% block main-content %}

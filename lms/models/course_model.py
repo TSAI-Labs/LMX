@@ -7,15 +7,40 @@ from django.db.models.fields.files import ImageFieldFile, FileField
 from django.utils import timezone
 
 
+class GradingSchemeName(models.Model):
+    """
+    Model to capture various grading schemes.
+    Courses will be able to choose from these grading schemes
+    """
+    name = models.CharField(max_length=250, null=False, blank=False, unique=True)
+
+    def __str__(self):
+        return f'Grading Scheme {self.name}'
+
+
 class GradingScheme(models.Model):
     """
     Model to capture various grading schemes.
     Courses will be able to choose from these grading schemes
     """
-    scheme = models.CharField(max_length=250, null=False, blank=False, unique=True)
+    scheme_name = models.ForeignKey(to=GradingSchemeName, on_delete=models.CASCADE)
+    grade = models.CharField(max_length=250, null=False, blank=False)
+    score_range_begin = models.SmallIntegerField()
+    score_range_end = models.SmallIntegerField()
 
     def __str__(self):
-        return f'Grading Scheme {self.scheme}'
+        return f'{self.scheme_name}, Grade: {self.grade}, Scores: [{self.score_range_begin}, {self.score_range_end})'
+
+    def clean(self):
+        super(GradingScheme, self).clean()
+
+        if self.score_range_end and self.score_range_begin:
+            if self.score_range_end < self.score_range_begin:
+                raise ValidationError('Range Error: Score end value is less that the score begin value!')
+
+    # # Constraints to ensure that a duplicate entry is not present with scheme name and grade
+    # class Meta:
+    #     unique_together = ('scheme_name', 'grade',)
 
 
 class Course(models.Model):
@@ -27,7 +52,7 @@ class Course(models.Model):
     time_zone = models.CharField(max_length=35, choices=[(x, x) for x in pytz.common_timezones], default='Asia/Kolkata')
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
-    grading_scheme = models.ForeignKey(to=GradingScheme, on_delete=models.SET_NULL, null=True, blank=True)
+    grading_scheme = models.ForeignKey(to=GradingSchemeName, on_delete=models.SET_NULL, null=True, blank=True)
     description = models.TextField()
     allow_self_enroll = models.BooleanField(default=True)
     enrollment_open_to_all = models.BooleanField(default=False)

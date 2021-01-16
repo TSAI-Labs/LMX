@@ -12,6 +12,10 @@ from lms.views.account.register_view import (
 from lms.views.course.course_views import (
     CourseListView,
 )
+from lms.views.course.grading_scheme_view import (
+    GradingSchemeUpdateView,
+    GradingSchemeCreateView
+)
 from lms.views.course.settings_view import (
     CourseDetailsView,
     CourseManageView,
@@ -79,7 +83,7 @@ urlpatterns = [
         name="dashboard_home"
     ),
 
-    # SETTINGS URLS #
+    # COURSE SETTINGS URLS #
 
     path(
         route="course/<int:pk>/details/",
@@ -87,7 +91,7 @@ urlpatterns = [
         name="course_details"
     ),
     path(
-        route="course/<int:pk>/manage",
+        route="course/<int:pk>/manage/",
         view=CourseManageView.as_view(),
         name="course_manage"
     ),
@@ -101,4 +105,14 @@ urlpatterns = [
         view=CourseStatisticsView.as_view(),
         name="course_statistics"
     ),
+    path(
+        route="course/<int:pk>/grading_scheme/new",
+        view=GradingSchemeCreateView.as_view(),
+        name="course_grading_scheme_create"
+    ),
+    path(
+        route="course/<int:pk>/grading_scheme/update",
+        view=GradingSchemeUpdateView.as_view(),
+        name="course_grading_scheme_update"
+    )
 ]
