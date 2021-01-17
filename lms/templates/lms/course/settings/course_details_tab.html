@@ -5,13 +5,85 @@
     <div class="container">
         <h1 class="text-center pt-3 pb-3 border-bottom">Course Details</h1>
 
-        <h5 class="pt-3 pb-1 text-muted">View/Update the Course Details</h5>
+        <h5 class="pt-3 pb-1">View/Update the Course Details</h5>
 
         <div class="pt-3 pb-3>">
             <form action="{% url 'lms:course_details' object.id %}" class="form-horizontal" method="POST">
                 {% csrf_token %}
                 <fieldset class="form-group">
-                    {{ form|crispy }}
+                    {{ form|as_crispy_errors }}
+                    <div class="row mb-lg-3 mt-lg-3">
+                        <div class="col">
+                            Course Title
+                        </div>
+                        <div class="col-lg-9">
+                            {{ form.title|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row mb-lg-3 mt-lg-3">
+                        <div class="col">
+                            Course Thumbnail
+                        </div>
+                        <div class="col-lg-9">
+                            {{ form.thumbnail|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row mb-lg-3 mt-lg-3">
+                        <div class="col">
+                            Course Timezone
+                        </div>
+                        <div class="col-lg-9">
+                            {{ form.time_zone|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row mb-lg-3 mt-lg-3">
+                        <div class="col">
+                            Course Start Date
+                        </div>
+                        <div class="col-lg-9">
+                            {{ form.start_date|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row mb-lg-3 mt-lg-3">
+                        <div class="col">
+                            Course End Date
+                        </div>
+                        <div class="col-lg-9">
+                            {{ form.end_date|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row mb-lg-3 mt-lg-3">
+                        <div class="col">
+                            Grading Scheme
+                        </div>
+                        <div class="col-lg-9">
+                            {{ form.grading_scheme|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row mb-lg-3 mt-lg-3">
+                        <div class="col">
+                            Course Description
+                        </div>
+                        <div class="col-lg-9">
+                            {{ form.description|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row mb-lg-3 mt-lg-3">
+                        <div class="col">
+                            Let students self enroll into the course?
+                        </div>
+                        <div class="col-lg-9">
+                            {{ form.allow_self_enroll|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="row mb-lg-3 mt-lg-3">
+                        <div class="col">
+                            Make the course enrollment open to all
+                        </div>
+                        <div class="col-lg-9">
+                            {{ form.enrollment_open_to_all|as_crispy_field }}
+                        </div>
+                    </div>
                 </fieldset>
                 <div class="pt-5 pb-5">
                     <a class="btn btn-outline-info" href="{% url 'lms:course_details' object.id %}">Discard Changes</a>

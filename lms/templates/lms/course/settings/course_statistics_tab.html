@@ -4,5 +4,32 @@
 {% block main-content %}
     <div class="container">
         <h1 class="text-center pt-3 pb-3 border-bottom">Statistics</h1>
+
+        <table class="table table-hover mt-lg-5 mb-lg-5">
+            <tbody>
+            <tr>
+                <th scope="row">Total students</th>
+                <td>{{ total_students }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Total active students</th>
+                <td>#</td>
+            </tr>
+            <tr>
+                <th scope="row">Total batches/sections</th>
+                <td>{{ total_sections }}</td>
+            </tr>
+            <tr>
+                <th scope="row">TAs</th>
+                <td>#</td>
+            </tr>
+            <tr>
+                <th scope="row">Peers</th>
+                <td>#</td>
+            </tr>
+
+            </tbody>
+        </table>
+
     </div>
 {% endblock main-content %}

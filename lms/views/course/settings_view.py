@@ -156,7 +156,15 @@ class CourseManageView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
 # todo: full implementation
 class CourseStatisticsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, DetailView):
     model = Course
+    fields = ['title']
+
     template_name = "lms/course/settings/course_statistics_tab.html"
 
     def test_func(self):
         return len(Staff.objects.all().filter(user=self.request.user)) == 1
+
+    def get_context_data(self, **kwargs):
+        context = super(CourseStatisticsView, self).get_context_data()
+        context['total_students'] = len(Enrollment.objects.filter(course=self.object))
+        context['total_sections'] = len(Section.objects.filter(course=self.object))
+        return context
