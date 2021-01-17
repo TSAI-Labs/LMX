@@ -48,9 +48,9 @@ admin.site.register(Enrollment, EnrollmentAdmin)
 
 # Registers the course-section model at the admin backend.
 class SectionAdmin(admin.ModelAdmin):
-    list_filter = ('name',)
-    search_fields = ('name',)
-    ordering = ['name']
+    list_filter = ('section_name', 'course')
+    search_fields = ('section_name', 'course')
+    ordering = ['section_name', 'course']
 
 
 admin.site.register(Section, SectionAdmin)

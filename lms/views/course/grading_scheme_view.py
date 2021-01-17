@@ -5,9 +5,9 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render
 from django.urls import reverse
-from django.views.generic import UpdateView, CreateView, TemplateView, DeleteView
+from django.views.generic import UpdateView
 
-from lms.forms.course.grading_scheme_form import GradeFormSet, GradingSchemeNameForm, GradingSchemeNamesListForm
+from lms.forms.course.grading_scheme_forms import GradeFormSet, GradingSchemeNameForm, GradingSchemeNamesListForm
 from lms.models.course_model import GradingScheme, GradingSchemeName, Course
 from lms.models.users_model import Staff
 

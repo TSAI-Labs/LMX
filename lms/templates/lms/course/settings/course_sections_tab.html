@@ -1,8 +1,132 @@
 {% extends 'lms/course/settings/settings_base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block main-content %}
     <div class="container">
         <h1 class="text-center pt-3 pb-3 border-bottom">Sections</h1>
+
+        <div class="bd-callout bd-callout-info">
+            <p class="font-weight-normal text-muted">
+                Sections make it possible to group students into different groups. You may easily assign enroll
+                students into existing sections, update or create new ones.
+            </p>
+        </div>
+
+        <h5 class="pt-3 pb-3 mb-3">Manage Sections</h5>
+        <div class="row">
+            <div class="col">
+                <div class="card h-100">
+                    <h5 class="card-header">Create</h5>
+                    <div class="card-body">
+                        <form class="col col-lg-9" method="post" action="{% url 'lms:course_sections' object.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <p class="card-text">Enter name for a new section</p>
+                                {{ section_create_form|crispy }}
+                            </div>
+                            <button type="submit" class="btn btn-outline-success mt-3" name="create-section"
+                                    value="true">
+                                Create
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <h5 class="card-header">Update</h5>
+                    <div class="card-body">
+                        <form class="col col-lg-9" method="post" action="{% url 'lms:course_sections' object.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <p class="card-text">Choose an existing section to update</p>
+                                {{ sections_list_form|crispy }}
+                                {{ section_create_form|crispy }}
+                            </div>
+                            <button type="submit" class="btn btn-outline-secondary mt-3" name="update-section"
+                                    value="true">
+                                Update
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card  h-100">
+                    <h5 class="card-header">Delete</h5>
+                    <div class="card-body">
+                        <form class="col col-lg-9" method="post" action="{% url 'lms:course_sections' object.id %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <p class="card-text">Choose an existing section to delete</p>
+                                {{ sections_list_form|crispy }}
+                            </div>
+                            <button type="submit" class="btn btn-outline-danger mt-3" name="delete-section"
+                                    value="true">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="mt-lg-5 pt-lg-5 pb-lg-5">Assign sections to enrolled students</h5>
+        <div class="mb-lg-5">
+
+            <form class="col col-lg-9" method="post" action="{% url 'lms:course_sections' object.id %}">
+                {% csrf_token %}
+                {{ enrolled_students_formset.management_form }}
+
+                <table class="table table-sm">
+
+                    <caption>List of enrolled students</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Student Name</th>
+                        <th scope="col">Section</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for form in enrolled_students_formset.forms %}
+                        <tr>
+                            {{ form|as_crispy_errors }}
+                            {{ form.student|as_crispy_field }}
+                            {{ form.course|as_crispy_field }}
+                            {{ form.id|as_crispy_field }}
+
+                            {#fixme: remove the labels from the fields#}
+                            <th scope="row">
+                                {{ forloop.counter }}
+                            </th>
+                            <td>
+                                {{ form.instance.student.user.username }}
+                            </td>
+                            <td>
+                                {{ form.instance.student.user.first_name }} {{ form.instance.student.user.last_name }}
+                            </td>
+                            <td>
+                                {{ form.section|as_crispy_field }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+                <button type="submit" class="btn btn-outline-success mt-3" name="update-section-assignments"
+                        value="true"> Update section assignments
+                </button>
+            </form>
+        </div>
+
     </div>
 {% endblock main-content %}
+
+{% block stylesheet %}
+    {{ block.super }}
+    <link href="{% static 'lms/css/course_settings.css' %}" rel="stylesheet" type="text/css"/>
+{% endblock stylesheet %}

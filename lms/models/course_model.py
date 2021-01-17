@@ -60,20 +60,6 @@ class Course(models.Model):
     def __str__(self):
         return f'{self.title} Course'
 
-    # Resizing the image to 300x300, to save space on the web server
-    def save(self, *args, **kwargs):
-
-        if self.thumbnail.name == '':
-            self.thumbnail = ImageFieldFile(instance=None, field=FileField(), name='default.png')
-        else:
-            img = Image.open(self.thumbnail.path)
-            if img.height > 300 or img.width > 300:
-                output_size = (300, 300)
-                img.thumbnail(output_size)
-                img.save(self.thumbnail.path)
-
-        super(Course, self).save(args, kwargs)
-
     # Perform validation
     def clean(self):
         if self.start_date > self.end_date:
@@ -84,7 +70,12 @@ class Section(models.Model):
     """
     Students belonging to each course can be further sub-divided into sections
     """
-    name = models.CharField(max_length=250, null=True, blank=False, unique=True)
+    section_name = models.CharField(max_length=250, null=True, blank=False, unique=True)
+    course = models.ForeignKey(to=Course, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'Section {self.name}'
+        return f'Section {self.section_name} - {self.course}'
+
+    # Constraints to ensure that a duplicate entry is not present with section_name and course
+    class Meta:
+        unique_together = ('section_name', 'course',)
