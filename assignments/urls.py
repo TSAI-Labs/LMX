@@ -7,7 +7,8 @@ from assignments.views import (
     AssignmentDetailView,
     AssignmentCreateView,
     AssignmentUpdateView,
-    AssignmentDeleteView
+    AssignmentDeleteView,
+    CommentCreateView
 )
 
 # Specifies the app name for name spacing.
@@ -41,12 +42,18 @@ urlpatterns = [
     path(
         route='assignment/<int:pk>/update/',
         view=AssignmentUpdateView.as_view(),
-        name='assignments-update'
+        name='assignment_update'
     ),
 
     path(
         route='assignment/<int:pk>/delete/',
         view=AssignmentDeleteView.as_view(),
-        name='assignments-delete'),
+        name='assignment_delete'),
+
+    path(
+        route="assignment/<int:pk>/comment/",
+        view=CommentCreateView.as_view(),
+        name="comment_create"
+    )
 
     ]

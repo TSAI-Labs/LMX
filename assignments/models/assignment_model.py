@@ -48,3 +48,14 @@ class Assignment(models.Model):
 
     def get_absolute_url(self):
         return reverse('lms:assignment_detail', args=(str(self.id)))
+
+
+class Comment(models.Model):
+    assignment = models.ForeignKey(Assignment,on_delete = models.CASCADE,related_name="comments")
+    author = models.CharField(max_length = 50)
+    content = models.TextField(max_length = 200)
+    date = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.content
+    class Meta:
+        ordering = ['-date']
