@@ -7,8 +7,8 @@ from django.views.generic import View
 from django.contrib import messages
 
 from lms.models.course_model import Course, StudentCourse
-from lms.models.users_model import Role
-from lms.models.assignment_model import Assignment
+from lms.models.user_role_model import Role
+from lms.models.assignment_model import Assignment, StudentAssignment
 from lms.views.account.login_view import UserLoginView
 
 from lms.forms.account.register_form import UserUpdateForm
@@ -20,21 +20,21 @@ class DashboardHomeView(LoginRequiredMixin, View):
     Display homepage of the dashboard.
     """
     context = {}
-    template_name = 'dashboard/student/dashboard_home.html'
+    template_name = 'dashboard/dashboard_home.html'
 
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             role = Role.objects.filter(user=request.user)
             if role:
                 if role[0].is_student:
-                    assignments = Assignment.objects.all()
+                    assignments = StudentAssignment.objects.filter(user=request.user)
                     courses = StudentCourse.objects.filter(user=request.user)
                     self.context.update(registered_courses=list(filter(lambda x: x.registered, courses)))
                     self.context.update(unregistered_courses=list(filter(lambda x: not x.registered, courses)))
-                    self.context.update(assignments=list(filter(lambda x: x.available_until > now(), assignments)))
+                    self.context.update(assignments=list(filter(lambda x: x.assignment.available_until > now(), assignments)))
                     self.context.update(is_profile_view=False)
                 else:
-                    assignments = Assignment.objects.all()
+                    assignments = Assignment.objects.filter(created_by=request.user)
                     courses = Course.objects.filter(user=request.user)
                     self.context.update(published_courses=list(filter(lambda x: x.published, courses)))
                     self.context.update(unpublished_courses=list(filter(lambda x: not x.published, courses)))
@@ -44,7 +44,7 @@ class DashboardHomeView(LoginRequiredMixin, View):
             else:
                 messages.error(request, "Contact Admin for Role Creation")
                 return redirect('lms:logout')
-                
+
             return render(request, self.template_name, self.context)
         else:
             return redirect('lms:login')
@@ -78,7 +78,7 @@ class DashboardProfileView(LoginRequiredMixin, View):
             'is_profile_view':True
         }
 
-        template_name = 'dashboard/student/profile.html'
+        template_name = 'dashboard/profile.html'
 
         return render(request, template_name, context)
 
@@ -102,6 +102,6 @@ class DashboardProfileView(LoginRequiredMixin, View):
             'is_profile_view':True
         }
 
-        template_name = 'dashboard/student/profile.html'
+        template_name = 'dashboard/profile.html'
 
         return render(request, template_name, context)

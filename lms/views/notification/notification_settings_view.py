@@ -20,7 +20,7 @@ class NotificationSettingsView(LoginRequiredMixin, View):
             'u_form': u_form
         }
 
-        template_name = 'notification/student/notification_settings.html'
+        template_name = 'notification/notification_settings.html'
 
         return render(request, template_name, context)
 
@@ -38,6 +38,6 @@ class NotificationSettingsView(LoginRequiredMixin, View):
             'u_form': u_form
         }
 
-        template_name = 'notification/student/notification_settings.html'
+        template_name = 'notification/notification_settings.html'
 
         return render(request, template_name, context)

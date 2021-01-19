@@ -1,7 +1,7 @@
 from django import forms
 
 # LMS application imports.
-from lms.models.student_model import Profile
+from lms.models.profile_model import Profile
 
 
 class ProfileUpdateForm(forms.ModelForm):

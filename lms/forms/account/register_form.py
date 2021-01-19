@@ -22,6 +22,15 @@ class UserRegisterForm(UserCreationForm):
                              help_text='Required. Input a valid email address.'
                              )
 
+    role = forms.ChoiceField(choices=[('1', 'Student'),('2', 'Teacher'),('3', 'Teacher Assistant')], required=True,
+                            widget=forms.Select(attrs={
+                                "name": "role", "class": "input100",
+                                "style": "align-items : center"
+                                                   }
+                                             ),
+                             help_text='Required. Select a user role'
+                             )
+
     password1 = forms.CharField(widget=
                                 forms.PasswordInput(attrs={
                                  "name": "password1", "class": "input100",
@@ -41,7 +50,7 @@ class UserRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'role', 'password1', 'password2']
         widgets = {
 
             "username": forms.TextInput(attrs={

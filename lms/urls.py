@@ -10,7 +10,7 @@ from lms.views.course.course_views import (
     CourseListView,
 )
 
-from lms.views.dashboard.student.dashboard_views import (
+from lms.views.dashboard.dashboard_views import (
     DashboardHomeView,
     DashboardProfileView,
 )

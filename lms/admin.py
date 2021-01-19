@@ -2,10 +2,10 @@ from django.contrib import admin
 from django.contrib import messages
 
 # LMS application imports.
-from .models.student_model import Profile
+from .models.profile_model import Profile
 from .models.course_model import Course, StudentCourse
-from .models.assignment_model import Assignment
-from .models.users_model import Role
+from .models.assignment_model import Assignment, StudentAssignment
+from .models.user_role_model import Role
 from .models.files_model import File
 from .models.blog_model import Post
 from .models.notification_settings_model import NotificationSetting
@@ -85,4 +85,10 @@ admin.site.register(Post, PostAdmin)
 
 @admin.register(Assignment)
 class AssignmentAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'for_course', 'created_by')
+    list_filter = ('for_course', 'created_by')
+
+@admin.register(StudentAssignment)
+class StudentAssignmentAdmin(admin.ModelAdmin):
+    list_display = ('user', 'assignment',)
+    list_filter = ('user__username', 'assignment__name',)

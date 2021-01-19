@@ -18,7 +18,7 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ student_course.courses.title }}</h5>
                   <p class="card-text">{{ student_course.courses.description }}</p>
-                  <a href="#" class="btn btn-primary">Go</a>
+                  <a href="#" class="btn btn-primary">View</a>
                 </div>
               </div>
             </div>
@@ -31,12 +31,13 @@
   <div class="mx-5 container-fluid">
       <div class="row">
          {% for student_course in unregistered_courses %}
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">{{ student_course.courses.title }}</h5>
                   <p class="card-text">{{ student_course.courses.description }}</p>
-                  <a href="#" class="btn btn-primary">Go</a>
+                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="#" class="btn btn-primary">Register</a>
                 </div>
               </div>
             </div>
@@ -49,12 +50,13 @@
   <div class="mx-5 container-fluid">
       <div class="row">
          {% for course in published_courses %}
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <a href="#" class="btn btn-primary">Go</a>
+                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="#" class="btn btn-primary">Un-Publish</a>
                 </div>
               </div>
             </div>
@@ -67,12 +69,13 @@
   <div class="mx-5 container-fluid">
       <div class="row">
          {% for course in unpublished_courses %}
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <div class="card">
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <a href="#" class="btn btn-primary">Go</a>
+                  <a href="#" class="btn btn-primary">View</a>
+                  <a href="#" class="btn btn-primary">Publish</a>
                 </div>
               </div>
             </div>
@@ -87,14 +90,20 @@
   {% if is_student_view %}
       <br>
       <h3>To Do</h3>
+      <ul class="list-group">
+         {% for student_assignment in assignments %}
+              <a href="#" class="list-group-item list-group-item-action">{{ student_assignment.assignment.name }} <br><span>Course: </span><span>{{ student_assignment.assignment.for_course }}</span>
+                  <br><span>Due Date: </span><span>{{ student_assignment.assignment.available_until }}</span></a>
+         {% endfor %}
+      </ul>
   {% else %}
       <br>
       <h3>Coming Up</h3>
+      <ul class="list-group">
+         {% for assignment in assignments %}
+              <a href="#" class="list-group-item list-group-item-action">{{ assignment.name }} <br><span>Course: </span><span>{{ assignment.for_course }}</span>
+                  <br><span>Due Date: </span><span>{{ assignment.available_until }}</span></a>
+         {% endfor %}
+      </ul>
   {% endif %}
-<ul class="list-group">
-   {% for assignment in assignments %}
-        <a href="#" class="list-group-item list-group-item-action">{{ assignment.name }} <br><span>Course: </span><span>{{ assignment.for_course }}</span>
-            <br><span>Due Date: </span><span>{{ assignment.available_until }}</span></a>
-   {% endfor %}
-</ul>
 {% endblock todo %}

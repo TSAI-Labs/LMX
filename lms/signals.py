@@ -3,8 +3,9 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 
 # LMS application imports.
-from .models.student_model import Profile
+from .models.profile_model import Profile
 from .models.notification_settings_model import NotificationSetting
+from .models.assignment_model import Assignment, StudentAssignment
 
 
 @receiver(post_save, sender=User)
@@ -26,4 +27,4 @@ def create_notification_settings(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def save_notification_settings(sender, instance, **kwargs):
-    instance.notificationsetting.save()    
+    instance.notificationsetting.save()

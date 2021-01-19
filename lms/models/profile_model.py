@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from PIL import Image
 import pytz
 
-#TODO changing file name
 class Profile(models.Model):
     TIMEZONES = tuple(zip(pytz.all_timezones, pytz.all_timezones))
 

@@ -8,7 +8,6 @@ class Role(models.Model):
     Model to capture the details of staff users. Admins, teachers and teaching assistants are considered as staff
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     is_admin = models.BooleanField(default=False)
     is_teacher = models.BooleanField(default=False)
     is_teaching_assistant = models.BooleanField(default=False)

@@ -3,11 +3,11 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from lms.models.users_model import Role
+from lms.models.user_role_model import Role
 
 class Course(models.Model):
     title = models.CharField(max_length=250, null=False, blank=False, unique=True)
-    #TODO change field type 
+    #TODO change field type
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='courses')
     description = models.TextField(null=True)
     published = models.BooleanField(default=False)
