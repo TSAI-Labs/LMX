@@ -1,4 +1,5 @@
 # Core Django imports.
+import pytz
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -54,7 +55,7 @@ class Course(models.Model):
     published = models.BooleanField(default=False)
 
     thumbnail = models.ImageField(default='default.png', upload_to='course_thumbnails', null=True, blank=True)
-    # time_zone = models.CharField(max_length=35, choices=[(x, x) for x in pytz.common_timezones], default='Asia/Kolkata')
+    # time_zone=models.CharField(max_length=35, choices=[(x, x) for x in pytz.common_timezones], default='Asia/Kolkata')
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
     grading_scheme = models.ForeignKey(to=GradingSchemeName, on_delete=models.SET_NULL, null=True, blank=True)
@@ -75,31 +76,6 @@ class Course(models.Model):
             raise ValidationError('Start date cannot be greater than the end date')
 
 
-class StudentCourse(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studentcourses')
-    courses = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='courses')
-    registered = models.BooleanField(default=False)
-
-    def __str__(self):
-        return self.user.username
-
-    def clean(self):
-        role = Role.objects.filter(user=self.user)
-        if role:
-            if (role[0].is_admin or role[0].is_teacher or role[0].is_teaching_assistant):
-                raise ValidationError("Only Student can register to the courses")
-        else:
-            raise ValidationError("Assign Role to the User")
-
-        if not self.courses.published:
-            raise ValidationError("Only Published courses can be selected")
-
-        student_courses = StudentCourse.objects.filter(user=self.user)
-        if student_courses:
-            if (self.courses in [stu_course.courses for stu_course in student_courses]):
-                raise ValidationError("Student already selected the course")
-
-
 class Section(models.Model):
     """
     Students belonging to each course can be further sub-divided into sections
@@ -113,3 +89,30 @@ class Section(models.Model):
     # Constraints to ensure that a duplicate entry is not present with section_name and course
     class Meta:
         unique_together = ('section_name', 'course',)
+
+
+class StudentCourse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studentcourses')
+    courses = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='courses')
+    section = models.ForeignKey(Section, on_delete=models.SET_NULL, blank=True, null=True)
+    registered = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.user.username} is associated with {self.courses.title}'
+
+    def clean(self):
+        role = Role.objects.filter(user=self.user)
+        if role:
+            if role[0].is_admin or role[0].is_teacher or role[0].is_teaching_assistant:
+                raise ValidationError("Only Student can register to the courses")
+        else:
+            raise ValidationError("Assign Role to the User")
+
+        if not self.courses.published:
+            raise ValidationError("Only Published courses can be selected")
+
+    # Constraints to ensure that a student cannot enroll into the same course more than once
+    class Meta:
+        unique_together = ('user', 'courses',)
+
+

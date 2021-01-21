@@ -11,9 +11,7 @@ from django.views.generic.edit import UpdateView
 
 # Blog application imports.
 from lms.forms.course.course_section_forms import SectionForm
-from lms.models.course_model import Course, Section
-from lms.models.enrollment_model import Enrollment
-from lms.models.users_model import Staff
+from lms.models.course_model import Course, Section, StudentCourse
 
 
 class CourseDetailsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
@@ -22,8 +20,8 @@ class CourseDetailsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageM
     """
 
     model = Course
-    fields = ['title', 'thumbnail', 'time_zone', 'start_date', 'end_date', 'grading_scheme', 'description',
-              'allow_self_enroll', 'enrollment_open_to_all']
+    fields = ['title', 'thumbnail', 'start_date', 'end_date', 'grading_scheme', 'description',
+              'allow_self_enroll', 'published', 'user']
     template_name = "lms/course/settings/course_details_tab.html"
     success_message = 'Course details have been successfully updated!'
 
@@ -31,9 +29,13 @@ class CourseDetailsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageM
     def get_success_url(self, **kwargs):
         return reverse('lms:course_details', kwargs={'pk': self.object.pk})
 
-    # Restrict access to only staff members
+    # Restrict access to only course user (teacher) and admin
     def test_func(self):
-        return len(Staff.objects.all().filter(user=self.request.user)) == 1
+        if self.request.user.role.is_admin:
+            return True
+        elif self.request.user == self.get_object().user:
+            return True
+        return False
 
 
 class CourseSectionsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
@@ -47,53 +49,47 @@ class CourseSectionsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
 
         return SectionChoiceForm
 
-    def enrolled_students_formset(self, post=None):
+    def enrolled_students_formset(self):
 
         class EnrollmentsForm(ModelForm):
             section = forms.ModelChoiceField(queryset=Section.objects.filter(course=self.object), required=False)
 
             class Meta:
-                model = Enrollment
-                fields = ['student', 'course', 'section']
+                model = StudentCourse
+                fields = ['user', 'courses', 'registered', 'section']
                 widgets = {
-                    'student': forms.HiddenInput(),
-                    'course': forms.HiddenInput(),
+                    'user': forms.HiddenInput(),
+                    'courses': forms.HiddenInput(),
                 }
 
-        enrollments = Enrollment.objects.filter(course=self.object)
+        enrollments = StudentCourse.objects.filter(courses=self.object)
         total_num_forms = len(enrollments)
-        enrollments_formset = inlineformset_factory(parent_model=Course, model=Enrollment, form=EnrollmentsForm,
+        enrollments_formset = inlineformset_factory(parent_model=Course, model=StudentCourse, form=EnrollmentsForm,
                                                     extra=total_num_forms, min_num=total_num_forms,
                                                     max_num=total_num_forms, validate_max=True, validate_min=True,
-                                                    can_delete=False, fields=['student', 'course', 'section'])
+                                                    can_delete=False,
+                                                    fields=['user', 'courses', 'registered', 'section'])
 
-        initial = []
-        for enrollment in enrollments:
-            initial.append({
-                'student': enrollment.student,
-                'section': enrollment.section
-            })
-
-        if post:
-            formset = enrollments_formset(post, instance=self.object)
-        else:
-            formset = enrollments_formset(instance=self.object)
-
-        return formset
+        return enrollments_formset
 
     # url to redirect to on success
     def get_success_url(self, **kwargs):
         return reverse('lms:course_sections', kwargs={'pk': self.object.pk})
 
+    # Restrict access to only course user (teacher) and admin
     def test_func(self):
-        return len(Staff.objects.all().filter(user=self.request.user)) == 1
+        if self.request.user.role.is_admin:
+            return True
+        elif self.request.user == self.get_object().user:
+            return True
+        return False
 
     def get_context_data(self, **kwargs):
         context = super(CourseSectionsView, self).get_context_data()
         context['section_create_form'] = SectionForm(initial={'course': self.object})
         context['section_update_form'] = SectionForm(initial={'course': self.object})
         context['sections_list_form'] = self.sections_choice_form()
-        context['enrolled_students_formset'] = self.enrolled_students_formset()
+        context['enrolled_students_formset'] = self.enrolled_students_formset()(instance=self.object)
 
         if self.request.POST:
             if self.request.POST.get('create-section'):
@@ -103,7 +99,8 @@ class CourseSectionsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
                 instance = Section.objects.get(id=int(self.request.POST['sections_list']))
                 context['section_update_form'] = SectionForm(self.request.POST, instance=instance)
             if self.request.POST.get('update-section-assignments'):
-                context['enrolled_students_formset'] = self.enrolled_students_formset(self.request.POST)
+                context['enrolled_students_formset'] = \
+                    self.enrolled_students_formset()(self.request.POST, instance=self.object)
 
         return context
 
@@ -132,8 +129,8 @@ class CourseSectionsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
             for form_data in context['enrolled_students_formset'].cleaned_data:
                 _id = form_data['id']
                 del form_data['id']
-                if _id and Enrollment.objects.filter(id=_id.id):
-                    Enrollment.objects.filter(id=_id.id).update(**form_data)
+                if _id and StudentCourse.objects.filter(id=_id.id):
+                    StudentCourse.objects.filter(id=_id.id).update(**form_data)
             messages.success(request, 'Student sections successfully updated!')
 
         return render(request, self.template_name, context=context)
@@ -149,8 +146,13 @@ class CourseManageView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMi
     def get_success_url(self, **kwargs):
         return reverse('lms:course_sections', kwargs={'pk': self.object.pk})
 
+    # Restrict access to only course user (teacher) and admin
     def test_func(self):
-        return len(Staff.objects.all().filter(user=self.request.user)) == 1
+        if self.request.user.role.is_admin:
+            return True
+        elif self.request.user == self.get_object().user:
+            return True
+        return False
 
 
 # todo: full implementation
@@ -160,11 +162,19 @@ class CourseStatisticsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessa
 
     template_name = "lms/course/settings/course_statistics_tab.html"
 
+    # Restrict access to only course user (teacher) and admin
     def test_func(self):
-        return len(Staff.objects.all().filter(user=self.request.user)) == 1
+        if self.request.user.role.is_admin:
+            return True
+        elif self.request.user == self.get_object().user:
+            return True
+        return False
 
     def get_context_data(self, **kwargs):
         context = super(CourseStatisticsView, self).get_context_data()
-        context['total_students'] = len(Enrollment.objects.filter(course=self.object))
+        context['total_students'] = len(StudentCourse.objects.filter(courses=self.object))
+        context['total_registered_students'] = len(StudentCourse.objects.filter(courses=self.object, registered=True))
+        context['total_unregistered_students'] = len(
+            StudentCourse.objects.filter(courses=self.object, registered=False))
         context['total_sections'] = len(Section.objects.filter(course=self.object))
         return context

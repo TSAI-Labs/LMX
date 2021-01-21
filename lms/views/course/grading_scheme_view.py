@@ -9,7 +9,6 @@ from django.views.generic import UpdateView
 
 from lms.forms.course.grading_scheme_forms import GradeFormSet, GradingSchemeNameForm, GradingSchemeNamesListForm
 from lms.models.course_model import GradingScheme, GradingSchemeName, Course
-from lms.models.users_model import Staff
 
 
 def validate_post(request):
@@ -108,9 +107,13 @@ class GradingSchemeCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMe
             messages.success(request, 'Grading Scheme is successfully created!')
         return render(request, self.template_name, context=self.get_context_data())
 
-    # Restrict access to only staff members
+    # Restrict access to only course user (teacher) and admin
     def test_func(self):
-        return len(Staff.objects.all().filter(user=self.request.user)) == 1
+        if self.request.user.role.is_admin:
+            return True
+        elif self.request.user == self.get_object().user:
+            return True
+        return False
 
 
 class GradingSchemeUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
@@ -169,6 +172,10 @@ class GradingSchemeUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMe
                 messages.success(request, 'Grading Scheme is successfully updated!')
             return render(request, self.template_name, context=self.get_context_data())
 
-    # Restrict access to only staff members
+    # Restrict access to only course user (teacher) and admin
     def test_func(self):
-        return len(Staff.objects.all().filter(user=self.request.user)) == 1
+        if self.request.user.role.is_admin:
+            return True
+        elif self.request.user == self.get_object().user:
+            return True
+        return False

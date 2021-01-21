@@ -28,14 +28,27 @@
                             {{ form.thumbnail|as_crispy_field }}
                         </div>
                     </div>
-                    <div class="row mb-lg-3 mt-lg-3">
-                        <div class="col">
-                            Course Timezone
+                    {#                    <div class="row mb-lg-3 mt-lg-3">#}
+                    {#                        <div class="col">#}
+                    {#                            Course Timezone#}
+                    {#                        </div>#}
+                    {#                        <div class="col-lg-9">#}
+                    {#                            {{ form.time_zone|as_crispy_field }}#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+
+                    {% if user.role.is_admin %}
+                        <div class="row mb-lg-3 mt-lg-3">
+                            <div class="col">
+                                Modify the teacher for the course
+                                <p class="text-muted font-weight-light">(option visible only to admin)</p>
+                            </div>
+                            <div class="col-lg-9">
+                                {{ form.user|as_crispy_field }}
+                            </div>
                         </div>
-                        <div class="col-lg-9">
-                            {{ form.time_zone|as_crispy_field }}
-                        </div>
-                    </div>
+                    {% endif %}
+
                     <div class="row mb-lg-3 mt-lg-3">
                         <div class="col">
                             Course Start Date
@@ -58,6 +71,10 @@
                         </div>
                         <div class="col-lg-9">
                             {{ form.grading_scheme|as_crispy_field }}
+                            <a type="button" class="btn btn-outline-secondary mt-2"
+                               href="{% url 'lms:course_grading_scheme_update' object.id %}">
+                                Manage grading scheme
+                            </a>
                         </div>
                     </div>
                     <div class="row mb-lg-3 mt-lg-3">
@@ -78,10 +95,10 @@
                     </div>
                     <div class="row mb-lg-3 mt-lg-3">
                         <div class="col">
-                            Make the course enrollment open to all
+                            Publish the course?
                         </div>
                         <div class="col-lg-9">
-                            {{ form.enrollment_open_to_all|as_crispy_field }}
+                            {{ form.published|as_crispy_field }}
                         </div>
                     </div>
                 </fieldset>
