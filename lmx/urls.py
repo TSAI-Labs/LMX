@@ -48,12 +48,11 @@ urlpatterns = [
              template_name='account/password_reset_complete.html'),
          name='password_reset_complete'),
 
-    # Url for image upload
-    # path(r'image/upload/', auth_views.upload_image, name='upload_image'),
-
-
     # Url for social authentication.
     path('oauth/', include('social_django.urls', namespace="social")),
+
+    path('ckeditor', include('ckeditor_uploader.urls'))
+
 ]
 
 # if not production add media url

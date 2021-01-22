@@ -3,9 +3,10 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django import forms
 from django.forms import ModelForm
+from django.urls import reverse_lazy
 
 # Blog application imports.
-from assignments.models.assignment_model import Assignment
+from assignments.models.assignment_model import Assignment, Comment
 
 
 class DateInput(forms.DateInput):
@@ -35,6 +36,23 @@ class CreateForm(ModelForm):
             'until': DateInput(),
         }
 
+class CommentForm(ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('author', 'content')
+
+class CommentCreateView(CreateView):
+    model = Comment
+    context_object_name = "comment"
+    template_name = "assignments/create_comment.html"
+    #fields = '__all__'
+    form_class = CommentForm
+    #success_url = reverse_lazy('home')
+    success_url = '/'
+
+    def form_valid(self, form):
+        form.instance.assignment_id = self.kwargs['pk']
+        return super().form_valid(form)
 
 class AssignmentCreateView(LoginRequiredMixin, CreateView):
     model = Assignment
