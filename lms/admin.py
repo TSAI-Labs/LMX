@@ -5,6 +5,7 @@ from .models.student_model import Profile
 from .models.course_model import Course
 
 
+
 class ProfileAdmin(admin.ModelAdmin):
     list_filter = ('user',)
     search_fields = ('user',)
@@ -13,7 +14,6 @@ class ProfileAdmin(admin.ModelAdmin):
 
 # Registers the student profile model at the admin backend.
 admin.site.register(Profile, ProfileAdmin)
-
 
 class CourseAdmin(admin.ModelAdmin):
 

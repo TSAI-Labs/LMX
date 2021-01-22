@@ -5,6 +5,11 @@
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
 
+.right {
+  text-align: right;
+  float: right;
+}
+
 @font-face {
   font-family: Ubuntu-Regular;
   src: url('../fonts/ubuntu/Ubuntu-Regular.ttf'); 

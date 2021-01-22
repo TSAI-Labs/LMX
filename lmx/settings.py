@@ -45,9 +45,12 @@ INSTALLED_APPS = [
     # third party apps
     'social_django',
     'crispy_forms',
+    'ckeditor',
+    'ckeditor_uploader',
 
     # My apps
     'lms.apps.LmsConfig',
+    'assignments'
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -141,6 +144,14 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "lms/static"),]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_CONFIGS = {
+ 'default' : {
+ 'extraPlugins': 'codesnippet',
+  'toolbar':'full',
+    },  
+}
+
 # Media files (User uploaded images)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -162,5 +173,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # SOCIAL AUTHS
-SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
-SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
+#SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
+#SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
