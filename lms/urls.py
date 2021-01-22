@@ -1,5 +1,5 @@
 # Core Django imports.
-from django.urls import path
+from django.urls import path, include, re_path
 
 # LMS app imports
 
@@ -78,7 +78,9 @@ urlpatterns = [
         route="student/dashboard/home/",
         view=DashboardHomeView.as_view(),
         name="dashboard_home"
-    )
+    ),
+
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
 
 ]
 

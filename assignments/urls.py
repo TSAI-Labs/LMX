@@ -1,5 +1,5 @@
 # Core Django imports.
-from django.urls import path
+from django.urls import path, include, re_path
 
 from assignments.views import (
     AssignmentBaseView,
@@ -54,6 +54,8 @@ urlpatterns = [
         route="assignment/<int:pk>/comment/",
         view=CommentCreateView.as_view(),
         name="comment_create"
-    )
+    ),
+
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
 
     ]

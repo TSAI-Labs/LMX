@@ -4,6 +4,7 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.urls import reverse
 from lms.models.course_model import Course
+from ckeditor_uploader.fields import RichTextUploadingField
 from django import forms
 
 
@@ -25,8 +26,9 @@ class Assignment(models.Model):
     )
 
     title = models.CharField(max_length=100)
+    #text =  RichTextUploadingField(blank=True, null=True)
     # content = models.TextField()
-    content = RichTextField(blank=True, null=True)
+    content = RichTextUploadingField(blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     points = models.IntegerField(blank=True, null=True, default=0)
     display_grades = models.CharField(choices=GRADES_DISPLAY, max_length=20, default='percentage')
@@ -59,3 +61,5 @@ class Comment(models.Model):
         return self.content
     class Meta:
         ordering = ['-date']
+
+

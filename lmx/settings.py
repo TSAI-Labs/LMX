@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'social_django',
     'crispy_forms',
     'ckeditor',
+    'ckeditor_uploader',
 
     # My apps
     'lms.apps.LmsConfig',
@@ -142,6 +143,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "lms/static"),]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_CONFIGS = {
+ 'default' : {
+ 'extraPlugins': 'codesnippet',
+  'toolbar':'full',
+    },  
+}
 
 # Media files (User uploaded images)
 MEDIA_URL = '/media/'

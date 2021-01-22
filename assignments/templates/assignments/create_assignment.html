@@ -3,6 +3,9 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+<link rel="stylesheet"  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 <div class="container">
 </br>
@@ -15,6 +18,7 @@
             <fieldset class="form-group">
                 <legend class ="border-bottom mb-2"></legend>
                 {{ form.media}}
+                {{ form.as_p|safe}}
                 <table>
                     {{ form.as_table}}
                 </table>
