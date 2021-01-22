@@ -14,7 +14,7 @@
           <small class="text-muted">{{ assignment.date_posted|date:"F d, Y" }}</small>
         </div>
         <h2><a class="article-title" href="{% url 'assignments:assignment_detail' assignment.id %}">{{ assignment.title }}</a></h2>
-        <p class="article-content"> {{ assignment.content }} </p>
+        <p class="article-content"> {{ assignment.content|safe }} </p>
       </div>
     </article>
 
