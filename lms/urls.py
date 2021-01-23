@@ -33,6 +33,7 @@ from lms.views.course.settings_view import (
     CourseSectionsView,
     CourseStatisticsView
 )
+
 from lms.views.course.mail_to_admin_view import (
     MailToAdminView
     
@@ -43,6 +44,7 @@ from lms.views.course.group_creation_view import (
     GroupCreationRequestSentView,
     ViewGroupsView
 )
+
 from lms.views.dashboard.dashboard_views import (
     DashboardHomeView,
     DashboardProfileView,
@@ -192,6 +194,7 @@ urlpatterns = [
         route="course/<int:pk>/grading_scheme/update",
         view=GradingSchemeUpdateView.as_view(),
         name="course_grading_scheme_update"
+
     ),
 
     # COURSE STUDENT - Group CREATION REQUEST
@@ -219,13 +222,7 @@ urlpatterns = [
         name="mail_to_admin"
     ),
 
-    
-
-    
-    
-
-
-
+   
 ]
 
 if settings.DEBUG:

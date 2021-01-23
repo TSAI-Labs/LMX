@@ -44,7 +44,9 @@
                     <div class="navbar-nav ml-auto">
                         <a href="{% url 'lms:home' %}" aria-current="page" class="nav-item nav-link active">Home</a>
                         <a href="{% url 'lms:blog-home' %}" class="nav-item nav-link active">Blogs</a>
-                        <a href="/" class="nav-item nav-link active">Quiz</a>
+
+                        <a href="#" class="nav-item nav-link active">Quiz</a>
+
                         {% if request.user.is_authenticated %}
                             <a href="{% url 'lms:dashboard_home' %}" class="nav-item nav-link active">Dashboard</a>
                             {% if 'blog' in request.path %}

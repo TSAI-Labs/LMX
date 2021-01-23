@@ -90,6 +90,7 @@ class Section(models.Model):
     class Meta:
         unique_together = ('section_name', 'course',)
 
+
 class Group(models.Model):
     """
     Students belonging to each course can be further sub-divided into groups by themselves:
@@ -107,11 +108,14 @@ class Group(models.Model):
         unique_together = ('group_name', 'course',)
 
 
+
 class StudentCourse(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studentcourses')
     courses = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='courses')
     section = models.ForeignKey(Section, on_delete=models.SET_NULL, blank=True, null=True)
+
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, blank=True, null=True)
+
     registered = models.BooleanField(default=False)
 
     def __str__(self):
@@ -131,7 +135,6 @@ class StudentCourse(models.Model):
     # Constraints to ensure that a student cannot enroll into the same course more than once
     class Meta:
         unique_together = ('user', 'courses',)
-
 
 
 

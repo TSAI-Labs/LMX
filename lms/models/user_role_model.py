@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -33,3 +34,4 @@ class Role(models.Model):
             user.is_staff = True
             print(user.is_staff)
         super().save(*args, **kwargs)
+
