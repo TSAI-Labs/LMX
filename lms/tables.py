@@ -14,4 +14,5 @@ import django_filters
 class StudentAssignmentFilter(django_filters.FilterSet):
     class Meta:
         model = StudentAssignment
-        fields = ['user']
+        fields = ['user', 'user__email']
+
