@@ -7,7 +7,6 @@ from assignments.views import (
     AssignmentCreateView,
     AssignmentUpdateView,
     AssignmentDeleteView
-    CommentCreateView
 )
 
 # Specifies the app name for name spacing.
@@ -15,6 +14,8 @@ app_name = "assignments"
 
 # lms/urls.py
 urlpatterns = [
+
+    
     path(
         route="assignment/home",
         view=AssignmentHomeView.as_view(),
@@ -43,13 +44,5 @@ urlpatterns = [
         route='assignment/<int:pk>/delete/',
         view=AssignmentDeleteView.as_view(),
         name='assignment_delete'),
-
-    path(
-        route="assignment/<int:pk>/comment/",
-        view=CommentCreateView.as_view(),
-        name="comment_create"
-    ),
-
-    re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
 
     ]

@@ -1,33 +1,27 @@
-{% extends 'assignments/base_assignment.html' %}
+{% extends 'lms/lms_base.html' %}
 
 {% load crispy_forms_tags %}
 
 {% block content %}
-<link rel="stylesheet"  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
-<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
 
-<div class="container">
-</br>
-</br>
-    <h1 class="text-center">Create Assignment</h1>
-</br>
-</br>
-        <form method="POST" enctype="multipart/form-data">
+<div id="content" class="flex">
+    <h1>Create Assignment</h1>
+    <div id="content-main">
+        <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class ="border-bottom mb-2"></legend>
+                <legend class="border-bottom mb-2"></legend>
                 {{ form.media}}
-                {{ form.as_p|safe}}
                 <table>
                     {{ form.as_table}}
                 </table>
             </fieldset>
-        </br>
-    </br>
+            </br>
+            </br>
             <div class="form-group">
                 <button class="btn btn-secondary">Create Assignment</button>
             </div>
         </form>
+    </div>
 </div>
 {% endblock content %}

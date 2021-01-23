@@ -36,7 +36,6 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'image_optimizer',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -47,7 +46,6 @@ INSTALLED_APPS = [
     'social_django',
     'crispy_forms',
     'ckeditor',
-    'ckeditor_uploader',
 
     # My apps
     'lms.apps.LmsConfig',
@@ -129,15 +127,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
-OPTIMIZED_IMAGE_METHOD = 'pillow'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -146,14 +142,6 @@ OPTIMIZED_IMAGE_METHOD = 'pillow'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "lms/static"),]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-CKEDITOR_UPLOAD_PATH = 'uploads/'
-CKEDITOR_CONFIGS = {
- 'default' : {
- 'extraPlugins': 'codesnippet',
-  'toolbar':'full',
-    },  
-}
 
 # Media files (User uploaded images)
 MEDIA_URL = '/media/'
@@ -176,5 +164,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # SOCIAL AUTHS
-SOCIAL_AUTH_GITHUB_KEY = r"env('SOCIAL_AUTH_GITHUB_KEY')"
-SOCIAL_AUTH_GITHUB_SECRET = r"env('SOCIAL_AUTH_GITHUB_SECRET')"
+#SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
+#SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
