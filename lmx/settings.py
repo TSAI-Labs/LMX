@@ -45,6 +45,10 @@ INSTALLED_APPS = [
     'social_django',
     'crispy_forms',
     'django_cleanup',
+    'django_seed',
+    'django_tables2',
+    'django_filters',
+    "bootstrap4",
 
     # My apps
     'lms.apps.LmsConfig',

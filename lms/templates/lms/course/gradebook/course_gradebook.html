@@ -1,0 +1,35 @@
+{% extends 'lms/lms_base.html' %}
+
+{% load render_table from django_tables2 %}
+
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+ 
+{% if filter %}
+<div class="row">
+    <div class="col-sm-10">
+    <form action="" method="get" class="form form-inline ">
+            {% bootstrap_form filter.form %}
+            {% bootstrap_button 'filter' %}
+    </form>
+</div>
+</div>
+<br>
+{% endif %}
+
+<!--ADD THE EXPORT PATH HERE @ href-->
+{% load querystring from django_tables2 %}
+<nav class="navbar navbar-light bg-light" style="background-color: #e3f2fd;">
+    {% comment %} <form class="form-inline">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form> {% endcomment %}
+
+    <a href="{% querystring '_export'='csv' %}">
+        <button class="btn btn-outline-success" type="button">Export Table(.csv)</button>
+    </a>
+</nav>
+{% render_table table%}
+{% endblock content %}

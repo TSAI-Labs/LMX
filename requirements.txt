@@ -23,3 +23,10 @@ social-auth-app-django==4.0.0
 social-auth-core==3.3.3
 sqlparse==0.4.1
 urllib3==1.26.2
+django_seed
+django-tables2
+tablib
+django-filter
+django-bootstrap4
+Pillow==8.0.1
+
