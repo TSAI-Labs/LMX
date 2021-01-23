@@ -1,5 +1,4 @@
 # Core Django imports.
-import pytz
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -98,7 +97,7 @@ class Group(models.Model):
     """
     group_name = models.CharField(max_length=250, null=True, blank=False, unique=True)
     course = models.ForeignKey(to=Course, on_delete=models.CASCADE)
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE,null=True, blank=False  )
+    user = models.OneToOneField(to=User, on_delete=models.CASCADE, null=True, blank=False)
 
     def __str__(self):
         return f'Group {self.group_name} - {self.course}'
@@ -108,15 +107,13 @@ class Group(models.Model):
         unique_together = ('group_name', 'course',)
 
 
-
 class StudentCourse(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studentcourses')
     courses = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='courses')
-    section = models.ForeignKey(Section, on_delete=models.SET_NULL, blank=True, null=True)
-
-    group = models.ForeignKey(Group, on_delete=models.SET_NULL, blank=True, null=True)
-
     registered = models.BooleanField(default=False)
+
+    section = models.ForeignKey(Section, on_delete=models.SET_NULL, blank=True, null=True)
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.username} is associated with {self.courses.title}'
@@ -135,6 +132,3 @@ class StudentCourse(models.Model):
     # Constraints to ensure that a student cannot enroll into the same course more than once
     class Meta:
         unique_together = ('user', 'courses',)
-
-
-
