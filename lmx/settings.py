@@ -50,6 +50,11 @@ INSTALLED_APPS = [
     'django_filters',
     "bootstrap4",
 
+    'ckeditor',
+    'ckeditor_uploader',
+
+
+
     # My apps
     'lms.apps.LmsConfig',
 ]
@@ -153,6 +158,10 @@ LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/student/dashboard/home/'
 LOGOUT_REDIRECT_URL = '/account/logout/'
 
+
+
+
+
 # Email Settings (Production)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = env('EMAIL_HOST')
@@ -162,5 +171,26 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # SOCIAL AUTHS
+
+#SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
+#SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
+
+
+
+
+#CKEDITOR SETTINGS
+CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_IMAGE_BACKEND = "pillow"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': None,
+    },
+}
+
+
 # SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
 # SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
+

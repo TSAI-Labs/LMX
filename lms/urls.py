@@ -35,6 +35,18 @@ from lms.views.course.settings_view import (
     CourseSectionsView,
     CourseStatisticsView
 )
+
+from lms.views.course.mail_to_admin_view import (
+    MailToAdminView
+    
+)
+
+from lms.views.course.group_creation_view import (
+    GroupCreationRequestView,
+    GroupCreationRequestSentView,
+    ViewGroupsView
+)
+
 from lms.views.dashboard.dashboard_views import (
     DashboardHomeView,
     DashboardProfileView,
@@ -186,14 +198,41 @@ urlpatterns = [
         name="course_grading_scheme_update"
     ),
 
-     path(
+    # COURSE STUDENT - Group CREATION REQUEST
+    path(
+        route="course/<int:pk>/group_creation_request/",
+        view=GroupCreationRequestView.as_view(),
+        name="group_creation_request"
+    ),
+    path(route='group_request/<int:ck>/<uidb64>/<token>/',
+         view=GroupCreationRequestSentView.as_view(),
+         name='group_request'
+    ),
+
+    # View GROUPS -  
+    path(
+        route="course/<int:pk>/view_groups",
+        view=ViewGroupsView.as_view(),
+        name="view_groups"
+    ),
+
+    # COURSE STUDENT -  Mail To Admin 
+    path(
+        route="course/<int:pk>/mail_to_admin",
+        view=MailToAdminView.as_view(),
+        name="mail_to_admin"
+    ),
+
+    # COURSE GRADEBOOK - Teacher's View
+    path(
         route="course/grades",
         view=GradeBookCourseView.as_view(),
         name='gradebook-course'
     ),
 
     # path to download csv file
-    path('_export=csv', table_download) 
+    path('_export=csv', table_download),
+  
 ]
 
 if settings.DEBUG:

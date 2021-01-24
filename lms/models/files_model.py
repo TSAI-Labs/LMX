@@ -1,3 +1,4 @@
+
 from datetime import datetime
 
 # Core Django imports.
@@ -13,4 +14,5 @@ class File(models.Model):
     date_modified = models.DateTimeField(null = True, blank = True)
     modified_by = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'modified_by')
     file_uploaded = models.FileField(upload_to = 'uploaded_files')
+
 
