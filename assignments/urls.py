@@ -1,13 +1,14 @@
 # Core Django imports.
-from django.urls import path
+from django.urls import path, include, re_path
 
 from assignments.views import (
     AssignmentHomeView,
     AssignmentDetailView,
     AssignmentCreateView,
     AssignmentUpdateView,
-    AssignmentDeleteView
-)
+    AssignmentDeleteView,
+    CommentCreateView
+
 
 # Specifies the app name for name spacing.
 app_name = "assignments"

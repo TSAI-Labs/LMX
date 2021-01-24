@@ -1,5 +1,6 @@
 # Core Django imports.
-from django.urls import path
+
+from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -133,6 +134,8 @@ urlpatterns = [
         name="dashboard_home"
     ),
 
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
+  
     # /author/dashboard/profile/
     path(
         route="dashboard/profile/",
