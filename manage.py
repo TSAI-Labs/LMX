@@ -7,6 +7,8 @@ import sys
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'lmx.settings')
+    os.environ.setdefault('SOCIAL_AUTH_GITHUB_KEY', '98a8e4b3da8efde33d79f15ba61b6c91d6b2256f')
+    os.environ.setdefault('SOCIAL_AUTH_GITHUB_SECRET', '98a8e4b3da8efde33d79f15ba61b6c91d6b2256f')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

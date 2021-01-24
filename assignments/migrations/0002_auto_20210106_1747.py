@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('lms', '0006_delete_assignment'),
+        #('lms', '0006_delete_assignment'),
         ('assignments', '0001_initial'),
     ]
 

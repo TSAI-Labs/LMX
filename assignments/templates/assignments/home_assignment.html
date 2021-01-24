@@ -1,10 +1,16 @@
-{% extends 'assignments/base_assignment.html' %}
+{% extends 'lms/lms_base.html' %}
 
 {% block content %}
-<div class="container">
-<div class="navbar-nav">
-  {% if user.is_authenticated %}
-    <a class="nav-item nav-link" href="{% url 'assignments:assignment_create' %}">+ Assignment</a>
+<div id="content" class="flex">
+  <h1>Assignments Section</h1>
+  <div id="content-main">
+
+    {% if user.is_authenticated %}
+    <ul class="object-tools">
+      <li>
+        <a href="{% url 'assignments:assignment_create' %}" class="addlink">Assignment</a>
+      </li>
+    </ul>
 
     {% for assignment in object_list %}
     <article class="media content-section">
@@ -14,17 +20,16 @@
           <small class="text-muted">{{ assignment.date_posted|date:"F d, Y" }}</small>
         </div>
         <h2><a class="article-title" href="{% url 'assignments:assignment_detail' assignment.id %}">{{ assignment.title }}</a></h2>
-        <p class="article-content"> {{ assignment.content|safe }} </p>
+        <p class="article-content"> {{ assignment.content }} </p>
       </div>
     </article>
 
     {% endfor %}
 
-  {% else %}
+    {% else %}
     <p>Login to view your assignments</p>
-  {% endif %}
+    {% endif %}
+  </div>
+</div>
+
 {% endblock content %}
-</div>
-
-
-</div>

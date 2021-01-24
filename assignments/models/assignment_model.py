@@ -5,17 +5,9 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from lms.models.course_model import Course
 from django import forms
-from image_optimizer.fields import OptimizedImageField
-import os
 
 
-
-def upload_path(instance, filename):
-    # change the filename here is required
-    return os.path.join(instance.title, filename)
-    
 class Assignment(models.Model):
-
     GRADES_DISPLAY = (
         ('percentage', 'Percentage'),
         ('complete/Incomplete', 'Complete/Incomplete'),
@@ -44,15 +36,7 @@ class Assignment(models.Model):
     due_date = models.DateField(blank=True, null=True)
     available_from = models.DateField(blank=True, null=True)
     until = models.DateField(blank=True, null=True)
-
-    image = models.ImageField(upload_to=upload_path)
-
-    image = OptimizedImageField(
-        upload_to=upload_path,
-        optimized_image_output_size=(900, 900),
-        optimized_image_resize_method='cover',  # 'thumbnail', 'cover' or None
-        
-    )
+    # image = models.ImageField(upload_to='photos/%Y/%m/%d', blank=True, null=True)
 
     # teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     # course
@@ -65,15 +49,7 @@ class Assignment(models.Model):
     def get_absolute_url(self):
         return reverse('lms:assignment_detail', args=(str(self.id)))
 
-
-class Comment(models.Model):
-    assignment = models.ForeignKey(Assignment,on_delete = models.CASCADE,related_name="comments")
-    author = models.CharField(max_length = 50)
-    content = models.TextField(max_length = 200)
-    date = models.DateTimeField(auto_now_add=True)
-    def __str__(self):
-        return self.content
-    class Meta:
-        ordering = ['-date']
-
-
+class StudentAssignment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studentassignments')
+    #assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    # This comment is new hence should emrge

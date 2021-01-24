@@ -1,16 +1,11 @@
 {% extends 'assignments/base_assignment.html' %}
 {% load crispy_forms_tags %}
+
+
+
 {% block content %}
-
-
-<div class="d-md-flex h-md-100 align-items-center">
-
-    <!-- First Half -->
-    
-    <div class="col-md-6 p-0 bg-indigo h-md-100">
-        <div class="text-black d-md-flex align-items-center h-100 p-5 text-center justify-content-center">
-            <div class="logoarea pt-5 pb-5">
-
+<div class="container">
+<div class="navbar-nav">
                 <div class="media-body">
                     <div class="article-metadata">
                         <a class="mr-2" href="#">{{ object.user }}</a>
@@ -40,8 +35,9 @@
                                 <br/>
                         {% endfor %}
                         {% endif %}
+
                     </div>
-                </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -54,6 +50,7 @@
         </div>
     </div>    
 </div>
+
 
 
 {% endblock content %}
