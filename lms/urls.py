@@ -22,6 +22,8 @@ from lms.views.blog.blog_view import (
 )
 from lms.views.course.course_views import (
     CourseListView,
+    GradeBookCourseView,
+    table_download
 )
 from lms.views.course.grading_scheme_view import (
     GradingSchemeUpdateView,
@@ -194,7 +196,6 @@ urlpatterns = [
         route="course/<int:pk>/grading_scheme/update",
         view=GradingSchemeUpdateView.as_view(),
         name="course_grading_scheme_update"
-
     ),
 
     # COURSE STUDENT - Group CREATION REQUEST
@@ -222,7 +223,16 @@ urlpatterns = [
         name="mail_to_admin"
     ),
 
-   
+    # COURSE GRADEBOOK - Teacher's View
+    path(
+        route="course/grades",
+        view=GradeBookCourseView.as_view(),
+        name='gradebook-course'
+    ),
+
+    # path to download csv file
+    path('_export=csv', table_download),
+  
 ]
 
 if settings.DEBUG:

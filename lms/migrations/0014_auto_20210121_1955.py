@@ -39,7 +39,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='course',
             name='thumbnail',
-            field=models.ImageField(blank=True, default='default.png', null=True, upload_to='course_thumbnails'),
+            field=models.ImageField(blank=True, default='default.jpg', null=True, upload_to='course_thumbnails'),
         ),
         migrations.CreateModel(
             name='Student',
