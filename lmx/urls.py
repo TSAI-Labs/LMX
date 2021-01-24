@@ -50,9 +50,6 @@ urlpatterns = [
 
     # Url for social authentication.
     path('oauth/', include('social_django.urls', namespace="social")),
-
-    path('ckeditor', include('ckeditor_uploader.urls'))
-
 ]
 
 # if not production add media url

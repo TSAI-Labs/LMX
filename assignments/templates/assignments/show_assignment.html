@@ -1,63 +1,31 @@
 {% extends 'assignments/base_assignment.html' %}
 {% load crispy_forms_tags %}
 
-{% block main-content %}
 
+
+{% block content %}
 <div class="container">
-    
-    <div>
-        <a class="mr-2" href="#">{{ object.user }}</a>
-        <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
-        {% if object.user == user %}
-            <div>
-                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assignments:assignment_update' object.id %}">Update</a>
-                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'assignments:assignment_delete' object.id %}">Delete</a>
-            </div>
-        {% endif %}
-    </div>
+<div class="navbar-nav">
 
-
-<h1 class="text-center">{{ assignment.title }}</h1>
-
-{{ assignment.content|safe }}
-<br/>
-<hr/>
-    <h5>Comments</h5>
-    <br/>
-    <a href="{% url 'assignments:comment_create' assignment.pk %}">Add Comment</a>
-    <br/>
-    <!-- Single Comments -->
-    {% if not assignment.comments.all %}
-        No Comment has been posted.
-    {% else %}
-    {% for comment in assignment.comments.all %}    
-    <h5 class="mt-0">{{ comment.author }}- {{comment.date}}</h5>
-            {{ comment.content|linebreaks }}
-            <br/>
-    {% endfor %}
-    {% endif %}
-    
-    <!-- Single Comments
-    {% for comment in post.comments.all %}
-    {% if comment.approved_comment %}
-    <div class="media mb-4">
-        <img class="d-flex mr-3 rounded-circle article-img" src="{{ comment.author.profile.image.url }}" alt="">
         <div class="media-body">
-            <h5 class="mt-0"><a href="{% url 'user_posts' comment.author.username %}">{{ comment.author }}</a></h5>
-            {{ comment.text|linebreaks }}
-            <hr>
+            <div class="article-metadata">
+                <a class="mr-2" href="#">{{ object.user }}</a>
+                <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+                {% if object.user == user %}
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assignments:assignments_update' object.id %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'assignments:assignment_delete' object.id %}">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+            <h2>{{ object.title }}</h2>
+            <p class="article-content">{{ object.available_from }}</p>
+            <p class="article-content">{{ object.due_date }}</p>
+            <p class="article-content">{{ object.points }}</p>
+            <p class="article-content">{{ object.content }}</p>
+            
+            </div>
         </div>
     </div>
-    {% else %}
-    <div class="alert alert-secondary" role="alert">
-        No Comment has been posted.
-    </div>
-    {% endif %}
-    {% endfor %} -->
 
-
-<!-- <p class="article-content">{{ object.available_from }}</p>
-<p class="article-content">{{ object.due_date }}</p>
-<p class="article-content">{{ object.points }}</p> -->
-</div>
-{% endblock main-content %}
+{% endblock content %}

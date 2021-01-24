@@ -1,9 +1,3 @@
-{% extends 'lms/lms_base.html' %}
-
-{% block title %}
-    Assignments
-{% endblock title %}
-
 {% block content %}
      <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -13,8 +7,7 @@
         </li>
     </ul> 
 
-    {% block main-content %}
-        {% include "assignments/list_assignment.html" %}    
-    {% endblock main-content %}
+    {% block content1 %}
+    {% endblock content1 %}
 
 {% endblock content %}
