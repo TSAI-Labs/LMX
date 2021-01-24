@@ -54,6 +54,7 @@ class Assignment(models.Model):
         
     )
 
+    # Adding dummy comment
     # teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     # course
 
