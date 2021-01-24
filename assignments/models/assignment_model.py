@@ -38,6 +38,7 @@ class Assignment(models.Model):
     until = models.DateField(blank=True, null=True)
     # image = models.ImageField(upload_to='photos/%Y/%m/%d', blank=True, null=True)
 
+    # Adding dummy comment
     # teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     # course
 
