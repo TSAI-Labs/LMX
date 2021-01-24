@@ -4,7 +4,9 @@ from django.contrib import messages
 # LMS application imports.
 from .models.assignment_model import Assignment, StudentAssignment
 from .models.blog_model import Post
-from .models.course_model import Course, StudentCourse, GradingSchemeName, Section, GradingScheme
+
+from .models.course_model import Course, StudentCourse, GradingSchemeName, Section, GradingScheme, Group
+
 from .models.files_model import File
 from .models.notification_settings_model import NotificationSetting
 from .models.profile_model import Profile
@@ -41,11 +43,15 @@ class StudentCourseAdmin(admin.ModelAdmin):
 admin.site.register(StudentCourse, StudentCourseAdmin)
 
 
+
+
+
 class RoleAdmin(admin.ModelAdmin):
     list_display = ('user', 'is_admin', 'is_teacher', 'is_teaching_assistant', 'is_student')
     list_filter = ('is_admin', 'is_teacher', 'is_teaching_assistant', 'is_student')
     search_fields = ('user__username',)
     ordering = ['user__username', ]
+
 
 
 # Registers the staff profile model at the admin backend.
@@ -83,6 +89,18 @@ class SectionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Section, SectionAdmin)
+
+
+
+class GroupAdmin(admin.ModelAdmin):
+    list_filter = ('group_name', 'course')
+    search_fields = ('group_name', 'course')
+    ordering = ['group_name', 'course']
+
+
+admin.site.register(Group, GroupAdmin)
+
+
 
 
 # Registers the grading scheme name model at the admin backend.

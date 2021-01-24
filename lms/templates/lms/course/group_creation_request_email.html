@@ -1,0 +1,9 @@
+{% autoescape off %}
+Hi {{ user.username }},
+{{from_user}}  from {{course}} has requested to create a group.
+
+
+Please click on the link below to confirm your registration:
+
+http://{{ domain }}{% url 'lms:group_request' ck=course_id uidb64=uid token=token %}
+{% endautoescape %}
