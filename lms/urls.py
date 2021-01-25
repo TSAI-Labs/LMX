@@ -89,7 +89,7 @@ urlpatterns = [
     ),
 
     path(
-        route='blog/user/<str:username>',
+        route='blog/user/<str:username>/',
         view=UserPostListView.as_view(),
         name='user-posts'
     ),
@@ -197,12 +197,12 @@ urlpatterns = [
         name="course_statistics"
     ),
     path(
-        route="course/<int:pk>/grading_scheme/new",
+        route="course/<int:pk>/grading_scheme/new/",
         view=GradingSchemeCreateView.as_view(),
         name="course_grading_scheme_create"
     ),
     path(
-        route="course/<int:pk>/grading_scheme/update",
+        route="course/<int:pk>/grading_scheme/update/",
         view=GradingSchemeUpdateView.as_view(),
         name="course_grading_scheme_update"
     ),
@@ -220,21 +220,21 @@ urlpatterns = [
 
     # View GROUPS -  
     path(
-        route="course/<int:pk>/view_groups",
+        route="course/<int:pk>/view_groups/",
         view=ViewGroupsView.as_view(),
         name="view_groups"
     ),
 
     # COURSE STUDENT -  Mail To Admin 
     path(
-        route="course/<int:pk>/mail_to_admin",
+        route="course/<int:pk>/mail_to_admin/",
         view=MailToAdminView.as_view(),
         name="mail_to_admin"
     ),
 
     # COURSE GRADEBOOK - Teacher's View
     path(
-        route="course/grades",
+        route="course/grades/",
         view=GradeBookCourseView.as_view(),
         name='gradebook-course'
     ),
@@ -252,13 +252,13 @@ urlpatterns = [
 
     
     path(
-        route="user/assignment/home/<int:pk>",
+        route="user/assignment/home/<int:pk>/",
         view=AssignmentDetailView.as_view(),
         name="assignment_detail"
     ),
 
     path(
-        route="assignment/create",
+        route="assignment/create/",
         view=AssignmentCreateView.as_view(),
         name="assignment_create"
     ),
