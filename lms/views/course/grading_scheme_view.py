@@ -3,7 +3,7 @@ from collections import namedtuple
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import UpdateView
 
@@ -115,6 +115,11 @@ class GradingSchemeCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMe
             return True
         return False
 
+    # Redirect a logged in user, when they fail test_func()
+    def handle_no_permission(self):
+        messages.warning(self.request, 'Requested resource is not accessible!')
+        return redirect('lms:dashboard_home')
+
 
 class GradingSchemeUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     """
@@ -179,3 +184,8 @@ class GradingSchemeUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMe
         elif self.request.user == self.get_object().user:
             return True
         return False
+
+    # Redirect a logged in user, when they fail test_func()
+    def handle_no_permission(self):
+        messages.warning(self.request, 'Requested resource is not accessible!')
+        return redirect('lms:dashboard_home')
