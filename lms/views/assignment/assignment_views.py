@@ -36,10 +36,11 @@ class CreateForm(ModelForm):
             'until': DateInput(),
         }
 
-class CommentForm(ModelForm):
+class CommentForm(LoginRequiredMixin, ModelForm):
     class Meta:
         model = Comment
-        fields = ('author', 'content')
+        fields = ['content']
+    
 
 class CommentCreateView(CreateView):
     model = Comment
@@ -52,6 +53,7 @@ class CommentCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.assignment_id = self.kwargs['pk']
+        form.instance.author = self.request.user
         return super().form_valid(form)
 
 class AssignmentCreateView(LoginRequiredMixin, CreateView):
@@ -69,7 +71,7 @@ class AssignmentCreateView(LoginRequiredMixin, CreateView):
     def test_func(self):
         post = self.get_object()
 
-        if self.request.user == post.user:
+        if self.request.user == post.created_by:
             return True
         return False
 
@@ -81,7 +83,7 @@ class AssignmentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         post = self.get_object()
 
-        if self.request.user == post.user:
+        if self.request.user == post.created_by:
             return True
         return False
 
@@ -99,6 +101,6 @@ class AssignmentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         assigment = self.get_object()
 
-        if self.request.user == assigment.user:
+        if self.request.user == assigment.created_by:
             return True
         return False

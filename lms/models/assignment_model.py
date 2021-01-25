@@ -14,7 +14,7 @@ from lms.models.user_role_model import Role
 
 def upload_path(instance, filename):
     # change the filename here is required
-    return os.path.join(instance.title, filename)
+    return os.path.join(instance.name, filename)
 
 class Assignment(models.Model):
 

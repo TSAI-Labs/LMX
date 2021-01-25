@@ -13,7 +13,7 @@
 
                 <div class="media-body">
                     <div class="article-metadata">
-                        <a class="mr-2" href="#">{{ object.user }}</a>
+                        <a class="mr-2" href="#">{{ object.created_by }}</a>
                         <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
                         {% if object.user == user %}
                             <div>
