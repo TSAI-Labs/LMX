@@ -49,12 +49,8 @@ INSTALLED_APPS = [
     'django_tables2',
     'django_filters',
     "bootstrap4",
-
     'ckeditor',
     'ckeditor_uploader',
-
-
-
     # My apps
     'lms.apps.LmsConfig',
 ]

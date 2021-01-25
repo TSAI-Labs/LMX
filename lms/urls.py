@@ -1,7 +1,7 @@
 # Core Django imports.
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, re_path, include
 
 # LMS app imports
 from lms.views.account.login_view import UserLoginView
@@ -55,6 +55,15 @@ from lms.views.notification.notification_settings_view import (
     NotificationSettingsView,
 )
 
+from lms.views.assignment.assignment_views import (
+    AssignmentHomeView,
+    AssignmentDetailView,
+    AssignmentCreateView,
+    AssignmentUpdateView,
+    AssignmentDeleteView,
+    CommentCreateView,
+)
+
 # Specifies the app name for name spacing.
 app_name = "lms"
 
@@ -80,7 +89,7 @@ urlpatterns = [
     ),
 
     path(
-        route='blog/user/<str:username>',
+        route='blog/user/<str:username>/',
         view=UserPostListView.as_view(),
         name='user-posts'
     ),
@@ -188,12 +197,12 @@ urlpatterns = [
         name="course_statistics"
     ),
     path(
-        route="course/<int:pk>/grading_scheme/new",
+        route="course/<int:pk>/grading_scheme/new/",
         view=GradingSchemeCreateView.as_view(),
         name="course_grading_scheme_create"
     ),
     path(
-        route="course/<int:pk>/grading_scheme/update",
+        route="course/<int:pk>/grading_scheme/update/",
         view=GradingSchemeUpdateView.as_view(),
         name="course_grading_scheme_update"
     ),
@@ -211,27 +220,66 @@ urlpatterns = [
 
     # View GROUPS -  
     path(
-        route="course/<int:pk>/view_groups",
+        route="course/<int:pk>/view_groups/",
         view=ViewGroupsView.as_view(),
         name="view_groups"
     ),
 
     # COURSE STUDENT -  Mail To Admin 
     path(
-        route="course/<int:pk>/mail_to_admin",
+        route="course/<int:pk>/mail_to_admin/",
         view=MailToAdminView.as_view(),
         name="mail_to_admin"
     ),
 
     # COURSE GRADEBOOK - Teacher's View
     path(
-        route="course/grades",
+        route="course/grades/",
         view=GradeBookCourseView.as_view(),
         name='gradebook-course'
     ),
 
     # path to download csv file
     path('_export=csv', table_download),
+
+    # Assignment Views
+
+    path(
+        route="assignment/home/",
+        view=AssignmentHomeView.as_view(),
+        name="assignment_home"
+    ),
+
+    
+    path(
+        route="user/assignment/home/<int:pk>/",
+        view=AssignmentDetailView.as_view(),
+        name="assignment_detail"
+    ),
+
+    path(
+        route="assignment/create/",
+        view=AssignmentCreateView.as_view(),
+        name="assignment_create"
+    ),
+    path(
+        route='assignment/<int:pk>/update/',
+        view=AssignmentUpdateView.as_view(),
+        name='assignments_update'
+    ),
+
+    path(
+        route='assignment/<int:pk>/delete/',
+        view=AssignmentDeleteView.as_view(),
+        name='assignment_delete'),
+
+    path(
+        route="assignment/<int:pk>/comment/",
+        view=CommentCreateView.as_view(),
+        name="comment_create"
+    ),
+
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
   
 ]
 

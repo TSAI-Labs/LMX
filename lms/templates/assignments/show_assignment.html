@@ -1,0 +1,59 @@
+{% extends 'lms/lms_base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<div class="d-md-flex h-md-100 align-items-center">
+
+    <!-- First Half -->
+    
+    <div class="col-md-6 p-0 bg-indigo h-md-100">
+        <div class="text-black d-md-flex align-items-center h-100 p-5 text-center justify-content-center">
+            <div class="logoarea pt-5 pb-5">
+
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <a class="mr-2" href="#">{{ object.created_by }}</a>
+                        <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+                        {% if object.user == user %}
+                            <div>
+                                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'lms:assignments_update' object.id %}">Update</a>
+                                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'lms:assignment_delete' object.id %}">Delete</a>
+                            </div>
+                        {% endif %}
+                        <h2>{{ object.title }}</h2>
+                        <p class="article-content">{{ object.available_from }}</p>
+                        <p class="article-content">{{ object.due_date }}</p>
+                        <p class="article-content">{{ object.points }}</p>
+                        <p class="article-content">{{ object.content }}</p>
+                        <h5>Comments</h5>
+                        <br/>
+                        <a href="{% url 'lms:comment_create' assignment.pk %}">Add Comment</a>
+                        <br/>
+                        <!-- Single Comments -->
+                        {% if not assignment.comments.all %}
+                            No Comment has been posted.
+                        {% else %}
+                        {% for comment in assignment.comments.all %}    
+                        <h5 class="mt-0">{{ comment.author }}- {{comment.date}}</h5>
+                                {{ comment.content|linebreaks }}
+                                <br/>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  
+
+    <div class="col-md-6 p-0 bg-red h-md-100 loginarea">
+        <div class="d-md-flex align-items-center h-md-100 p-5 justify-content-center">
+            <img class="img-thumbnail" src="{{ object.image.url }}">
+        </div>
+    </div>    
+</div>
+
+
+{% endblock content %}
