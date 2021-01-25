@@ -1,4 +1,4 @@
-{% extends 'assignments/base_assignment.html' %}
+{% extends 'lms/lms_base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
 
@@ -17,8 +17,8 @@
                         <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
                         {% if object.user == user %}
                             <div>
-                                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'assignments:assignments_update' object.id %}">Update</a>
-                                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'assignments:assignment_delete' object.id %}">Delete</a>
+                                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'lms:assignments_update' object.id %}">Update</a>
+                                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'lms:assignment_delete' object.id %}">Delete</a>
                             </div>
                         {% endif %}
                         <h2>{{ object.title }}</h2>
@@ -28,7 +28,7 @@
                         <p class="article-content">{{ object.content }}</p>
                         <h5>Comments</h5>
                         <br/>
-                        <a href="{% url 'assignments:comment_create' assignment.pk %}">Add Comment</a>
+                        <a href="{% url 'lms:comment_create' assignment.pk %}">Add Comment</a>
                         <br/>
                         <!-- Single Comments -->
                         {% if not assignment.comments.all %}

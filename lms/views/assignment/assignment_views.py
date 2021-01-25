@@ -17,7 +17,7 @@ class AssignmentHomeView(ListView):
     model = Assignment
     context_object_name = "assignments"
     template_name = "assignments/home_assignment.html"
-    ordering = ['-date_posted']
+    ordering = ['-available_from']
 
 class AssignmentDetailView(DetailView):
     model = Assignment

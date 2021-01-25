@@ -1,4 +1,4 @@
-{% extends 'lms/assignments/base_assignment.html' %}
+{% extends 'lms/lms_base.html' %}
 {% block content %}
 <div class="container">
     <div class="content-section">
@@ -10,7 +10,7 @@
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
-                <a class="btn btn-outline-secondary" href="{% url 'assignments:assignment_detail' object.id %}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{% url 'lms:assignment_detail' object.id %}">Cancel</a>
             </div>
         </form>
     </div>

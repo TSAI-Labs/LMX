@@ -1,4 +1,4 @@
-{% extends 'assignments/base_assignment.html' %}
+{% extends 'lms/lms_base.html' %}
 
 {% load crispy_forms_tags %}
 
@@ -19,9 +19,9 @@
                 <legend class ="border-bottom mb-2"></legend>
                 {{ form.media}}
                 {{ form.as_p|safe}}
-                <table>
+                <!-- <table>
                     {{ form.as_table}}
-                </table>
+                </table> -->
             </fieldset>
         </br>
     </br>
