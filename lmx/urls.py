@@ -52,7 +52,7 @@ urlpatterns = [
     # Url for social authentication.
     path('oauth/', include('social_django.urls', namespace="social")),
 
-    path(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls')),
 
     ]
 

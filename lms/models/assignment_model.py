@@ -2,11 +2,13 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.exceptions import ValidationError
-from ckeditor.fields import RichTextField
-from image_optimizer.fields import OptimizedImageField
 from django import forms
-import os
 from django.urls import reverse
+
+from ckeditor_uploader.fields import RichTextUploadingField
+from image_optimizer.fields import OptimizedImageField
+
+import os
 
 from lms.models.course_model import Course, StudentCourse
 from lms.models.user_role_model import Role
@@ -36,7 +38,7 @@ class Assignment(models.Model):
     )
 
     name = models.CharField(max_length=30)
-    description = RichTextField(blank=True, null=True)
+    description = RichTextUploadingField(blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
     available_from = models.DateTimeField()
     available_until = models.DateTimeField()

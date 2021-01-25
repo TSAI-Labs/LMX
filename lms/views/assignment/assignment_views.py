@@ -1,16 +1,12 @@
 # Core Django imports.
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django import forms
-from django.forms import ModelForm
 from django.urls import reverse_lazy
 
 # Blog application imports.
 from lms.models.assignment_model import Assignment, Comment
-
-
-class DateInput(forms.DateInput):
-    input_type = 'date'
+from lms.forms.assignment.create_assignment_form import CreateForm
+from lms.forms.assignment.comment_form import CommentForm
 
 
 class AssignmentHomeView(ListView):
@@ -23,24 +19,7 @@ class AssignmentDetailView(DetailView):
     model = Assignment
     context_object_name = "assignment"
     template_name = "assignments/show_assignment.html"
-
-class CreateForm(ModelForm):
-    class Meta:
-        model = Assignment
-        fields = '__all__'
-
-
-        widgets = {
-            'due_date': DateInput(),
-            'available_from': DateInput(),
-            'until': DateInput(),
-        }
-
-class CommentForm(LoginRequiredMixin, ModelForm):
-    class Meta:
-        model = Comment
-        fields = ['content']
-    
+ 
 
 class CommentCreateView(CreateView):
     model = Comment

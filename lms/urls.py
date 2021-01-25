@@ -245,7 +245,7 @@ urlpatterns = [
     # Assignment Views
 
     path(
-        route="assignment/home",
+        route="assignment/home/",
         view=AssignmentHomeView.as_view(),
         name="assignment_home"
     ),
