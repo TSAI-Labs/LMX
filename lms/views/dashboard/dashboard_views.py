@@ -29,8 +29,13 @@ class DashboardHomeView(LoginRequiredMixin, View):
                 if role[0].is_student:
                     assignments = StudentAssignment.objects.filter(user=request.user)
                     courses = StudentCourse.objects.filter(user=request.user)
+                    all_courses = Course.objects.filter(published=True)
                     self.context.update(registered_courses=list(filter(lambda x: x.registered, courses)))
-                    self.context.update(unregistered_courses=list(filter(lambda x: not x.registered, courses)))
+                    self.context.update(unregistered_courses=[x for x in all_courses
+                                                                if not x in [y.courses
+                                                                            for y in courses
+                                                                            if y.registered
+                                                                            ]])
                     self.context.update(assignments=list(filter(lambda x: x.assignment.available_until > now(), assignments)))
                     self.context.update(is_profile_view=False)
                 else:
