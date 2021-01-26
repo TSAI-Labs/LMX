@@ -30,14 +30,20 @@
   <h3 class="mx-5 text-left">Un-Registered Courses</h3>
   <div class="mx-5 container-fluid">
       <div class="row">
-         {% for student_course in unregistered_courses %}
+         {% for course in unregistered_courses %}
             <div class="col-sm-4">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">{{ student_course.courses.title }}</h5>
-                  <p class="card-text">{{ student_course.courses.description }}</p>
-                  <a href="#" class="btn btn-primary">View</a>
-                  <a href="#" class="btn btn-primary">Register</a>
+                  <h5 class="card-title">{{ course.title }}</h5>
+                  <p class="card-text">{{ course.description }}</p>
+                  <form action="#" method="get" style="display:inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">View</button>
+                  </form>
+                  <form action="{% url 'lms:course_register' course.id %}" method="post" style="display:inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">Register</button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -55,8 +61,14 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <a href="#" class="btn btn-primary">View</a>
-                  <a href="#" class="btn btn-primary">Un-Publish</a>
+                  <form action="#" method="get" style="display:inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">View</button>
+                  </form>
+                  <form action="{% url 'lms:course_unpublish' course.id %}" method="post" style="display:inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">Un-Publish</button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -74,8 +86,14 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <a href="#" class="btn btn-primary">View</a>
-                  <a href="#" class="btn btn-primary">Publish</a>
+                  <form action="#" method="get" style="display:inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">View</button>
+                  </form>
+                  <form action="{% url 'lms:course_publish' course.id %}" method="post" style="display:inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">Publish</button>
+                  </form>
                 </div>
               </div>
             </div>

@@ -36,9 +36,18 @@ from lms.views.course.settings_view import (
     CourseStatisticsView
 )
 
+from lms.views.course.course_registration_views import (
+    CourseRegistraionView,
+)
+
+from lms.views.course.course_publish_views import (
+    CoursePublishView,
+    CourseUnPublishView
+)
+
 from lms.views.course.mail_to_admin_view import (
     MailToAdminView
-    
+
 )
 
 from lms.views.course.group_creation_view import (
@@ -167,6 +176,27 @@ urlpatterns = [
         name="dashboard_profile"
     ),
 
+    # /author/course/register
+    path(
+        route="course/register/<int:pk>/",
+        view=CourseRegistraionView.as_view(),
+        name="course_register"
+    ),
+
+    # /author/course/publish
+    path(
+        route="course/publish/<int:pk>/",
+        view=CoursePublishView.as_view(),
+        name="course_publish"
+    ),
+
+    # /author/course/unpublish
+    path(
+        route="course/unpublish/<int:pk>/",
+        view=CourseUnPublishView.as_view(),
+        name="course_unpublish"
+    ),
+
     # /author/notification/
     path(
         route="notifications/",
@@ -218,14 +248,14 @@ urlpatterns = [
          name='group_request'
     ),
 
-    # View GROUPS -  
+    # View GROUPS -
     path(
         route="course/<int:pk>/view_groups/",
         view=ViewGroupsView.as_view(),
         name="view_groups"
     ),
 
-    # COURSE STUDENT -  Mail To Admin 
+    # COURSE STUDENT -  Mail To Admin
     path(
         route="course/<int:pk>/mail_to_admin/",
         view=MailToAdminView.as_view(),
@@ -250,7 +280,7 @@ urlpatterns = [
         name="assignment_home"
     ),
 
-    
+
     path(
         route="user/assignment/home/<int:pk>/",
         view=AssignmentDetailView.as_view(),
@@ -280,7 +310,7 @@ urlpatterns = [
     ),
 
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
-  
+
 ]
 
 if settings.DEBUG:
