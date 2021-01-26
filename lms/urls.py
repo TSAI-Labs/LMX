@@ -21,6 +21,7 @@ from lms.views.blog.blog_view import (
     UserPostListView,
 )
 from lms.views.course.course_views import (
+    CourseListView_default,
     CourseListView,
     GradeBookCourseView,
     table_download
@@ -84,8 +85,22 @@ urlpatterns = [
     # /home/
     path(
         route='',
-        view=CourseListView.as_view(),
+        view=CourseListView_default.as_view(),
         name='home'
+    ),
+
+    # /home/
+    path(
+        route='course/<int:pk>/',
+        view=CourseListView.as_view(),
+        name='course-home'
+    ),
+
+    # /home/
+    path(
+        route='course/',
+        view=CourseListView.as_view(),
+        name='course-home'
     ),
 
     # Blog URLS #

@@ -10,14 +10,44 @@ from django_tables2.export.views import ExportMixin
 from django_tables2.views import SingleTableMixin
 
 from lms.models.assignment_model import StudentAssignment
-from lms.models.course_model import Course
+from lms.models.course_model import Course , StudentCourse
 from lms.tables import StudentAssignmentTable, StudentAssignmentFilter
+from lms.models.user_role_model import Role
 
 
 class CourseListView(ListView):
     model = Course
     context_object_name = "courses"
+    context={}
     template_name = "lms/course/home.html"
+   
+
+    # def get(self, request, *args, **kwargs):
+    #     selected_course = Course.objects.get(id=kwargs['pk'])
+    #     print(f'SELECTED COURSE {selected_course}')
+    #     # selected_course.published=False
+    #     # selected_course.save()
+    #     return redirect('lms:dashboard_profile')
+
+    def get(self, request, *args, **kwargs):
+        
+        role = Role.objects.filter(user=request.user)
+        if role[0].is_student:
+            selected_course = StudentCourse.objects.get(id=kwargs['pk'])
+        else:
+            selected_course = Course.objects.get(id=kwargs['pk'])
+        self.context.update(course_id=selected_course.id)
+        self.context.update(is_student=role[0].is_student)
+        
+    # self.context.update(course_publish=selected_course.published)
+        # self.context.update(course_description=selected_course.description)
+        return render(request, self.template_name, self.context)
+        
+
+class CourseListView_default(ListView):
+    model = Course
+    context_object_name = "courses_default"
+    template_name = "lms/lms_base.html"
 
 
 class GradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, SingleTableMixin, FilterView):

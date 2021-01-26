@@ -18,7 +18,10 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ student_course.courses.title }}</h5>
                   <p class="card-text">{{ student_course.courses.description }}</p>
-                  <a href="#" class="btn btn-primary">View</a>
+                  <form action="{% url 'lms:course-home' student_course.id %}" method="get" style="display:inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">View</button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -36,10 +39,10 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <form action="#" method="get" style="display:inline">
+                  <!-- <form action="{% url 'lms:course-home' course.id %}" method="get" style="display:inline">
                     {% csrf_token %}
                     <button class="btn btn-primary">View</button>
-                  </form>
+                  </form> -->
                   <form action="{% url 'lms:course_register' course.id %}" method="post" style="display:inline">
                     {% csrf_token %}
                     <button class="btn btn-primary">Register</button>
@@ -61,7 +64,7 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <form action="/" method="get" style="display:inline">
+                  <form action="{% url 'lms:course-home' course.id %}" method="get" style="display:inline">
                     {% csrf_token %}
                     <button class="btn btn-primary">View</button>
                   </form>
@@ -86,7 +89,7 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <form action="/" method="get" style="display:inline">
+                  <form action="{% url 'lms:course-home' course.id %}" method="get" style="display:inline">
                     {% csrf_token %}
                     <button class="btn btn-primary">View</button>
                   </form>
