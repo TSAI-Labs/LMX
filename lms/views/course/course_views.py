@@ -15,6 +15,8 @@ from lms.tables import StudentAssignmentTable, StudentAssignmentFilter
 
 from lms.models.course_model import Question, Responses, Quiz, Student_Question, UsersProfile
 from django.db.models import Avg, Max, Min
+from django.core.paginator import Paginator
+
 
 class CourseListView(ListView):
     model = Course
