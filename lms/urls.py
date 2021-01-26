@@ -285,7 +285,7 @@ urlpatterns = [
     path('_export=csv', table_download),
 
     #By Quiz Teacher View Team.[Start]
-    path('lms/course',compute_stats,name="compute_stats"),
+    path('lms/course_stats',compute_stats,name="compute_stats"),
     
     path('lms/quiz',fetch_questions_oneatatime,name="fetch_questions_oneatatime"),
 

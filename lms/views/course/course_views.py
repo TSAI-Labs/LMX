@@ -14,6 +14,7 @@ from lms.models.course_model import Course
 from lms.tables import StudentAssignmentTable, StudentAssignmentFilter
 
 from lms.models.course_model import Question, Responses, Quiz, Student_Question, UsersProfile
+from django.db.models import Avg, Max, Min
 
 class CourseListView(ListView):
     model = Course
@@ -120,9 +121,9 @@ def compute_stats(request):
     profiles= UsersProfile.objects.all()
     context= dict()
     context.update({'profiles':profiles})
-    context.update(Profile.objects.all().aggregate(Avg('marks')))
-    context.update(Profile.objects.all().aggregate(Min('marks')))
-    context.update(Profile.objects.all().aggregate(Max('marks')))
+    context.update(UsersProfile.objects.all().aggregate(Avg('marks')))
+    context.update(UsersProfile.objects.all().aggregate(Min('marks')))
+    context.update(UsersProfile.objects.all().aggregate(Max('marks')))
     return render(request,'lms/course/compute_stats.html',context)
 
 
