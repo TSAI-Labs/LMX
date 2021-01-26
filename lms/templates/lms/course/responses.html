@@ -1,0 +1,44 @@
+<!-- By Quiz Teacher View Team -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <table style="width:80%" border = "1";>
+        <tr>
+          <th>course</th>
+          <th>student</th>
+          <th>QuestionId</th>
+          <th>answer</th>
+          <th>comments</th>
+          <th>status</th>
+        </tr>
+        {% for response in responses        %}
+        <tr>
+          <td>{{response.course}}</td>
+          <td>{{response.student}}</td>
+          <td>{{response.Questionid}}</td>
+          <td>{{response.answer}}</td>
+          <form action="enter_comment" method="POST">
+              {% csrf_token %}
+             <td><input type="text" name="comments" placeholder="Comment"></td> 
+             <td><input type="Submit"></td>          
+          </form>
+        </tr>
+        {%  endfor %}
+        
+      </table>
+
+      <a href="{% url 'lms:Edit_quiz' %}" ><button class="btn btn-success pull-right" style="float:right" id="previewbtn" type="submit";>Edit Quiz </button></a>      
+
+</body>
+
+</html>

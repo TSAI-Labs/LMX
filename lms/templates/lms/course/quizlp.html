@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+
+    <body>
+        <div class=row>
+            {% for i in quizs %}
+            <div class="column" style="border:2px solid black;background-color:#aaa;">
+                <p>{{ i.Quizname }} &nbsp;
+                    <a href="{% url 'lms:display_lp' %}" >
+                        <button class="btn btn-success pull-right"  type="submit";>Start</button>
+                    </a>
+                </p>
+           </div>     
+           {% endfor %}
+        </div>
+    </body>
+</html>

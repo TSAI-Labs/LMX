@@ -31,4 +31,5 @@ tablib
 django-filter
 django-bootstrap4
 Pillow==8.0.1
+django-image-optimizer==1.0.1
 

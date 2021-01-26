@@ -45,6 +45,18 @@ from lms.views.course.course_publish_views import (
     CourseUnPublishView
 )
 
+from lms.views.course.course_views import (
+    compute_stats,
+    fetch_questions_oneatatime,
+    fetch_questions,
+    quiz_lp,
+    display_lp,
+    Edit_quiz,
+    preview_quiz,
+    enter_comment,
+    quiz_publish
+)
+
 from lms.views.course.mail_to_admin_view import (
     MailToAdminView
 
@@ -271,6 +283,26 @@ urlpatterns = [
 
     # path to download csv file
     path('_export=csv', table_download),
+
+    #By Quiz Teacher View Team.[Start]
+    path('lms/course',compute_stats,name="compute_stats"),
+    
+    path('lms/quiz',fetch_questions_oneatatime,name="fetch_questions_oneatatime"),
+
+    path('lms/quiz3',fetch_questions,name="fetch_questions"),
+
+    path('lms/quizlp',quiz_lp,name="quiz_lp"),
+
+    path('lms/quiz2',display_lp,name="display_lp"),
+
+    path('admin/',Edit_quiz,name="Edit_quiz"),
+
+    path('lms/quizs',preview_quiz,name="preview_quiz"),
+
+    path('lms/enter_comment',enter_comment,name="enter_comment"),
+
+    path('lms/quiz_student_view',quiz_publish,name='quiz_publish'),
+    #By Quiz Teacher View Team.[End]
 
     # Assignment Views
 
