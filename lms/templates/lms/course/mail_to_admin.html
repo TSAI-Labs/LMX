@@ -1,4 +1,4 @@
-{% extends 'lms/lms_base.html' %}
+{% extends 'lms/course/course_base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 
@@ -9,12 +9,6 @@ Mail To Admin
 {% block content %}
 <div class="container">
     <h1 class="text-center pt-3 pb-3 border-bottom">Mail To Admin</h1>
-		
-		
-  		
-	
-
-               
     <div class="pt-3 pb-3>">
 		<div class="form-group">
                 <form action="{% url 'lms:mail_to_admin' pk %}"  class="form-horizontal" method="post" novalidate>

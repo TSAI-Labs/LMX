@@ -121,7 +121,11 @@
                   <td><a href="#"> </a></td>
                 </tr>
                 <tr class="model-user">
-                  <th scope="row"><a href="/">Settings</a></th>
+                  <th scope="row"><a href="{% url 'lms:view_groups' object.id %}">Groups</a></th>
+                  <td><a href="#"> </a></td>
+                </tr>
+                <tr class="model-user">
+                  <th scope="row"><a href="{% url 'lms:course_details' object.id %}">Settings</a></th>
                   <td><a href="#"> </a></td>
                 </tr>
               {% else %}
@@ -149,7 +153,15 @@
                   <th scope="row"><a href="/">Pages</a></th>
                   <td><a href="#"> </a></td>
                 </tr>
-                <!-- <tr class="model-user">
+                <tr class="model-user">
+                  <th scope="row"><a href="{% url 'lms:view_groups' object.courses.id %}">Groups</a></th>
+                  <td><a href="#"> </a></td>
+                </tr>
+                <tr class="model-user">
+                  <th scope="row"><a href="{% url 'lms:mail_to_admin' object.courses.id %}">Mail to Admin</a></th>
+                  <td><a href="#"> </a></td>
+                </tr>
+                  <!-- <tr class="model-user">
                   <th scope="row"><a href="/">People</a></th>
                   <td><a href="#"> </a></td>
                 </tr>
@@ -161,6 +173,7 @@
                   <th scope="row"><a href="/">Analytics</a></th>
                   <td><a href="#"> </a></td>
                 </tr>
+
                 <tr class="model-user">
                   <th scope="row"><a href="/">Settings</a></th>
                   <td><a href="#"> </a></td>
@@ -173,8 +186,6 @@
       </nav>
       <div class="content">
 
-        {% block content %}
-        {% endblock content %}
 
         <!-- Messages -->
         {% block messages %}
@@ -196,6 +207,10 @@
           {% endif %}
         </div>
         {% endblock messages %}
+
+        {% block content %}
+        {% endblock content %}
+
 
       </div>
 

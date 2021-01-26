@@ -36,6 +36,7 @@ class CourseListView(ListView):
             selected_course = StudentCourse.objects.get(id=kwargs['pk'])
         else:
             selected_course = Course.objects.get(id=kwargs['pk'])
+        self.context.update(object=selected_course)
         self.context.update(course_id=selected_course.id)
         self.context.update(is_student=role[0].is_student)
         

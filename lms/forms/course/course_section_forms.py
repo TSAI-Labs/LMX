@@ -32,7 +32,7 @@ def enrolled_students_formset(course_obj):
                 'courses': forms.HiddenInput(),
             }
 
-    enrollments = StudentCourse.objects.filter(courses=course_obj)
+    enrollments = StudentCourse.objects.filter(courses=course_obj).filter(registered=True)
     total_num_forms = len(enrollments)
     enrollments_formset = inlineformset_factory(parent_model=Course, model=StudentCourse, form=EnrollmentsForm,
                                                 extra=total_num_forms, min_num=total_num_forms,
