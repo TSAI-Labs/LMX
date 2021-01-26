@@ -148,6 +148,9 @@ def quiz_publish(request):
     questions = Question.objects.all()
     for i in questions:
         model_one = Student_Question(course= i.course,
+                                     quiznumber = i.quiznumber,
+                                     questiontype= i.questiontype,
+                                     questionnumber = i.questionnumber,
                                      question= i.question,
                                      description= i.description,
                                      answer= i.answer,
