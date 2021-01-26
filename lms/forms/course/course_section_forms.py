@@ -1,5 +1,6 @@
 from django import forms
-from django.forms import ModelForm, inlineformset_factory
+from django.contrib.auth.models import User
+from django.forms import ModelForm, inlineformset_factory, BaseInlineFormSet
 
 from lms.models.course_model import Section, StudentCourse, Course
 
@@ -11,6 +12,23 @@ class SectionForm(ModelForm):
         widgets = {
             'course': forms.HiddenInput(),
         }
+
+
+def get_unregistered_students_form(course_obj):
+    filtered_users = set()
+    qs = StudentCourse.objects.filter(courses=course_obj).filter(registered=False)
+    for item in qs:
+        filtered_users.add(item.user.pk)
+    qs = User.objects.filter(pk__in=filtered_users)
+
+    class UnregisteredStudentsForm(ModelForm):
+        user = forms.ModelChoiceField(queryset=qs, required=True)
+
+        class Meta:
+            model = StudentCourse
+            fields = ['user']
+
+    return UnregisteredStudentsForm
 
 
 def sections_choice_form(course_obj):
@@ -26,18 +44,21 @@ def enrolled_students_formset(course_obj):
 
         class Meta:
             model = StudentCourse
-            fields = ['user', 'courses', 'registered', 'section']
+            fields = ['user', 'registered', 'section']
             widgets = {
                 'user': forms.HiddenInput(),
-                'courses': forms.HiddenInput(),
             }
 
     enrollments = StudentCourse.objects.filter(courses=course_obj).filter(registered=True)
-    total_num_forms = len(enrollments)
-    enrollments_formset = inlineformset_factory(parent_model=Course, model=StudentCourse, form=EnrollmentsForm,
-                                                extra=total_num_forms, min_num=total_num_forms,
-                                                max_num=total_num_forms, validate_max=True, validate_min=True,
-                                                can_delete=False,
-                                                fields=['user', 'courses', 'registered', 'section'])
+
+    class EnrollmentsFormSet(BaseInlineFormSet):
+        def __init__(self, *args, **kwargs):
+            kwargs['queryset'] = enrollments
+            super(EnrollmentsFormSet, self).__init__(*args, **kwargs)
+
+    enrollments_formset = inlineformset_factory(parent_model=Course, model=StudentCourse,
+                                                form=EnrollmentsForm,
+                                                formset=EnrollmentsFormSet,
+                                                extra=0, can_delete=False)
 
     return enrollments_formset
