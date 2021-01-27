@@ -1,0 +1,122 @@
+<!-- By Quiz Teacher View Team -->
+
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quiz Preview Page</title>
+    </head>
+
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <script>
+            $(document).ready(function(){
+                $("#b1").click(function(){
+                    $(".rb").show();
+                    $ (".rb").attr("disabled",true) ; 
+                }) ;
+            });
+        </script>
+
+        <script>
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+        </script>
+
+        <center>
+            <h2>  Quiz Preview  </h2>
+        </center>
+
+        <left>
+        <hr />
+        <!--
+        <p style='margin-left:10px'> <b>Points</b>  95 &nbsp;&nbsp; <b>Questions 17 </b>   </p>
+        -->
+
+        <div id="xyz"> 
+            <form>
+                <labels style='margin-left:10px'><b> Time Limit</b> </labels>
+                <select name="minutes" id="minutes">
+                <option value="volvo">15</option>
+                <option value="saab">30</option>
+                <option value="opel">60</option>
+                <option value="audi">90</option> <p>Minutes</p>
+                </select>
+            </form>
+            <br />
+            <div class='col-sm-3'>
+                <div class="form-group">
+                <label class="control-label" style="float:left">Available From</label>
+                <div class='input-group date' id='datetimepicker1'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+
+        <br />
+        <hr />
+
+        </left>
+
+
+        <div id="masterContent" class=container style="width:800px; margin-left:200px;">
+            <div class=row>
+                {% for quest in questions %}
+                <div class="column" style="border:2px solid black;background-color:#aaa;">
+                    <h2>Question {{quest.id}} <label style="display:inline;float:right;"><h4>{{quest.points}} pts</h4></label> </h2>
+                    <div style="border:1px solid black;background-color:#FFFFFF;">
+                        <h4 style="margin-left:20px"><b> {{quest.question}}</b></h4>
+                        <div class="lmn">
+                            {% if quest.img %}
+                            <img src="{{quest.img.url}}" alt="">
+                            {% endif %}
+                        </div>
+                        <textarea rows="2" cols="50" name="comment" form="usrform" style="float:right;">Enter text here...</textarea>
+                        <p><input style="margin-left:30px;" type="radio" class="rb" name="{{quest.id}}" id="option1" value="{{quest.option1}}">&nbsp;{{quest.option1}}</p>
+                        <p><input style="margin-left:30px;" type="radio" class="rb" name="{{quest.id}}" id="option2" value="{{quest.option2}}">&nbsp;{{quest.option2}}</p>
+                        {% if quest.option3 != "" and quest.option4 != "" %}
+                        <p><input style="margin-left:30px;" type="radio" class="rb" name="{{quest.id}}" id="option3" value="{{quest.option2}}">&nbsp;{{quest.option3}}</p>
+                        <p><input style="margin-left:30px;" type="radio" class="rb" name="{{quest.id}}" id="option4" value="{{quest.option2}}">&nbsp;{{quest.option4}}</p>
+                        {%  endif %}
+                        <p> <label class="rb" style="display:none;color:green" > {{quest.answer}}          </label>          </p>
+                    </div>
+                </div>
+
+              <br />
+
+                {%  endfor   %}
+
+                <p> Have question for us <input style="width:500px; height:30px"></input></p>
+
+            </div>
+
+        </div>
+
+        <hr />
+        <center>
+            <input type="submit" class="btn-btn-primary" id="b1" style="color:green " >
+        </center>
+
+        </div>
+
+    </body>
+
+</html>

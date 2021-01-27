@@ -1,0 +1,35 @@
+<!-- By Quiz Teacher View Team -->
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quiz Statics</title>
+    </head>
+
+    <body>
+        <table style="width:80%" border = "1";>
+            <tr>
+                <th>Student Name</th>
+                <th>attempts</th>
+                <th>attempts left</th>
+                <th>score</th>
+            </tr>
+            {% for profile in profiles  %}
+            <tr>
+                <td>{{profile.user}}</td>
+                <td>{{profile.number_of_attempts}}</td>
+                <td>{{profile.Attempts_left}}</td>
+                <td>{{profile.marks}}</td>
+            </tr>
+            {%  endfor %}
+        </table>
+        <h3><label>The average mark is :</label> {{marks__avg}} </h3>
+        <h3><label>The Max mark is :</label> {{marks__max}} </h3>
+        <h3><label>The Minimum mark is :</label> {{marks__min}} </h3>
+    </body>
+
+</html>
