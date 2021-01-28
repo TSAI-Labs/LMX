@@ -1,7 +1,7 @@
 # Core Django imports.
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, re_path, include
 
 # LMS app imports
 from lms.views.account.login_view import UserLoginView
@@ -36,9 +36,18 @@ from lms.views.course.settings_view import (
     CourseStatisticsView
 )
 
+from lms.views.course.course_registration_views import (
+    CourseRegistraionView,
+)
+
+from lms.views.course.course_publish_views import (
+    CoursePublishView,
+    CourseUnPublishView
+)
+
 from lms.views.course.mail_to_admin_view import (
     MailToAdminView
-    
+
 )
 
 from lms.views.course.group_creation_view import (
@@ -53,6 +62,15 @@ from lms.views.dashboard.dashboard_views import (
 )
 from lms.views.notification.notification_settings_view import (
     NotificationSettingsView,
+)
+
+from lms.views.assignment.assignment_views import (
+    AssignmentHomeView,
+    AssignmentDetailView,
+    AssignmentCreateView,
+    AssignmentUpdateView,
+    AssignmentDeleteView,
+    CommentCreateView,
 )
 
 # Specifies the app name for name spacing.
@@ -80,7 +98,7 @@ urlpatterns = [
     ),
 
     path(
-        route='blog/user/<str:username>',
+        route='blog/user/<str:username>/',
         view=UserPostListView.as_view(),
         name='user-posts'
     ),
@@ -158,6 +176,27 @@ urlpatterns = [
         name="dashboard_profile"
     ),
 
+    # /author/course/register
+    path(
+        route="course/register/<int:pk>/",
+        view=CourseRegistraionView.as_view(),
+        name="course_register"
+    ),
+
+    # /author/course/publish
+    path(
+        route="course/publish/<int:pk>/",
+        view=CoursePublishView.as_view(),
+        name="course_publish"
+    ),
+
+    # /author/course/unpublish
+    path(
+        route="course/unpublish/<int:pk>/",
+        view=CourseUnPublishView.as_view(),
+        name="course_unpublish"
+    ),
+
     # /author/notification/
     path(
         route="notifications/",
@@ -188,12 +227,12 @@ urlpatterns = [
         name="course_statistics"
     ),
     path(
-        route="course/<int:pk>/grading_scheme/new",
+        route="course/<int:pk>/grading_scheme/new/",
         view=GradingSchemeCreateView.as_view(),
         name="course_grading_scheme_create"
     ),
     path(
-        route="course/<int:pk>/grading_scheme/update",
+        route="course/<int:pk>/grading_scheme/update/",
         view=GradingSchemeUpdateView.as_view(),
         name="course_grading_scheme_update"
     ),
@@ -209,30 +248,74 @@ urlpatterns = [
          name='group_request'
     ),
 
-    # View GROUPS -  
+    # View GROUPS -
     path(
-        route="course/<int:pk>/view_groups",
+        route="course/<int:pk>/view_groups/",
         view=ViewGroupsView.as_view(),
         name="view_groups"
     ),
 
-    # COURSE STUDENT -  Mail To Admin 
+    # COURSE STUDENT -  Mail To Admin
     path(
-        route="course/<int:pk>/mail_to_admin",
+        route="course/<int:pk>/mail_to_admin/",
         view=MailToAdminView.as_view(),
         name="mail_to_admin"
     ),
 
     # COURSE GRADEBOOK - Teacher's View
     path(
-        route="course/grades",
+        route="course/grades/",
         view=GradeBookCourseView.as_view(),
         name='gradebook-course'
     )
 
     # path to download csv file
+<<<<<<< HEAD
     # path('_export=csv', table_download),
   
+=======
+    path('_export=csv', table_download),
+
+    # Assignment Views
+
+    path(
+        route="assignment/home/",
+        view=AssignmentHomeView.as_view(),
+        name="assignment_home"
+    ),
+
+
+    path(
+        route="user/assignment/home/<int:pk>/",
+        view=AssignmentDetailView.as_view(),
+        name="assignment_detail"
+    ),
+
+    path(
+        route="assignment/create/",
+        view=AssignmentCreateView.as_view(),
+        name="assignment_create"
+    ),
+    path(
+        route='assignment/<int:pk>/update/',
+        view=AssignmentUpdateView.as_view(),
+        name='assignments_update'
+    ),
+
+    path(
+        route='assignment/<int:pk>/delete/',
+        view=AssignmentDeleteView.as_view(),
+        name='assignment_delete'),
+
+    path(
+        route="assignment/<int:pk>/comment/",
+        view=CommentCreateView.as_view(),
+        name="comment_create"
+    ),
+
+    re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
+
+>>>>>>> 18b7d648bb603e72635d02e30cedf06e3581ae2b
 ]
 
 if settings.DEBUG:

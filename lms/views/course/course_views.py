@@ -1,14 +1,17 @@
 # Core Django imports.
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render, redirect
 from django.views.generic import ListView
-
-# Blog application imports.
-from lms.models.course_model import Course
-from lms.models.profile_model import Profile
-from django.shortcuts import render, Http404, HttpResponse
-
-from django_filters import filterset
 from django_filters.views import FilterView
+from django_tables2 import RequestConfig
+from django_tables2.export.export import TableExport
+from django_tables2.export.views import ExportMixin
 from django_tables2.views import SingleTableMixin
+
+from lms.models.assignment_model import StudentAssignment
+from lms.models.course_model import Course
+from lms.tables import StudentAssignmentTable, StudentAssignmentFilter
 
 
 class CourseListView(ListView):
@@ -17,23 +20,27 @@ class CourseListView(ListView):
     template_name = "lms/course/home.html"
 
 
-
-#dummy model 
-from django_tables2 import SingleTableView, RequestConfig
-from django_tables2.export.views import ExportMixin
-
-from django_filters.views import FilterView
-from django_tables2.views import SingleTableMixin
-from django_tables2.export.export import TableExport
-from lms.tables import StudentAssignmentTable, StudentAssignmentFilter
-from lms.models.assignment_model import StudentAssignment
-
-class GradeBookCourseView(ExportMixin, SingleTableMixin, FilterView):
+class GradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, SingleTableMixin, FilterView):
     model = StudentAssignment
     table_class = StudentAssignmentTable
-    
+
     template_name = 'lms/course/gradebook/course_gradebook.html'
-    filterset_class  = StudentAssignmentFilter
+    filterset_class = StudentAssignmentFilter
+
+    # Restrict access to only course user (teacher) and admin
+    def test_func(self):
+        if self.request.user.role.is_admin:
+            return True
+        elif self.request.user.role.is_teacher:
+            return True
+        elif self.request.user.role.is_teaching_assistant:
+            return True
+        return False
+
+    # Redirect a logged in user, when they fail test_func()
+    def handle_no_permission(self):
+        messages.warning(self.request, 'Requested resource is not accessible!')
+        return redirect('lms:dashboard_home')
 
     # def get(self, request, *args, **kwargs):
     #     # table = StudentAssignmentTable(StudentAssignment.objects.filter(assignment__name=kwargs[pk]))
@@ -51,6 +58,7 @@ class GradeBookCourseView(ExportMixin, SingleTableMixin, FilterView):
 #         exporter = TableExport(export_format, table)
 #         return exporter.response("table.{}".format(export_format))
 
+<<<<<<< HEAD
 #     return render(request, "lms/course/gradebook/course_gradebook_export.html", {
 #         "table": table
 #     })
@@ -59,3 +67,8 @@ class GradeBookCourseView(ExportMixin, SingleTableMixin, FilterView):
 
 
 
+=======
+    return render(request, "lms/course/gradebook/course_gradebook_export.html", {
+        "table": table
+    })
+>>>>>>> 18b7d648bb603e72635d02e30cedf06e3581ae2b

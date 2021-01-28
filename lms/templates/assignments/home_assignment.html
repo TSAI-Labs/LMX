@@ -1,0 +1,31 @@
+{% extends 'lms/lms_base.html' %}
+
+{% block content %}
+<div class="container">
+<div class="navbar-nav">
+  {% if user.is_authenticated %}
+    
+    <a class="nav-item nav-link" href="{% url 'lms:assignment_create' %}">+ Assignment</a>
+
+    {% for assignment in object_list %}
+    <article class="media content-section">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="#">{{ assignment.user }}</a>
+          <small class="text-muted">{{ assignment.available_from|date:"F d, Y" }}</small>
+        </div>
+        <h2><a class="article-title" href="{% url 'lms:assignment_detail' assignment.id %}">{{ assignment.name }}</a></h2>
+        <p class="article-content"> {{ assignment.description|safe }} </p>
+      </div>
+    </article>
+
+    {% endfor %}
+
+  {% else %}
+    <p>Login to view your assignments</p>
+  {% endif %}
+{% endblock content %}
+</div>
+
+
+</div>
