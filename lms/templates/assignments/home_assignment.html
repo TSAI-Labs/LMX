@@ -1,27 +1,49 @@
 {% extends 'lms/course/course_base.html' %}
 
 {% block content %}
-<div class="container">
-<div class="navbar-nav">
-  {% if user.is_authenticated %}
-    
-    {% for assignment in object_list %}
-    <article class="media content-section">
-      <div class="media-body">
-        <div class="article-metadata">
-          <a class="mr-2" href="#">{{ assignment.user }}</a>
-          <small class="text-muted">{{ assignment.available_from|date:"F d, Y" }}</small>
-        </div>
-        <h2><a class="article-title" href="{% url 'lms:assignment_detail' object.id assignment.id %}">{{ assignment.name }}</a></h2>
-        <p class="article-content"> {{ assignment.description|safe }} </p>
-      </div>
-    </article>
+    <div class="container">
+    <div class="navbar-nav">
+    {% if user.is_authenticated %}
 
-    {% endfor %}
+        {% if is_student_view %}
+            {% for student_assignment in object_list %}
+                <article class="media content-section">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            <small class="text-muted">
+                                {{ student_assignment.assignment.available_from|date:"F d, Y" }}
+                            </small>
+                        </div>
+                        <h2><a class="article-title"
+                               href="{% url 'lms:assignment_student_detail' object.courses.id student_assignment.assignment.id %}">
+                            {{ student_assignment.assignment.name }}
+                        </a>
+                        </h2>
+                        <p class="article-content"> {{ student_assignment.assignment.description|safe }} </p>
+                    </div>
+                </article>
+            {% endfor %}
 
-  {% else %}
-    <p>Login to view your assignments</p>
-  {% endif %}
+        {% else %}
+            {% for assignment in object_list %}
+                <article class="media content-section">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            <a class="mr-2" href="#">{{ assignment.user }}</a>
+                            <small class="text-muted">{{ assignment.available_from|date:"F d, Y" }}</small>
+                        </div>
+                        <h2><a class="article-title"
+                               href="{% url 'lms:assignment_detail' object.id assignment.id %}">{{ assignment.name }}</a>
+                        </h2>
+                        <p class="article-content"> {{ assignment.description|safe }} </p>
+                    </div>
+                </article>
+            {% endfor %}
+        {% endif %}
+
+    {% else %}
+        <p>Login to view your assignments</p>
+    {% endif %}
 {% endblock content %}
 </div>
 

@@ -6,8 +6,7 @@ from django.urls import path, re_path, include
 # LMS app imports
 from lms.views.account.login_view import UserLoginView
 from lms.views.account.logout_view import UserLogoutView
-from lms.views.account.register_view import \
-    (
+from lms.views.account.register_view import (
     ActivateView,
     AccountActivationSentView,
     UserRegisterView,
@@ -18,7 +17,7 @@ from lms.views.assignment.assignment_views import (
     AssignmentCreateView,
     AssignmentUpdateView,
     AssignmentDeleteView,
-    CommentCreateView,
+    CommentCreateView, AssignmentHomeStudentView, AssignmentDetailStudentView,
 )
 from lms.views.blog.blog_view import (
     PostListView,
@@ -313,6 +312,17 @@ urlpatterns = [
     # By Quiz Teacher View Team.[End]
 
     # Assignment Views
+    path(
+        route="course/<int:pkcourse>/student_assignment/home/",
+        view=AssignmentHomeStudentView.as_view(),
+        name="assignment_student_home"
+    ),
+
+    path(
+        route="course/<int:pkcourse>/student_assignment/home/<int:pk>/",
+        view=AssignmentDetailStudentView.as_view(),
+        name="assignment_student_detail"
+    ),
 
     path(
         route="course/<int:pkcourse>/assignment/home/",

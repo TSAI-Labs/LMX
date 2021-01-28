@@ -2,59 +2,62 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
+    <div class="container">
+        <div class="d-md-flex h-md-100 align-items-center">
 
-<div class="d-md-flex h-md-100 align-items-center">
+            <!-- First Half -->
 
-    <!-- First Half -->
-    
-    <div class="col-md-6 p-0 bg-indigo h-md-100">
-        <div class="text-black d-md-flex align-items-center h-100 p-5 text-center justify-content-center">
-            <div class="logoarea pt-5 pb-5">
+            <div class="col-md-6 p-0 bg-indigo h-md-100">
+                <div class="text-black d-md-flex align-items-center h-100 p-5 text-center justify-content-center">
+                    <div class="logoarea pt-5 pb-5">
 
-                <div class="media-body">
-                    <div class="article-metadata">
-                        <a class="mr-2" href="#">{{ assignments.created_by }}</a>
-                        <small class="text-muted">{{ assignments.date_posted|date:"F d, Y" }}</small>
-                        {% if object.user == user %}
-                            <div>
-                                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'lms:assignments_update' object.id assignments.id %}">Update</a>
-                                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'lms:assignment_delete' object.id assignments.id %}">Delete</a>
-                            </div>
-                        {% endif %}
-                        <h2>{{ assignments.name }}</h2>
-                        <p class="article-content">Available From{{ assignments.available_from }}</p>
-                        <p class="article-content">Due Date{{ assignments.due_date }}</p>
-                        <p class="article-content">No of Points - {{ assignments.max_grade }}</p>
-                        <p class="article-content">Content - {{ assignments.description | safe }}</p>
-                        <p class="article-content">Course - {{ assignments.for_course }}</p>
-                        <h5>Comments</h5>
-                        <br/>
-                        <a href="{% url 'lms:comment_create' object.id assignments.pk %}">Add Comment</a>
-                        <br/>
-                        <!-- Single Comments -->
-                        {% if not assignments.comments.all %}
-                            No Comment has been posted.
-                        {% else %}
-                        {% for comment in assignments.comments.all %}    
-                        <h5 class="mt-0">{{ comment.author }}- {{comment.date}}</h5>
-                                {{ comment.content|linebreaks }}
+                        <div class="media-body">
+                            <div class="article-metadata">
+                                <a class="mr-2" href="#">{{ assignments.created_by }}</a>
+                                <small class="text-muted">{{ assignments.date_posted|date:"F d, Y" }}</small>
+                                {% if object.user == user %}
+                                    <div>
+                                        <a class="btn btn-outline-secondary btn-sm mt-1 mb-1"
+                                           href="{% url 'lms:assignments_update' object.id assignments.id %}">Update</a>
+                                        <a class="btn btn-outline-danger btn-sm mt-1 mb-1"
+                                           href="{% url 'lms:assignment_delete' object.id assignments.id %}">Delete</a>
+                                    </div>
+                                {% endif %}
+                                <h2>{{ assignments.name }}</h2>
+                                <p class="article-content">Available From{{ assignments.available_from }}</p>
+                                <p class="article-content">Due Date{{ assignments.available_until }}</p>
+                                <p class="article-content">No of Points - {{ assignments.max_grade }}</p>
+                                <p class="article-content">Content - {{ assignments.description | safe }}</p>
+                                <p class="article-content">Course - {{ assignments.for_course }}</p>
+                                <h5>Comments</h5>
                                 <br/>
-                        {% endfor %}
-                        {% endif %}
+                                {% if not is_student_view %}
+                                    <a href="{% url 'lms:comment_create' object.id assignments.pk %}">Add Comment</a>
+                                {% endif %}
+                                <br/>
+                                <!-- Single Comments -->
+                                {% if not assignments.comments.all %}
+                                    No Comment has been posted.
+                                {% else %}
+                                    {% for comment in assignments.comments.all %}
+                                        <h5 class="mt-0">{{ comment.author }}- {{ comment.date }}</h5>
+                                        {{ comment.content|linebreaks }}
+                                        <br/>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 p-0 bg-red h-md-100 loginarea">
+                <div class="d-md-flex align-items-center h-md-100 p-5 justify-content-center">
+                    <img class="img-thumbnail" src="{{ object.image.url }}">
                 </div>
             </div>
         </div>
     </div>
-    
-  
-
-    <div class="col-md-6 p-0 bg-red h-md-100 loginarea">
-        <div class="d-md-flex align-items-center h-md-100 p-5 justify-content-center">
-            <img class="img-thumbnail" src="{{ object.image.url }}">
-        </div>
-    </div>    
-</div>
-
 
 {% endblock content %}
