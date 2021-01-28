@@ -100,7 +100,7 @@ class Group(models.Model):
     """
     group_name = models.CharField(max_length=250, null=True, blank=False, unique=True)
     course = models.ForeignKey(to=Course, on_delete=models.CASCADE)
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE, null=True, blank=False)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, null=True, blank=False)
 
     def __str__(self):
         return f'Group {self.group_name} - {self.course}'

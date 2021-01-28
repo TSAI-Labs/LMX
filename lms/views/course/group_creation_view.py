@@ -33,16 +33,17 @@ class GroupCreationRequestView(LoginRequiredMixin, View):
     """
     template_name = 'lms/course/group_creation_request.html'
 
-    home_template = 'dashboard/dashboard_home.html'
-
     def get(self, request, *args, **kwargs):
         role = Role.objects.filter(user=request.user)
         if role and role[0].is_student:
 
             pk = self.kwargs['pk']
 
-            self.context_object = {"group_creation_form": GroupCreationRequestForm(user_id=request.user.id, pk=pk),
-                                   'pk': pk}
+            self.context_object = \
+                {"group_creation_form": GroupCreationRequestForm(user_id=request.user.id, pk=pk),
+                 'pk': pk,
+                 'object': Course.objects.get(id=int(pk))
+                 }
 
             return render(request, self.template_name, self.context_object)
 
@@ -63,9 +64,9 @@ class GroupCreationRequestView(LoginRequiredMixin, View):
                 is_group_exists = Group.objects.get(name=group_name)
             except:
                 is_group_exists = None
+
             try:
                 course_enrolled = StudentCourse.objects.get(courses_id=pk, user_id=user_id)
-
             except:
                 print("error")
                 course_enrolled = None
@@ -75,11 +76,8 @@ class GroupCreationRequestView(LoginRequiredMixin, View):
                 group.save()
                 course_enrolled.group = group
                 course_enrolled.save()
-
             elif (is_group_exists and course_enrolled and course_enrolled.group == 'group_name'):
                 pass
-
-
             else:
                 print("Either you are already in a group nor the group name already exists")
 
@@ -100,7 +98,10 @@ class GroupCreationRequestView(LoginRequiredMixin, View):
                 subject = "Request to create Group"
                 res = send_mail(subject=subject, message=message, from_email=request.user.email, recipient_list=[mail])
 
-            return render(request, self.home_template)
+            return redirect(to="lms:view_groups", pk=pk)
+        else:
+            messages.error(request, 'Form is invalid!')
+            return redirect(to="lms:group_creation_request", pk=pk)
 
 
 class GroupCreationRequestSentView(LoginRequiredMixin, View):
@@ -190,7 +191,5 @@ class ViewGroupsView(LoginRequiredMixin, ListView):
 
         self.context_object = {"groups": groups_student_dict,
                                'object': Course.objects.get(id=int(course_id))}
-
-        # self.context_object.update()
 
         return render(request, 'lms/course/view_groups.html', self.context_object)
