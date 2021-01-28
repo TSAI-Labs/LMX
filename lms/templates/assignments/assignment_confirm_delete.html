@@ -10,7 +10,7 @@
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
-                <a class="btn btn-outline-secondary" href="{% url 'lms:assignment_detail' object.id %}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{% url 'lms:assignment_detail' object.id assignment.id %}">Cancel</a>
             </div>
         </form>
     </div>

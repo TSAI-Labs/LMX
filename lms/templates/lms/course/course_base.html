@@ -85,8 +85,8 @@
               </tr>
               {% if not is_student %}
                 <tr class="model-group">
-                  <th scope="row"><a href="{% url 'lms:assignment_home' %}">Assignments</a></th>
-                  <td><a href="{% url 'lms:assignment_create' %}" class="addlink">Add</a></td>
+                  <th scope="row"><a href="{% url 'lms:assignment_home' object.id %}">Assignments</a></th>
+                  <td><a href="{% url 'lms:assignment_create' object.id %}" class="addlink">Add</a></td>
                 </tr>
                 <tr class="model-user">
                   <th scope="row"><a href="/">Quizes</a></th>
@@ -130,7 +130,7 @@
                 </tr>
               {% else %}
                 <tr class="model-group">
-                  <th scope="row"><a href="{% url 'lms:assignment_home' %}">Assignments</a></th>
+                  <th scope="row"><a href="{% url 'lms:assignment_home' object.id %}">Assignments</a></th>
                   <td><a href="#" ></a></td>
                 </tr>
                 <tr class="model-user">

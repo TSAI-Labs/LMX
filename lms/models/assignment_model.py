@@ -62,12 +62,14 @@ class Assignment(models.Model):
 
     def clean(self):
         role = Role.objects.filter(user=self.created_by)
+        print('***********RRRRRRRROLLLLLLLLLEEEEEEE*********',role)
         if role:
             if not (role[0].is_admin or role[0].is_teacher):
                 raise ValidationError("Only Teacher Or Admin Can Create Assignment")
             if not self.for_course.user == self.created_by:
                 raise ValidationError("Teacher of this course only can create assignments")
         else:
+            
             raise ValidationError("Assign Role to the User")
 
     def save(self, *args, **kwargs):
@@ -77,6 +79,7 @@ class Assignment(models.Model):
             if student.registered:
                 temp_object = StudentAssignment(user=student.user, assignment=self)
                 temp_object.save()
+    
 
 # Comment Model - Seperate from teacher and student model's
 class Comment(models.Model):

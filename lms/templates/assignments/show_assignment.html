@@ -13,28 +13,29 @@
 
                 <div class="media-body">
                     <div class="article-metadata">
-                        <a class="mr-2" href="#">{{ object.created_by }}</a>
-                        <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+                        <a class="mr-2" href="#">{{ assignments.created_by }}</a>
+                        <small class="text-muted">{{ assignments.date_posted|date:"F d, Y" }}</small>
                         {% if object.user == user %}
                             <div>
-                                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'lms:assignments_update' object.id %}">Update</a>
-                                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'lms:assignment_delete' object.id %}">Delete</a>
+                                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'lms:assignments_update' object.id assignments.id %}">Update</a>
+                                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'lms:assignment_delete' object.id assignments.id %}">Delete</a>
                             </div>
                         {% endif %}
-                        <h2>{{ object.title }}</h2>
-                        <p class="article-content">{{ object.available_from }}</p>
-                        <p class="article-content">{{ object.due_date }}</p>
-                        <p class="article-content">{{ object.points }}</p>
-                        <p class="article-content">{{ object.content }}</p>
+                        <h2>{{ assignments.name }}</h2>
+                        <p class="article-content">Available From{{ assignments.available_from }}</p>
+                        <p class="article-content">Due Date{{ assignments.due_date }}</p>
+                        <p class="article-content">No of Points - {{ assignments.max_grade }}</p>
+                        <p class="article-content">Content - {{ assignments.description | safe }}</p>
+                        <p class="article-content">Course - {{ assignments.for_course }}</p>
                         <h5>Comments</h5>
                         <br/>
-                        <a href="{% url 'lms:comment_create' assignment.pk %}">Add Comment</a>
+                        <a href="{% url 'lms:comment_create' object.id assignments.pk %}">Add Comment</a>
                         <br/>
                         <!-- Single Comments -->
-                        {% if not assignment.comments.all %}
+                        {% if not assignments.comments.all %}
                             No Comment has been posted.
                         {% else %}
-                        {% for comment in assignment.comments.all %}    
+                        {% for comment in assignments.comments.all %}    
                         <h5 class="mt-0">{{ comment.author }}- {{comment.date}}</h5>
                                 {{ comment.content|linebreaks }}
                                 <br/>
