@@ -2,30 +2,38 @@
 {% load static %}
 
 {% block title %}
-View Groups
+    View Groups
 {% endblock title %}
 {% block content %}
-<div class="container"></div>
-<h1 class="text-center pt-3 pb-3 border-bottom">View Groups</h1>
-<div class = "row">
-    {%for group_name, group_members in groups.items %}
 
-    <div class = "col-md-4">
-        <div class="card" style="width: 18rem;">
-            <div class="card-header">
-             {{group_name}} 
-            </div>
-            <ul class="list-group list-group-flush">
-                {%for  group_member in group_members %}
+    <div class="container">
+        <h1 class="text-center pt-3 pb-3 border-bottom">View Groups</h1>
 
-              <li class="list-group-item">{{group_member}}</li>
-             
-              {%endfor%}
-            </ul>
-          </div>
+        <div class="mb-lg-5">
+            <p>Click here to create a group:</p>
+            <a class="btn btn-outline-primary btn-sm mt-1 mb-1" href="{% url 'lms:group_creation_request' object.id %}">
+                Create Group</a>
+        </div>
+
+        <div class="row">
+            {% for group_name, group_members in groups.items %}
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <div class="card-header">
+                            {{ group_name }}
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            {% for  group_member in group_members %}
+
+                                <li class="list-group-item">{{ group_member }}</li>
+
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-    {%endfor%}
-</div>
 
 
 
