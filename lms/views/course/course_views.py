@@ -35,21 +35,25 @@ class GradeBookCourseView(ExportMixin, SingleTableMixin, FilterView):
     template_name = 'lms/course/gradebook/course_gradebook.html'
     filterset_class  = StudentAssignmentFilter
 
+    # def get(self, request, *args, **kwargs):
+    #     # table = StudentAssignmentTable(StudentAssignment.objects.filter(assignment__name=kwargs[pk]))
+    #     pass
+
 
 # download csv file (django_tables2 method)
-def table_download(request):
-    table = StudentAssignmentTable(StudentAssignment.objects.all())
+# def table_download(request):
+#     table = StudentAssignmentTable(StudentAssignment.objects.all())
 
-    RequestConfig(request).configure(table)
+#     RequestConfig(request).configure(table)
 
-    export_format = request.GET.get("_export", None)
-    if TableExport.is_valid_format(export_format):
-        exporter = TableExport(export_format, table)
-        return exporter.response("table.{}".format(export_format))
+#     export_format = request.GET.get("_export", None)
+#     if TableExport.is_valid_format(export_format):
+#         exporter = TableExport(export_format, table)
+#         return exporter.response("table.{}".format(export_format))
 
-    return render(request, "lms/course/gradebook/course_gradebook_export.html", {
-        "table": table
-    })
+#     return render(request, "lms/course/gradebook/course_gradebook_export.html", {
+#         "table": table
+#     })
 
 
 

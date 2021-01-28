@@ -22,8 +22,8 @@ from lms.views.blog.blog_view import (
 )
 from lms.views.course.course_views import (
     CourseListView,
-    GradeBookCourseView,
-    table_download
+    GradeBookCourseView
+    # table_download
 )
 from lms.views.course.grading_scheme_view import (
     GradingSchemeUpdateView,
@@ -228,10 +228,10 @@ urlpatterns = [
         route="course/grades",
         view=GradeBookCourseView.as_view(),
         name='gradebook-course'
-    ),
+    )
 
     # path to download csv file
-    path('_export=csv', table_download),
+    # path('_export=csv', table_download),
   
 ]
 
