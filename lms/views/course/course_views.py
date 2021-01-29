@@ -10,14 +10,41 @@ from django_tables2.export.views import ExportMixin
 from django_tables2.views import SingleTableMixin
 
 from lms.models.assignment_model import StudentAssignment
-from lms.models.course_model import Course
+from lms.models.course_model import Course , StudentCourse
 from lms.tables import StudentAssignmentTable, StudentAssignmentFilter
+from lms.models.user_role_model import Role
+
+from django.db.models import Avg, Max, Min
+from django.core.paginator import Paginator
 
 
 class CourseListView(ListView):
     model = Course
     context_object_name = "courses"
-    template_name = "lms/course/home.html"
+    context={}
+    template_name = "lms/course/course_home.html"
+
+    def get(self, request, *args, **kwargs):
+
+        role = Role.objects.filter(user=request.user)
+        if role[0].is_student:
+            selected_student_course = StudentCourse.objects.get(id=kwargs['pk'])
+            print(selected_student_course)
+            selected_course = Course.objects.get(id=selected_student_course.courses_id)
+            print(selected_course)
+            self.context.update(object1=selected_student_course)
+            self.context.update(object=selected_course)
+        else:
+            selected_course = Course.objects.get(id=kwargs['pk'])
+            self.context.update(object=selected_course)
+
+        return render(request, self.template_name, self.context)
+
+
+class CourseListView_default(ListView):
+    model = Course
+    context_object_name = "courses_default"
+    template_name = "lms/lms_base.html"
 
 
 class GradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, SingleTableMixin, FilterView):

@@ -6,11 +6,18 @@ from django.urls import path, re_path, include
 # LMS app imports
 from lms.views.account.login_view import UserLoginView
 from lms.views.account.logout_view import UserLogoutView
-from lms.views.account.register_view import \
-    (
+from lms.views.account.register_view import (
     ActivateView,
     AccountActivationSentView,
     UserRegisterView,
+)
+from lms.views.assignment.assignment_views import (
+    AssignmentHomeView,
+    AssignmentDetailView,
+    AssignmentCreateView,
+    AssignmentUpdateView,
+    AssignmentDeleteView,
+    CommentCreateView, AssignmentHomeStudentView, AssignmentDetailStudentView,
 )
 from lms.views.blog.blog_view import (
     PostListView,
@@ -20,14 +27,42 @@ from lms.views.blog.blog_view import (
     PostDeleteView,
     UserPostListView,
 )
+from lms.views.course.course_publish_views import (
+    CoursePublishView,
+    CourseUnPublishView
+)
+from lms.views.course.course_registration_views import (
+    CourseRegistraionView,
+)
 from lms.views.course.course_views import (
+    CourseListView_default,
     CourseListView,
     GradeBookCourseView
     # table_download
 )
+from lms.views.quiz.quiz_views import (
+    compute_stats,
+    fetch_questions_oneatatime,
+    fetch_questions,
+    quiz_lp,
+    display_lp,
+    Edit_quiz,
+    preview_quiz,
+    enter_comment,
+    quiz_publish
+)
 from lms.views.course.grading_scheme_view import (
     GradingSchemeUpdateView,
     GradingSchemeCreateView
+)
+from lms.views.course.group_creation_view import (
+    GroupCreationRequestView,
+    GroupCreationRequestSentView,
+    ViewGroupsView
+)
+from lms.views.course.mail_to_admin_view import (
+    MailToAdminView
+
 )
 from lms.views.course.settings_view import (
     CourseDetailsView,
@@ -35,42 +70,12 @@ from lms.views.course.settings_view import (
     CourseSectionsView,
     CourseStatisticsView
 )
-
-from lms.views.course.course_registration_views import (
-    CourseRegistraionView,
-)
-
-from lms.views.course.course_publish_views import (
-    CoursePublishView,
-    CourseUnPublishView
-)
-
-from lms.views.course.mail_to_admin_view import (
-    MailToAdminView
-
-)
-
-from lms.views.course.group_creation_view import (
-    GroupCreationRequestView,
-    GroupCreationRequestSentView,
-    ViewGroupsView
-)
-
 from lms.views.dashboard.dashboard_views import (
     DashboardHomeView,
     DashboardProfileView,
 )
 from lms.views.notification.notification_settings_view import (
     NotificationSettingsView,
-)
-
-from lms.views.assignment.assignment_views import (
-    AssignmentHomeView,
-    AssignmentDetailView,
-    AssignmentCreateView,
-    AssignmentUpdateView,
-    AssignmentDeleteView,
-    CommentCreateView,
 )
 
 # Specifies the app name for name spacing.
@@ -84,8 +89,22 @@ urlpatterns = [
     # /home/
     path(
         route='',
-        view=CourseListView.as_view(),
+        view=CourseListView_default.as_view(),
         name='home'
+    ),
+
+    # /home/
+    path(
+        route='course/<int:pk>/',
+        view=CourseListView.as_view(),
+        name='course-home'
+    ),
+
+    # /home/
+    path(
+        route='course/',
+        view=CourseListView.as_view(),
+        name='course-home'
     ),
 
     # Blog URLS #
@@ -246,7 +265,7 @@ urlpatterns = [
     path(route='group_request/<int:ck>/<uidb64>/<token>/',
          view=GroupCreationRequestSentView.as_view(),
          name='group_request'
-    ),
+         ),
 
     # View GROUPS -
     path(
@@ -276,39 +295,69 @@ urlpatterns = [
 =======
     path('_export=csv', table_download),
 
+    # By Quiz Teacher View Team.[Start]
+    path('lms/course_stats/', compute_stats, name="compute_stats"),
+
+    path('lms/quiz/', fetch_questions_oneatatime, name="fetch_questions_oneatatime"),
+
+    path('lms/quiz3/', fetch_questions, name="fetch_questions"),
+
+    path('lms/quizlp/', quiz_lp, name="quiz_lp"),
+
+    path('lms/quiz2/', display_lp, name="display_lp"),
+
+    path('admin/', Edit_quiz, name="Edit_quiz"),
+
+    path('lms/quizs/', preview_quiz, name="preview_quiz"),
+
+    path('lms/enter_comment/', enter_comment, name="enter_comment"),
+
+    path('lms/quiz_student_view/', quiz_publish, name='quiz_publish'),
+    # By Quiz Teacher View Team.[End]
+
     # Assignment Views
+    path(
+        route="course/<int:pkcourse>/student_assignment/home/",
+        view=AssignmentHomeStudentView.as_view(),
+        name="assignment_student_home"
+    ),
 
     path(
-        route="assignment/home/",
+        route="course/<int:pkcourse>/student_assignment/home/<int:pk>/",
+        view=AssignmentDetailStudentView.as_view(),
+        name="assignment_student_detail"
+    ),
+
+    path(
+        route="course/<int:pkcourse>/assignment/home/",
         view=AssignmentHomeView.as_view(),
         name="assignment_home"
     ),
 
-
     path(
-        route="user/assignment/home/<int:pk>/",
+        route="course/<int:pkcourse>/assignment/home/<int:pk>/",
         view=AssignmentDetailView.as_view(),
         name="assignment_detail"
     ),
 
     path(
-        route="assignment/create/",
+        route="course/<int:pkcourse>/assignment/create/",
         view=AssignmentCreateView.as_view(),
         name="assignment_create"
     ),
     path(
-        route='assignment/<int:pk>/update/',
+        route='course/<int:pkcourse>/assignment/<int:pk>/update/',
         view=AssignmentUpdateView.as_view(),
         name='assignments_update'
     ),
 
     path(
-        route='assignment/<int:pk>/delete/',
+        route='course/<int:pkcourse>/assignment/<int:pk>/delete/',
         view=AssignmentDeleteView.as_view(),
         name='assignment_delete'),
 
     path(
-        route="assignment/<int:pk>/comment/",
+        route="course/<int:pkcourse>/assignment/<int:pk>/comment/",
         view=CommentCreateView.as_view(),
         name="comment_create"
     ),

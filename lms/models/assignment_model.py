@@ -1,14 +1,11 @@
 # Core Django imports.
-from django.contrib.auth.models import User
-from django.db import models
-from django.core.exceptions import ValidationError
-from django import forms
-from django.urls import reverse
+import os
 
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.db import models
 from image_optimizer.fields import OptimizedImageField
-
-import os
 
 from lms.models.course_model import Course, StudentCourse
 from lms.models.user_role_model import Role
@@ -18,9 +15,8 @@ def upload_path(instance, filename):
     # change the filename here is required
     return os.path.join(instance.name, filename)
 
-class Assignment(models.Model):
 
-    
+class Assignment(models.Model):
     GRADES_DISPLAY = (
         ('percentage', 'Percentage'),
         ('complete/Incomplete', 'Complete/Incomplete'),
@@ -55,7 +51,7 @@ class Assignment(models.Model):
         optimized_image_resize_method='cover',  # 'thumbnail', 'cover' or None
         null=True,
         blank=True
-        )
+    )
 
     def __str__(self):
         return f'{self.name}'
@@ -78,20 +74,22 @@ class Assignment(models.Model):
                 temp_object = StudentAssignment(user=student.user, assignment=self)
                 temp_object.save()
 
-# Comment Model - Seperate from teacher and student model's
+
+# Comment Model - Separate from teacher and student model's
 class Comment(models.Model):
-    assignment = models.ForeignKey(Assignment,on_delete = models.CASCADE,related_name="comments")
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, related_name="comments")
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    content = models.TextField(max_length = 200)
+    content = models.TextField(max_length=200)
     date = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
         return self.content
+
     class Meta:
         ordering = ['-date']
+
 
 class StudentAssignment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='studentassignments')
     assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
-
-
-
+    marks = models.IntegerField(default=0)

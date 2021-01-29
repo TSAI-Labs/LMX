@@ -6,6 +6,7 @@ from .models.assignment_model import Assignment, StudentAssignment
 from .models.blog_model import Post
 
 from .models.course_model import Course, StudentCourse, GradingSchemeName, Section, GradingScheme, Group
+from .models.quiz_model import Quiz, Responses, Question
 
 from .models.files_model import File
 from .models.notification_settings_model import NotificationSetting
@@ -154,3 +155,12 @@ class AssignmentAdmin(admin.ModelAdmin):
 class StudentAssignmentAdmin(admin.ModelAdmin):
     list_display = ('user', 'assignment',)
     list_filter = ('user__username', 'assignment__name',)
+
+
+
+
+# By Quiz Teacher View Team [Start]
+admin.site.register(Question)
+admin.site.register(Quiz)
+admin.site.register(Responses)
+# By Quiz Teacher View Team [Finish]

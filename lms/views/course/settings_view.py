@@ -9,7 +9,8 @@ from django.views.generic.edit import UpdateView
 
 # Blog application imports.
 from lms.forms.course.course_details_form import CourseDetailsForm
-from lms.forms.course.course_section_forms import SectionForm, sections_choice_form, enrolled_students_formset
+from lms.forms.course.course_section_forms import SectionForm, sections_choice_form, enrolled_students_formset, \
+    get_unregistered_students_form
 from lms.models.course_model import Course, Section, StudentCourse
 
 
@@ -64,6 +65,7 @@ class CourseSectionsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
         context['section_update_form'] = SectionForm(initial={'course': self.object})
         context['sections_list_form'] = sections_choice_form(self.object)
         context['enrolled_students_formset'] = enrolled_students_formset(self.object)(instance=self.object)
+        context['new_student_register_form'] = get_unregistered_students_form(self.object)()
 
         if self.request.POST:
             if self.request.POST.get('create-section'):
@@ -106,6 +108,15 @@ class CourseSectionsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
                 if _id and StudentCourse.objects.filter(id=_id.id):
                     StudentCourse.objects.filter(id=_id.id).update(**form_data)
             messages.success(request, 'Student sections successfully updated!')
+
+        if request.POST.get('new_student_register'):
+            qs = StudentCourse.objects.filter(courses=self.object).filter(user=self.request.POST['user'])
+            qs.update(registered='True')
+            context['new_student_register_form'] = get_unregistered_students_form(self.object)()
+            messages.success(request, 'New student is successfully registered!')
+
+        context['enrolled_students_formset'] = enrolled_students_formset(self.object)(instance=self.object)
+        context['new_student_register_form'] = get_unregistered_students_form(self.object)()
 
         return render(request, self.template_name, context=context)
 

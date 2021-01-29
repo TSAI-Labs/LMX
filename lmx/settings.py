@@ -154,27 +154,21 @@ LOGIN_URL = '/account/login/'
 LOGIN_REDIRECT_URL = '/student/dashboard/home/'
 LOGOUT_REDIRECT_URL = '/account/logout/'
 
-
-
-
-
 # Email Settings (Production)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = env('EMAIL_HOST')
-# EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = 'smtp.gmail.com'  # env('EMAIL_HOST')
+EMAIL_HOST_USER = 'lmsjoe21@gmail.com'  # env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = 'epaidjango!1'  # env('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 # SOCIAL AUTHS
 
-#SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
-#SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
+# SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
+# SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
 
 
-
-
-#CKEDITOR SETTINGS
+# CKEDITOR SETTINGS
 CKEDITOR_JQUERY_URL = 'https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
@@ -186,7 +180,5 @@ CKEDITOR_CONFIGS = {
     },
 }
 
-
 # SOCIAL_AUTH_GITHUB_KEY = env('SOCIAL_AUTH_GITHUB_KEY')
 # SOCIAL_AUTH_GITHUB_SECRET = env('SOCIAL_AUTH_GITHUB_SECRET')
-

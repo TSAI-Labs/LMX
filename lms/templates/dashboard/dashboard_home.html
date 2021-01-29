@@ -9,8 +9,8 @@
 <h1 class="text-center">Dashboard</h1>
 <br>
 {% if is_student_view %}
-  <h3 class="mx-5 text-left">Registered Courses</h3>
-  <div class="mx-5 container-fluid">
+  <h3 class="text-left">Registered Courses</h3>
+  <div class="container-fluid">
       <div class="row">
          {% for student_course in registered_courses %}
             <div class="col-sm-3">
@@ -18,7 +18,10 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ student_course.courses.title }}</h5>
                   <p class="card-text">{{ student_course.courses.description }}</p>
-                  <a href="#" class="btn btn-primary">View</a>
+                  <form action="{% url 'lms:course-home' student_course.id %}" method="get" style="display:inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">View</button>
+                  </form>
                 </div>
               </div>
             </div>
@@ -27,8 +30,8 @@
   </div>
 
   <br>
-  <h3 class="mx-5 text-left">Un-Registered Courses</h3>
-  <div class="mx-5 container-fluid">
+  <h3 class="text-left">Un-Registered Courses</h3>
+  <div class="container-fluid">
       <div class="row">
          {% for course in unregistered_courses %}
             <div class="col-sm-4">
@@ -36,10 +39,10 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <form action="#" method="get" style="display:inline">
+                  <!-- <form action="{% url 'lms:course-home' course.id %}" method="get" style="display:inline">
                     {% csrf_token %}
                     <button class="btn btn-primary">View</button>
-                  </form>
+                  </form> -->
                   <form action="{% url 'lms:course_register' course.id %}" method="post" style="display:inline">
                     {% csrf_token %}
                     <button class="btn btn-primary">Register</button>
@@ -52,8 +55,8 @@
   </div>
 
 {% else %}
-  <h3 class="mx-5 text-left">Published Courses</h3>
-  <div class="mx-5 container-fluid">
+  <h3 class="text-left">Published Courses</h3>
+  <div class="container-fluid">
       <div class="row">
          {% for course in published_courses %}
             <div class="col-sm-4">
@@ -61,7 +64,7 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <form action="/" method="get" style="display:inline">
+                  <form action="{% url 'lms:course-home' course.id %}" method="get" style="display:inline">
                     {% csrf_token %}
                     <button class="btn btn-primary">View</button>
                   </form>
@@ -77,8 +80,8 @@
   </div>
 
   <br>
-  <h3 class="mx-5 text-left">Un-Published Courses</h3>
-  <div class="mx-5 container-fluid">
+  <h3 class="text-left">Un-Published Courses</h3>
+  <div class="container-fluid">
       <div class="row">
          {% for course in unpublished_courses %}
             <div class="col-sm-4">
@@ -86,7 +89,7 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ course.title }}</h5>
                   <p class="card-text">{{ course.description }}</p>
-                  <form action="/" method="get" style="display:inline">
+                  <form action="{% url 'lms:course-home' course.id %}" method="get" style="display:inline">
                     {% csrf_token %}
                     <button class="btn btn-primary">View</button>
                   </form>
@@ -107,21 +110,25 @@
 {% block todo %}
   {% if is_student_view %}
       <br>
-      <h3>To Do</h3>
-      <ul class="list-group">
-         {% for student_assignment in assignments %}
-              <a href="#" class="list-group-item list-group-item-action">{{ student_assignment.assignment.name }} <br><span>Course: </span><span>{{ student_assignment.assignment.for_course }}</span>
-                  <br><span>Due Date: </span><span>{{ student_assignment.assignment.available_until }}</span></a>
-         {% endfor %}
-      </ul>
+      <div class='mx-2'>
+        <h3>To Do</h3>
+        <ul class="list-group">
+           {% for student_assignment in assignments %}
+                <a href="#" class="list-group-item list-group-item-action">{{ student_assignment.assignment.name }} <br><span>Course: </span><span>{{ student_assignment.assignment.for_course }}</span>
+                    <br><span>Due Date: </span><span>{{ student_assignment.assignment.available_until }}</span></a>
+           {% endfor %}
+        </ul>
+      </div>
   {% else %}
       <br>
-      <h3>Coming Up</h3>
-      <ul class="list-group">
-         {% for assignment in assignments %}
-              <a href="#" class="list-group-item list-group-item-action">{{ assignment.name }} <br><span>Course: </span><span>{{ assignment.for_course }}</span>
-                  <br><span>Due Date: </span><span>{{ assignment.available_until }}</span></a>
-         {% endfor %}
-      </ul>
+      <div class='mx-2'>
+        <h3>Coming Up</h3>
+        <ul class="list-group">
+           {% for assignment in assignments %}
+                <a href="#" class="list-group-item list-group-item-action">{{ assignment.name }} <br><span>Course: </span><span>{{ assignment.for_course }}</span>
+                    <br><span>Due Date: </span><span>{{ assignment.available_until }}</span></a>
+           {% endfor %}
+        </ul>
+      </div>
   {% endif %}
 {% endblock todo %}

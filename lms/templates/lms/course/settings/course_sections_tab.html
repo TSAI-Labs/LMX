@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <h5 class="mt-lg-5 pt-lg-5 pb-lg-5">Update section / registration for enrolled students</h5>
+        <h5 class="mt-lg-5 pt-lg-5 pb-lg-5">Update student section / registration</h5>
         <div class="mb-lg-5">
 
             <form class="col col-lg-9" method="post" action="{% url 'lms:course_sections' object.id %}">
@@ -95,10 +95,10 @@
                     </thead>
                     <tbody>
                     {% for form in enrolled_students_formset.forms %}
+
                         <tr>
                             {{ form|as_crispy_errors }}
                             {{ form.user|as_crispy_field }}
-                            {{ form.courses|as_crispy_field }}
                             {{ form.id|as_crispy_field }}
 
                             {#fixme: remove the labels from the fields#}
@@ -126,6 +126,32 @@
                         value="true"> Update section assignments
                 </button>
             </form>
+        </div>
+
+        <h5 class="mt-lg-5 pt-lg-5 pb-lg-5">Register a new student</h5>
+        <div class="mb-lg-5">
+            <div class="row">
+                <div class="col">
+                    <div class="card h-100">
+                        <h5 class="card-header">Register</h5>
+                        <div class="card-body">
+                            <form class="col col-lg-9" method="post" action="{% url 'lms:course_sections' object.id %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <p class="card-text">Choose a student to register</p>
+                                    {{ new_student_register_form|crispy }}
+                                </div>
+                                <button type="submit" class="btn btn-outline-success mt-3" name="new_student_register"
+                                        value="true">
+                                    Register
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
     </div>

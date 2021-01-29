@@ -6,6 +6,9 @@ from django.utils import timezone
 
 from lms.models.user_role_model import Role
 
+from image_optimizer.fields import OptimizedImageField
+from ckeditor.fields import RichTextField
+
 
 class GradingSchemeName(models.Model):
     """
@@ -48,13 +51,11 @@ class Course(models.Model):
     Model to capture all the course details
     """
     title = models.CharField(max_length=250, null=False, blank=False, unique=True)
-    # TODO change field type
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='courses')
     description = models.TextField(null=True)
     published = models.BooleanField(default=False)
 
     thumbnail = models.ImageField(default='default.png', upload_to='course_thumbnails', null=True, blank=True)
-    # time_zone=models.CharField(max_length=35, choices=[(x, x) for x in pytz.common_timezones], default='Asia/Kolkata')
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
     grading_scheme = models.ForeignKey(to=GradingSchemeName, on_delete=models.SET_NULL, null=True, blank=True)
@@ -97,7 +98,7 @@ class Group(models.Model):
     """
     group_name = models.CharField(max_length=250, null=True, blank=False, unique=True)
     course = models.ForeignKey(to=Course, on_delete=models.CASCADE)
-    user = models.OneToOneField(to=User, on_delete=models.CASCADE, null=True, blank=False)
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, null=True, blank=False)
 
     def __str__(self):
         return f'Group {self.group_name} - {self.course}'
