@@ -1,12 +1,11 @@
 # Django imports.
-from django.utils.timezone import now
-from django.contrib.auth.models import User
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import View
-from django.contrib import messages
 
 from lms.forms.notification.notification_settings_form import NotificationSettingUpdateForm
+
 
 class NotificationSettingsView(LoginRequiredMixin, View):
     """

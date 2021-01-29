@@ -40,18 +40,37 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ml-auto">
-                    <a href="{% url 'lms:home' %}" aria-current="page" class="nav-item nav-link active">Home</a>
-                    <a href="{% url 'lms:blog-home' %}" class="nav-item nav-link active">Blogs</a>
                     {% if request.user.is_authenticated %}
                         <a href="{% url 'lms:dashboard_home' %}" class="nav-item nav-link active">Dashboard</a>
+                        <a href="{% url 'lms:blog-home' %}" class="nav-item nav-link active">Blogs</a>
                         {% if 'blog' in request.path %}
                             <a href="{% url 'lms:post-create' %}" class="nav-item nav-link">New Post</a>
                         {% endif %}
+                        <a href="{% url 'lms:notification_settings' %}" class="nav-item nav-link active">Notification</a>
                         <a href="{% url 'lms:sub_delete' %}" class="nav-item nav-link active">Unsubscribe</a>
                         <a href="{% url 'lms:logout' %}" class="nav-item nav-link">Sign Out</a>
                     {% else %}
+                        <a href="{% url 'lms:home' %}" aria-current="page" class="nav-item nav-link active">Home</a>
+                        <a href="{% url 'lms:blog-home' %}" class="nav-item nav-link active">Blogs</a>
                         <a href="{% url 'lms:subscribe' %}" class="nav-item nav-link active">Newsletter</a>
                         <a href="{% url 'lms:login' %}" class="nav-item nav-link">Sign In</a>
+
+                        {% if request.resolver_match.view_name == "lms:home" %}
+                            <a class="nav-item active px-4">
+                                <form class="form-inline" action="{% url 'lms:home' %}">
+                                    <div class="row">
+                                        <div class="col">
+                                            <input class="form-control mr-sm-2" type="search" placeholder="Search"
+                                                   aria-label="Search" name="search">
+                                        </div>
+                                        <div class="col">
+                                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

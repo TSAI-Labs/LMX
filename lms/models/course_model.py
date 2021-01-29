@@ -6,9 +6,6 @@ from django.utils import timezone
 
 from lms.models.user_role_model import Role
 
-from image_optimizer.fields import OptimizedImageField
-from ckeditor.fields import RichTextField
-
 
 class GradingSchemeName(models.Model):
     """
@@ -49,12 +46,12 @@ class GradingScheme(models.Model):
 class Course(models.Model):
     """
     Model to capture all the course details
+    credits: default.png online school by Becris from the Noun Project
     """
     title = models.CharField(max_length=250, null=False, blank=False, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='courses')
     description = models.TextField(null=True)
     published = models.BooleanField(default=False)
-
     thumbnail = models.ImageField(default='default.png', upload_to='course_thumbnails', null=True, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)

@@ -6,12 +6,12 @@ from django.urls import path, re_path, include
 # LMS app imports
 from lms.views.account.login_view import UserLoginView
 from lms.views.account.logout_view import UserLogoutView
-from lms.views.account.subscriber_view import subscribe, subscribe_confirm, subscribe_delete,sub_delete
 from lms.views.account.register_view import (
     ActivateView,
     AccountActivationSentView,
     UserRegisterView,
 )
+from lms.views.account.subscriber_view import subscribe, subscribe_confirm, subscribe_delete, sub_delete
 from lms.views.assignment.assignment_views import (
     AssignmentHomeView,
     AssignmentDetailView,
@@ -36,22 +36,10 @@ from lms.views.course.course_registration_views import (
     CourseRegistrationView,
 )
 from lms.views.course.course_views import (
-    CourseListView_default,
     CourseListView,
     GradeBookCourseView,
     StudentGradeBookCourseView
     # table_download
-)
-from lms.views.quiz.quiz_views import (
-    compute_stats,
-    fetch_questions_oneatatime,
-    fetch_questions,
-    quiz_lp,
-    display_lp,
-    Edit_quiz,
-    preview_quiz,
-    enter_comment,
-    quiz_publish
 )
 from lms.views.course.grading_scheme_view import (
     GradingSchemeUpdateView,
@@ -82,6 +70,17 @@ from lms.views.dashboard.dashboard_views import (
 from lms.views.notification.notification_settings_view import (
     NotificationSettingsView,
 )
+from lms.views.quiz.quiz_views import (
+    compute_stats,
+    fetch_questions_oneatatime,
+    fetch_questions,
+    quiz_lp,
+    display_lp,
+    Edit_quiz,
+    preview_quiz,
+    enter_comment,
+    quiz_publish
+)
 
 # Specifies the app name for name spacing.
 app_name = "lms"
@@ -90,13 +89,6 @@ app_name = "lms"
 urlpatterns = [
 
     # LMS URLS #
-
-    # /home/
-    # path(
-    #     route='',
-    #     view=CourseListView_default.as_view(),
-    #     name='home'
-    # ),
 
     # /home/
     path(
@@ -187,10 +179,10 @@ urlpatterns = [
     # DASHBOARD URLS #
 
     # /
-    path('',dashboard_list,name='home'),
-    path('<int:page>',dashboard_list,name='home'),
-    path('coursedetails/<int:pk>/',dashboard_details),
-    path('subscribe/<int:pk>/',dashboard_subscribe),
+    path('', dashboard_list, name='home'),
+    path('<int:page>', dashboard_list, name='home'),
+    path('coursedetails/<int:pk>/', dashboard_details),
+    path('subscribe/<int:pk>/', dashboard_subscribe),
 
     # /author/dashboard/home/
     path(
@@ -298,7 +290,7 @@ urlpatterns = [
         view=GradeBookCourseView.as_view(),
         name='gradebook-course'
     ),
-    
+
     path(
         route="course/<int:course_id>/student_grades/",
         view=StudentGradeBookCourseView.as_view(),

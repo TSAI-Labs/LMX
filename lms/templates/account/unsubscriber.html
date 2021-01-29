@@ -1,66 +1,20 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+{% extends 'lms/lms_base.html' %}
 
-    <!-- Meta Tags -->
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="description" content="LMX">
-    <meta name="keywords" content="Courses, LMS, Blogs, Quiz">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Favicon-->
-    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon" />
-
-    <!-- Title -->
-    <title>LMX Student Dashboard </title>
-
-    {% block stylesheets %}
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
-    <!-- Bootstrap select -->
-    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
-    {% endblock stylesheets %}
-</head>
-
-<html>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'lms:dashboard_profile' %}">{{ user.username }}</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                    <div class="navbar-nav ml-auto">
-                        {% if request.user.is_authenticated %}
-                            <a href="{% url 'lms:home' %}" class="nav-item nav-link active">Home</a>
-                            <a href="{% url 'lms:notification_settings' %}" class="nav-item nav-link active">Notification</a>
-                            <a href="{% url 'lms:blog-home' %}" class="nav-item nav-link active">Blogs</a>
-                            <a href="{% url 'lms:sub_delete' %}" class="nav-item nav-link">Unsubscribe</a>
-                            <a href="{% url 'lms:logout' %}" class="nav-item nav-link">Sign Out</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <body>
-            <div class="container">
-            <div class="col-12">
-                <h1>Email Newsletter</h1>
-            </div>
-            <div class="col-12">
-                {% if email %}
+{% block content %}
+    <div class="container">
+        <div class="col-12">
+            <h1>Email Newsletter</h1>
+        </div>
+        <div class="col-12">
+            {% if email %}
                 <p>{{ action }} mail sent to {{ email }} </p>
-                {% else %}
-                    {% if action %}
-                        <p>{{ action }}</p>
-                    {% endif %}
+            {% else %}
+                {% if action %}
+                    <p>{{ action }}</p>
                 {% endif %}
+            {% endif %}
 
-            </div>
+        </div>
         {% if form %}
             <div class="col-12 col-md-4">
                 <form method="post" novalidate>
@@ -71,6 +25,5 @@
                 </form>
             </div>
         {% endif %}
-        </div>
-    </body>
-</html>
+    </div>
+{% endblock content %}

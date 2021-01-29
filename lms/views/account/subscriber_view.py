@@ -79,12 +79,8 @@ def subscribe_delete(request):
 def sub_delete(request):
     if request.method == 'POST':
         try:
-            # print("The email is",request.POST['email'])
             sub = Subscriber.objects.get(email=request.POST['email'])
-            # print("The sub value is", sub.is_subscribed)
-            # if sub.confirmed== False:
-            # return render(request, 'account/unsubscriber.html', {'email': sub.email, 'action': 'The User  did not confirm Subscription'})
-            if sub.is_subscribed == False:
+            if not sub.is_subscribed:
                 print("The user has already unsubscribed")
                 return render(request, 'account/unsubscriber.html', {'email': sub.email, 'action': 'Unsubscribe'})
             else:
@@ -98,20 +94,15 @@ def sub_delete(request):
                     unsubscribe</a>.'.format(request.build_absolute_uri('/account/subscribe_delete'),
                                              sub.email,
                                              sub.conf_num)
-                # email_from="reddypsusila9@gmail.com"
                 email_from = settings.EMAIL_HOST_USER
                 recipient_list = [sub.email]
                 send_mail(subject, message, email_from, recipient_list)
-                # print(subject,message)
                 return render(request, 'account/unsubscriber.html',
                               {'email': sub.email, 'action': 'Unsubscribe', 'form': SubscriberForm()})
         except IntegrityError:
             return render(request, 'account/unsubscriber.html', {'form': SubscriberForm()})
         except:
-            # print("User already unsubscribed")
             return render(request, 'account/unsubscriber.html', {'action': 'User already unsubscribed'})
         return render(request, 'account/unsubscriber.html', {'email': sub.email, 'action': 'Unsubscribed'})
     else:
         return render(request, 'account/unsubscriber.html', {'form': SubscriberForm()})
-
-    # return render(request, 'account/unsubscriber.html',{'form': SubscriberForm()},{'email': sub.email, 'action': 'Unsubscribed'})
