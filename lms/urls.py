@@ -6,6 +6,7 @@ from django.urls import path, re_path, include
 # LMS app imports
 from lms.views.account.login_view import UserLoginView
 from lms.views.account.logout_view import UserLogoutView
+from lms.views.account.subscriber_view import subscribe, subscribe_confirm, subscribe_delete,sub_delete
 from lms.views.account.register_view import (
     ActivateView,
     AccountActivationSentView,
@@ -358,6 +359,10 @@ urlpatterns = [
         name="comment_create"
     ),
 
+    path(route='account/subscribe', view=subscribe, name='subscribe'),
+    path(route='account/subscribe_confirm', view=subscribe_confirm, name='subscribe_confirm'),
+    path(route='account/subscribe_delete', view=subscribe_delete, name='subscribe_delete'),
+    path(route='account/sub_delete', view=sub_delete, name='sub_delete'),
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
 
 ]

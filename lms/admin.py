@@ -12,6 +12,7 @@ from .models.files_model import File
 from .models.notification_settings_model import NotificationSetting
 from .models.profile_model import Profile
 from .models.user_role_model import Role
+from .models.subscriber_model import Subscriber, Newsletter
 
 
 class NotificationSettingAdmin(admin.ModelAdmin):
@@ -156,6 +157,24 @@ class StudentAssignmentAdmin(admin.ModelAdmin):
     list_display = ('user', 'assignment',)
     list_filter = ('user__username', 'assignment__name',)
 
+
+class SubscriberAdmin(admin.ModelAdmin):
+    list_filter = ('email',)
+    search_fields = ('email',)
+    ordering = ['email', ]
+
+admin.site.register(Subscriber, SubscriberAdmin)
+
+def send_newsletter(modeladmin, request, queryset):
+    for newsletter in queryset:
+        newsletter.send(request)
+
+send_newsletter.short_description = "Send selected Newsletters to all subscribers"
+
+class NewsletterAdmin(admin.ModelAdmin):
+    actions = [send_newsletter]
+
+admin.site.register(Newsletter, NewsletterAdmin)
 
 
 

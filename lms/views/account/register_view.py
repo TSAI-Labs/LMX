@@ -14,6 +14,19 @@ from lms.token import account_activation_token
 from lms.forms.account.register_form import UserRegisterForm
 from lms.models.user_role_model import Role
 
+from lms.models.subscriber_model import Subscriber, Newsletter
+from lms.forms.account.subscriber_form import SubscriberForm
+import lmx.settings
+import random
+
+
+from django.core.mail import send_mail
+
+
+
+def random_digits():
+    return "%0.12d" % random.randint(0, 999999999999)
+
 
 class UserRegisterView(View):
     """
@@ -54,6 +67,31 @@ class UserRegisterView(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
+
+            try:
+                sub = Subscriber(email=emailid, conf_num=random_digits())
+                sub.confirmed = False
+                sub.is_subscribed = True
+                sub.save()
+            except IntegrityError:
+                return render(request, 'account/subscriber.html', {'form': SubscriberForm()})
+
+            try:
+                subject = "Newsletter Confirmation"
+                message = 'Thank you for signing up for my email newsletter! \
+                                        Please complete the process by \
+                                        <a href="{}?email={}&conf_num={}"> clicking here to \
+                                        confirm your registration</a>.'.format(
+                    request.build_absolute_uri('/account/subscribe_confirm'),
+                    sub.email,
+                    sub.conf_num)
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [sub.email]
+                send_mail(subject, message, email_from, recipient_list)
+                #print(subject,message)
+                return redirect('lms:account_activation_sent')
+            except:
+                return redirect('lms:account_activation_sent')
 
             print(subject, message)
             # user.email_user(subject, message)
