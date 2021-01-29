@@ -50,6 +50,10 @@
                         {% if 'blog' in request.path %}
                             <a href="{% url 'lms:post-create' %}" class="nav-item nav-link">New Post</a>
                         {% endif %}
+                        <div>
+                            <a href="/account/subscribe" class="nav-item nav-link active">Newsletter</a>
+                            <a href="/account/sub_delete" class="nav-item nav-link active">Unsubscribe</a>
+                        </div>
                         <a href="{% url 'lms:logout' %}" class="nav-item nav-link">Sign Out</a>
                     {% else %}
                         <a href="{% url 'lms:login' %}" class="nav-item nav-link">Sign In</a>
