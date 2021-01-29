@@ -46,7 +46,7 @@
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="#">Grades</a></th>
+                        <th scope="row"><a href="{% url 'lms:gradebook-course' object.id %}">Grades</a></th>
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
@@ -99,7 +99,7 @@
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="#">Grades</a></th>
+                        <th scope="row"><a href="{% url 'lms:gradebook-course-student' object1.id %}">Grades</a></th>
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">

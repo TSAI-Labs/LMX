@@ -38,7 +38,8 @@ from lms.views.course.course_views import (
     CourseListView_default,
     CourseListView,
     GradeBookCourseView,
-    table_download
+    StudentGradeBookCourseView
+    # table_download
 )
 from lms.views.quiz.quiz_views import (
     compute_stats,
@@ -283,13 +284,16 @@ urlpatterns = [
 
     # COURSE GRADEBOOK - Teacher's View
     path(
-        route="course/grades/",
+        route="course/<int:course_id>/grades/",
         view=GradeBookCourseView.as_view(),
         name='gradebook-course'
     ),
-
-    # path to download csv file
-    path('_export=csv', table_download),
+    
+    path(
+        route="course/<int:course_id>/student_grades/",
+        view=StudentGradeBookCourseView.as_view(),
+        name='gradebook-course-student'
+    ),
 
     # By Quiz Teacher View Team.[Start]
     path('lms/course_stats/', compute_stats, name="compute_stats"),
