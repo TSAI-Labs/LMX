@@ -37,7 +37,8 @@ from lms.views.course.course_registration_views import (
 from lms.views.course.course_views import (
     CourseListView_default,
     CourseListView,
-    GradeBookCourseView
+    GradeBookCourseView,
+    StudentGradeBookCourseView
     # table_download
 )
 from lms.views.quiz.quiz_views import (
@@ -283,17 +284,16 @@ urlpatterns = [
 
     # COURSE GRADEBOOK - Teacher's View
     path(
-        route="course/grades/",
+        route="course/<int:course_id>/grades/",
         view=GradeBookCourseView.as_view(),
         name='gradebook-course'
-    )
-
-    # path to download csv file
-<<<<<<< HEAD
-    # path('_export=csv', table_download),
-  
-=======
-    path('_export=csv', table_download),
+    ),
+    
+    path(
+        route="course/<int:course_id>/student_grades/",
+        view=StudentGradeBookCourseView.as_view(),
+        name='gradebook-course-student'
+    ),
 
     # By Quiz Teacher View Team.[Start]
     path('lms/course_stats/', compute_stats, name="compute_stats"),
@@ -364,7 +364,6 @@ urlpatterns = [
 
     re_path(r'^ckeditor/', include('ckeditor_uploader.urls'))
 
->>>>>>> 18b7d648bb603e72635d02e30cedf06e3581ae2b
 ]
 
 if settings.DEBUG:

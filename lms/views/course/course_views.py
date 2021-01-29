@@ -11,7 +11,7 @@ from django_tables2.views import SingleTableMixin
 
 from lms.models.assignment_model import StudentAssignment
 from lms.models.course_model import Course , StudentCourse
-from lms.tables import StudentAssignmentTable, StudentAssignmentFilter
+from lms.tables import StudentAssignmentTable, StudentAssignmentFilter, TeacherAssignmentTable, TeacherAssignmentFilter
 from lms.models.user_role_model import Role
 
 from django.db.models import Avg, Max, Min
@@ -49,11 +49,19 @@ class CourseListView_default(ListView):
 
 class GradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, SingleTableMixin, FilterView):
     model = StudentAssignment
-    table_class = StudentAssignmentTable
+    table_class = TeacherAssignmentTable
 
     template_name = 'lms/course/gradebook/course_gradebook.html'
-    filterset_class = StudentAssignmentFilter
+    filterset_class = TeacherAssignmentFilter
 
+    def get_queryset(self):
+        return StudentAssignment.objects.filter(assignment__for_course__id=self.kwargs['course_id'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = Course.objects.get(id=self.kwargs['course_id'])
+        return context
+    
     # Restrict access to only course user (teacher) and admin
     def test_func(self):
         if self.request.user.role.is_admin:
@@ -69,33 +77,32 @@ class GradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, 
         messages.warning(self.request, 'Requested resource is not accessible!')
         return redirect('lms:dashboard_home')
 
-    # def get(self, request, *args, **kwargs):
-    #     # table = StudentAssignmentTable(StudentAssignment.objects.filter(assignment__name=kwargs[pk]))
-    #     pass
+class StudentGradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, SingleTableMixin, FilterView):
+    model = StudentAssignment
+    table_class = StudentAssignmentTable
 
+    template_name = 'lms/course/gradebook/course_gradebook.html'
+    filterset_class = StudentAssignmentFilter
 
-# download csv file (django_tables2 method)
-# def table_download(request):
-#     table = StudentAssignmentTable(StudentAssignment.objects.all())
+    def get_queryset(self):
+        course_id = StudentCourse.objects.get(id=self.kwargs['course_id']).courses_id
+        student_assignments = StudentAssignment.objects.filter(user=self.request.user)
+        qs = [x.id for x in student_assignments if x.assignment.for_course_id == course_id]
+        return StudentAssignment.objects.filter(id__in=qs)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object1'] = StudentCourse.objects.get(id=self.kwargs['course_id'])
+        context['object'] = Course.objects.get(id=context['object1'].courses_id)
+        return context
+    
+    # Restrict access to only course user (teacher) and admin
+    def test_func(self):
+        if self.request.user.role.is_student:
+            return True
+        return False
 
-#     RequestConfig(request).configure(table)
-
-#     export_format = request.GET.get("_export", None)
-#     if TableExport.is_valid_format(export_format):
-#         exporter = TableExport(export_format, table)
-#         return exporter.response("table.{}".format(export_format))
-
-<<<<<<< HEAD
-#     return render(request, "lms/course/gradebook/course_gradebook_export.html", {
-#         "table": table
-#     })
-
-
-
-
-
-=======
-    return render(request, "lms/course/gradebook/course_gradebook_export.html", {
-        "table": table
-    })
->>>>>>> 18b7d648bb603e72635d02e30cedf06e3581ae2b
+    # Redirect a logged in user, when they fail test_func()
+    def handle_no_permission(self):
+        messages.warning(self.request, 'Requested resource is not accessible!')
+        return redirect('lms:dashboard_home')
