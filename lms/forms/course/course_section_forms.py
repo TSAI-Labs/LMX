@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm, inlineformset_factory, BaseInlineFormSet
 
-from lms.models.course_model import Section, StudentCourse, Course
+from lms.models.course_model import Section, StudentCourse, Course, CourseSubscribe
 
 
 class SectionForm(ModelForm):
@@ -62,3 +62,8 @@ def enrolled_students_formset(course_obj):
                                                 extra=0, can_delete=False)
 
     return enrollments_formset
+
+class CourseSubscribeForm(ModelForm):
+    class Meta:
+        model = CourseSubscribe
+        fields = ['email_id', 'course']
