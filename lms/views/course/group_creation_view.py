@@ -15,7 +15,6 @@ from django.views.generic import View, ListView
 from lms.forms.course.group_creation_request_form import GroupCreationRequestForm
 # Blog application imports.
 from lms.models.course_model import Course, Group
-# from lms.models.enrollment_model import Group, Enrollment
 from lms.models.course_model import StudentCourse
 from lms.models.user_role_model import Role
 from lms.token import account_activation_token
@@ -24,10 +23,10 @@ from lms.token import account_activation_token
 class GroupCreationRequestView(LoginRequiredMixin, View):
     """
     Group Creation Request To another Student
-    Implementation : This view is for the student who creates groups and request memebers to join the group. 
-    The person who created the group is like the admin, he can only request members to join. 
+    Implementation : This view is for the student who creates groups and request memebers to join the group.
+    The person who created the group is like the admin, he can only request members to join.
     He should atleast request 1 member to join the group at the time of group creation and later he can request more.
-    
+
 
     #TODO : Add the max limit of members for group creation
     """
@@ -44,6 +43,8 @@ class GroupCreationRequestView(LoginRequiredMixin, View):
                  'pk': pk,
                  'object': Course.objects.get(id=int(pk))
                  }
+
+            self.context_object['object1'] = StudentCourse.objects.filter(courses=self.context_object['object'].id).get(user = self.request.user)
 
             return render(request, self.template_name, self.context_object)
 
@@ -190,6 +191,11 @@ class ViewGroupsView(LoginRequiredMixin, ListView):
             groups_student_dict[group.group_name] = students
 
         self.context_object = {"groups": groups_student_dict,
-                               'object': Course.objects.get(id=int(course_id))}
+                               'object': Course.objects.get(id=int(course_id)),
+                               }
 
+        role = Role.objects.filter(user=request.user)
+        if role and role[0].is_student:
+            self.context_object['object1'] = StudentCourse.objects.filter(courses=self.context_object['object'].id).get(user = self.request.user)
+            
         return render(request, 'lms/course/view_groups.html', self.context_object)

@@ -11,10 +11,9 @@ from django_tables2.views import SingleTableMixin
 
 from lms.models.assignment_model import StudentAssignment
 from lms.models.course_model import Course , StudentCourse
-from lms.tables import StudentAssignmentTable, StudentAssignmentFilter
+from lms.tables import StudentAssignmentTable, StudentAssignmentFilter, TeacherAssignmentTable, TeacherAssignmentFilter
 from lms.models.user_role_model import Role
 
-from lms.models.course_model import Question, Responses, Quiz, Student_Question, UsersProfile
 from django.db.models import Avg, Max, Min
 from django.core.paginator import Paginator
 
@@ -23,31 +22,24 @@ class CourseListView(ListView):
     model = Course
     context_object_name = "courses"
     context={}
-    template_name = "lms/course/home.html"
-   
-
-    # def get(self, request, *args, **kwargs):
-    #     selected_course = Course.objects.get(id=kwargs['pk'])
-    #     print(f'SELECTED COURSE {selected_course}')
-    #     # selected_course.published=False
-    #     # selected_course.save()
-    #     return redirect('lms:dashboard_profile')
+    template_name = "lms/course/course_home.html"
 
     def get(self, request, *args, **kwargs):
-        
+
         role = Role.objects.filter(user=request.user)
         if role[0].is_student:
-            selected_course = StudentCourse.objects.get(id=kwargs['pk'])
+            selected_student_course = StudentCourse.objects.get(id=kwargs['pk'])
+            print(selected_student_course)
+            selected_course = Course.objects.get(id=selected_student_course.courses_id)
+            print(selected_course)
+            self.context.update(object1=selected_student_course)
+            self.context.update(object=selected_course)
         else:
             selected_course = Course.objects.get(id=kwargs['pk'])
-        self.context.update(object=selected_course)
-        self.context.update(course_id=selected_course.id)
-        self.context.update(is_student=role[0].is_student)
-        
-    # self.context.update(course_publish=selected_course.published)
-        # self.context.update(course_description=selected_course.description)
+            self.context.update(object=selected_course)
+
         return render(request, self.template_name, self.context)
-        
+
 
 class CourseListView_default(ListView):
     model = Course
@@ -57,11 +49,19 @@ class CourseListView_default(ListView):
 
 class GradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, SingleTableMixin, FilterView):
     model = StudentAssignment
-    table_class = StudentAssignmentTable
+    table_class = TeacherAssignmentTable
 
     template_name = 'lms/course/gradebook/course_gradebook.html'
-    filterset_class = StudentAssignmentFilter
+    filterset_class = TeacherAssignmentFilter
 
+    def get_queryset(self):
+        return StudentAssignment.objects.filter(assignment__for_course__id=self.kwargs['course_id'])
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object'] = Course.objects.get(id=self.kwargs['course_id'])
+        return context
+    
     # Restrict access to only course user (teacher) and admin
     def test_func(self):
         if self.request.user.role.is_admin:
@@ -77,121 +77,32 @@ class GradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, 
         messages.warning(self.request, 'Requested resource is not accessible!')
         return redirect('lms:dashboard_home')
 
+class StudentGradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, SingleTableMixin, FilterView):
+    model = StudentAssignment
+    table_class = StudentAssignmentTable
 
-# download csv file (django_tables2 method)
-def table_download(request):
-    table = StudentAssignmentTable(StudentAssignment.objects.all())
+    template_name = 'lms/course/gradebook/course_gradebook.html'
+    filterset_class = StudentAssignmentFilter
 
-    RequestConfig(request).configure(table)
-
-    export_format = request.GET.get("_export", None)
-    if TableExport.is_valid_format(export_format):
-        exporter = TableExport(export_format, table)
-        return exporter.response("table.{}".format(export_format))
-
-    return render(request, "lms/course/gradebook/course_gradebook_export.html", {
-        "table": table
-    })
-
-
-# Fetch Quiz Questions all at a time by Quiz Teacher View Team.
-def fetch_questions(request):
-    questions = Question.objects.all()
-    quizs = Quiz.objects.first()
-    context = dict()
-    context.update({'questions':questions})
-    context.update({'quizs':quizs})
-    return render(request,'lms/course/quiz3.html',context)
-
-
-# Fetch one quiz question at a time.
-def fetch_questions_oneatatime(request):
-    obj = Question.objects.all()
-
-    count = Question.objects.all().count()
-    paginator = Paginator(obj,1)
-    try:
-        page = int(request.GET.get('page','1'))  
-    except:
-        page =1
-    try:
-        questions = paginator.page(page)
-    except(EmptyPage,InvalidPage):
-
-        questions=paginator.page(paginator.num_pages)
+    def get_queryset(self):
+        course_id = StudentCourse.objects.get(id=self.kwargs['course_id']).courses_id
+        student_assignments = StudentAssignment.objects.filter(user=self.request.user)
+        qs = [x.id for x in student_assignments if x.assignment.for_course_id == course_id]
+        return StudentAssignment.objects.filter(id__in=qs)
     
-    return render(request,'lms/course/quiz.html',{'obj':obj,'questions':questions,'count':count})    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['object1'] = StudentCourse.objects.get(id=self.kwargs['course_id'])
+        context['object'] = Course.objects.get(id=context['object1'].courses_id)
+        return context
+    
+    # Restrict access to only course user (teacher) and admin
+    def test_func(self):
+        if self.request.user.role.is_student:
+            return True
+        return False
 
-
-# Quiz Starting Page.
-def display_lp(request):
-    quizs = Quiz.objects.first()
-    context = {'quizs':quizs}
-    return render(request,'lms/quiz2.html',context)
-
-
-# Edit Quiz Questions only admin has the right to to do.
-def Edit_quiz(request):
-    return render(request,'admin/')  
-
-
-# Preview Quiz
-def preview_quiz(request):
-    questions = Question.objects.all()
-    context = {'questions':questions}
-    return render(request,'lms/course/quiz_preview.html',context)
-
-
-# Quiz Landing Page
-def quiz_lp(request):
-    quizs=Quiz.objects.all()
-    context = {'quizs':quizs}
-    return render(request,'lms/course/quizlp.html',context)
-
-
-# Compute Stats of Quiz
-def compute_stats(request):
-    profiles= UsersProfile.objects.all()
-    context= dict()
-    context.update({'profiles':profiles})
-    context.update(UsersProfile.objects.all().aggregate(Avg('marks')))
-    context.update(UsersProfile.objects.all().aggregate(Min('marks')))
-    context.update(UsersProfile.objects.all().aggregate(Max('marks')))
-    return render(request,'lms/course/compute_stats.html',context)
-
-
-# Enter Comments.
-def enter_comment(request):
-    responses = Responses.objects.all()
-    context = {'responses':responses}
-    if request.method == "POST":
-       responses = Responses()
-       responses.comments = request.POST['comments']
-       responses.save()
-       return render(request,'lms/course/responses.html')
-    else:
-        return render(request,'lms/course/responses.html',context)
-
-
-
-# Quiz Publish
-def quiz_publish(request):
-    questions = Question.objects.all()
-    for i in questions:
-        model_one = Student_Question(course= i.course,
-                                     quiznumber = i.quiznumber,
-                                     questiontype= i.questiontype,
-                                     questionnumber = i.questionnumber,
-                                     question= i.question,
-                                     description= i.description,
-                                     answer= i.answer,
-                                     option1= i.option1,
-                                     option2= i.option2,
-                                     option3= i.option3,
-                                     option4= i.option4,
-                                     points = i.points,
-                                     img= i.img,
-                                     files= i.files 
-                                     )
-        model_one.save()
-    return render(request,'lms/quiz_student_view.html')
+    # Redirect a logged in user, when they fail test_func()
+    def handle_no_permission(self):
+        messages.warning(self.request, 'Requested resource is not accessible!')
+        return redirect('lms:dashboard_home')
