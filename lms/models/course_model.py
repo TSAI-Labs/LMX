@@ -133,3 +133,18 @@ class StudentCourse(models.Model):
     # Constraints to ensure that a student cannot enroll into the same course more than once
     class Meta:
         unique_together = ('user', 'courses',)
+
+
+class CourseSubscribe(models.Model):
+    """
+    Students belonging to each course can be further sub-divided into sections
+    """
+    email_id = models.EmailField(max_length=250, null=False, blank=False, unique=False)
+    course = models.ForeignKey(to=Course, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Email {self.email_id} - {self.course}'
+
+    # Constraints to ensure that a duplicate entry is not present with section_name and course
+    class Meta:
+        unique_together = ('email_id', 'course',)

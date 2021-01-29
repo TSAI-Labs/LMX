@@ -1,0 +1,55 @@
+
+{% extends 'lms/lms_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+ Group Creation Request
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center pt-3 pb-3 border-bottom">Create Group/Request Members To join</h1>
+    <div class="bd-callout bd-callout-info">
+        <p class="font-weight-normal text-muted">
+            This form is to both create group , request members and if you own a group already then type in the exact group name and request the members
+        </p>
+    </div>
+
+    <div class="pt-3 pb-3>">
+		<div class="form-group">
+                <form action="{% url 'lms:group_creation_request' pk %}"  class="form-horizontal" method="post" novalidate>
+                    {% csrf_token %}
+
+                    <fieldset class="form-group">
+                        {{ form|as_crispy_errors }}
+                        <div class="row mb-lg-3 mt-lg-3">
+                            <div class="col">
+                                Group Name
+                            </div>
+
+                            <div class="col-lg-9">
+                                {{ group_creation_form.name|as_crispy_field }}
+                            </div>
+                        </div>
+		
+                        <div class="row mb-lg-3 mt-lg-3">
+                            <div class="col">
+                                Student Email
+                            </div>
+
+                            <div class="col-lg-9">
+                                {{ group_creation_form.student_email |as_crispy_field }}
+                            </div>
+                        </div>
+
+                
+                    </fieldset>
+                    <div class="border-top  pt-3 pb-5">
+                     
+                     <button class="btn btn-outline-success" type="submit">Send Request</button>
+                 </div>
+		</form>
+		</div>
+
+{% endblock content %}
