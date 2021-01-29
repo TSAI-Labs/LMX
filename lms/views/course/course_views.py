@@ -37,12 +37,14 @@ class CourseListView(ListView):
         
         role = Role.objects.filter(user=request.user)
         if role[0].is_student:
-            selected_course = StudentCourse.objects.get(id=kwargs['pk'])
+            selected_student_course = StudentCourse.objects.get(id=kwargs['pk'])
+            selected_course = Course.objects.get(id=selected_student_course.courses_id)
+            self.context.update(object=selected_student_course)
+            self.context.update(object1=selected_course)
         else:
             selected_course = Course.objects.get(id=kwargs['pk'])
-        self.context.update(object=selected_course)
-        self.context.update(course_id=selected_course.id)
-        self.context.update(is_student=role[0].is_student)
+            self.context.update(object=selected_course)
+            self.context.update(object1=selected_course)
         
     # self.context.update(course_publish=selected_course.published)
         # self.context.update(course_description=selected_course.description)

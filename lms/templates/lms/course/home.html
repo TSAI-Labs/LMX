@@ -6,5 +6,13 @@
 
 
 {% block content %}
-<h1 class="text-center">LMX Courses</h1>
+<div class='container'>
+    <h1 class='text-center'>{{ object1.title }}</h1>
+    <article class="media content-section">
+        <div class="media-body">
+  
+          <p class="article-content">{{ object1.description }}</p>
+        </div>
+    </article>
+  </div>
 {% endblock content %}

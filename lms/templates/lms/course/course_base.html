@@ -84,7 +84,7 @@
                         <th scope="row"><a href="/">HOME</a></th>
                         <td><a href="/"></a></td>
                     </tr>
-                    {% if not is_student %}
+                    {% if user.is_staff %}
                         <tr class="model-group">
                             <th scope="row"><a href="{% url 'lms:assignment_home' object.id %}">Assignments</a></th>
                             <td><a href="{% url 'lms:assignment_create' object.id %}" class="addlink">Add</a></td>
@@ -156,11 +156,11 @@
                             <td><a href="#"> </a></td>
                         </tr>
                         <tr class="model-user">
-                            <th scope="row"><a href="{% url 'lms:view_groups' object.courses.id %}">Groups</a></th>
+                            <th scope="row"><a href="{% url 'lms:view_groups' object.id %}">Groups</a></th>
                             <td><a href="#"> </a></td>
                         </tr>
                         <tr class="model-user">
-                            <th scope="row"><a href="{% url 'lms:mail_to_admin' object.courses.id %}">Mail to Admin</a>
+                            <th scope="row"><a href="{% url 'lms:mail_to_admin' object.id %}">Mail to Admin</a>
                             </th>
                             <td><a href="#"> </a></td>
                         </tr>
