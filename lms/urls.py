@@ -73,6 +73,9 @@ from lms.views.course.settings_view import (
 from lms.views.dashboard.dashboard_views import (
     DashboardHomeView,
     DashboardProfileView,
+    dashboard_list,
+    dashboard_details,
+    dashboard_subscribe
 )
 from lms.views.notification.notification_settings_view import (
     NotificationSettingsView,
@@ -87,11 +90,11 @@ urlpatterns = [
     # LMS URLS #
 
     # /home/
-    path(
-        route='',
-        view=CourseListView_default.as_view(),
-        name='home'
-    ),
+    # path(
+    #     route='',
+    #     view=CourseListView_default.as_view(),
+    #     name='home'
+    # ),
 
     # /home/
     path(
@@ -180,6 +183,12 @@ urlpatterns = [
          ),
 
     # DASHBOARD URLS #
+
+    # /
+    path('',dashboard_list,name='home'),
+    path('<int:page>',dashboard_list,name='home'),
+    path('coursedetails/<int:pk>/',dashboard_details),
+    path('subscribe/<int:pk>/',dashboard_subscribe),
 
     # /author/dashboard/home/
     path(

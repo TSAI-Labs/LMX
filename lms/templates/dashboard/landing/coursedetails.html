@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+{% extends 'dashboard/landing_base.html' %}
+{% load static %}
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+    <div class="p-2 mb-2 bg-secondary text-white text-center font-weight-bold"><h4>Course Details</h4></div>
+    <div class="container jumbotron">
+    <div class="card mb-3 align-items-center" style="width: 50rem;"">
+    <table class="table table-striped table-hover table-bordered">
+      {% for course in course_list %}
+      <tbody>
+      
+      <tr>
+        <td><b>Title</b></td><td>{{course.title}}</td>
+      </tr>
+      <tr>
+        <td><b>Description</b></td><td>{{course.description}}</td>
+
+      </tr>
+      <tr>
+        <td><b>Published</b></td><td>{{course.published}}</td>
+
+      </tr>
+      <tr>
+
+        <td><b>StartDate</b></td><td>{{course.start_date}}</td>
+      </tr>
+      <tr>
+
+        <td><b>EndDate</b></td><td>{{course.end_date}}</td>
+      </tr>
+      <tr>
+
+        <td><b>Created by</b></td><td>{{course.user_id}}</td>
+      </tr>
+      <tr>
+        <td><b>Grading Scheme</b></td><td>{{course.grading_scheme_id}}</td>
+      </tr>
+      
+      </tbody>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock content %}

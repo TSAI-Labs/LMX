@@ -1,0 +1,79 @@
+{% extends 'lms/course/settings/settings_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block main-content %}
+    <div class="container">
+        <form action="{% url 'lms:course_grading_scheme_update' object.id %}" class="form-horizontal" method="POST">
+            {% csrf_token %}
+
+            {{ grade_formset.management_form }}
+
+            <h1 class="text-center">Grading Scheme</h1>
+            <fieldset class="form-group">
+
+                <label for="scheme_name">Scheme Name: </label>
+                <input type="text" class="form-control" name="scheme_name" id="id_scheme_name"
+                       {% if scheme_name.data != None %}value="{{ scheme_name.data }}"{% endif %}
+                       required="True">
+
+                <table class="table table-sm">
+                    <caption>Grading Scheme</caption>
+                    <thead>
+                    <tr>
+                        <th scope="col">Grade Letter</th>
+                        <th scope="col">Score begin range</th>
+                        <th scope="col">Score end range</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {# Rendering error messages from forms  #}
+                    {% for form in grade_formset.forms %}
+                        {% if form.errors %}
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-danger">
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <div class="alert alert-danger">
+                                    <strong>{{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <tr>
+                            <th scope="row"><label for="id_form-{{ forloop.counter0 }}-grade"></label>
+                                <input type="text" class="form-control"
+                                       name="form-{{ forloop.counter0 }}-grade"
+                                       id="id_form-{{ forloop.counter0 }}-grade"
+                                       {% if form.grade.value != None %}value="{{ form.grade.value }}"{% endif %}>
+                            </th>
+                            <td><label for="id_form-{{ forloop.counter0 }}-score_range_begin"></label>
+                                <input type="number" class="form-control"
+                                       name="form-{{ forloop.counter0 }}-score_range_begin"
+                                       id="id_form-{{ forloop.counter0 }}-score_range_begin"
+                                       {% if form.score_range_begin.value != None %}value="{{ form.score_range_begin.value }}"{% endif %}>
+                            </td>
+                            <td><label for="id_form-{{ forloop.counter0 }}-score_range_end"></label>
+                                <input type="number" class="form-control"
+                                       name="form-{{ forloop.counter0 }}-score_range_end"
+                                       id="id_form-{{ forloop.counter0 }}-score_range_end"
+                                       {% if form.score_range_end.value != None %}value="{{ form.score_range_end.value }}"{% endif %}>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {#                                        {{ grade_formset }}#}
+                    </tbody>
+                </table>
+
+            </fieldset>
+
+            <div class="border-top  pt-3 pb-5">
+                <button class="btn btn-outline-info" type="submit">Update Grading Scheme</button>
+            </div>
+        </form>
+    </div>
+{% endblock main-content %}

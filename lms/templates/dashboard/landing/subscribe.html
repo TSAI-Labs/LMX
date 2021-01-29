@@ -1,0 +1,29 @@
+{% extends 'dashboard/landing_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+<div class="p-2 mb-2 bg-secondary text-white text-center font-weight-bold"><h4>{{ course_name }} Subscription Form</h4></div>
+<div class="container jumbotron">
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form |crispy  }}
+        <input type="submit" value="Submit">
+        <!-- <div class="form-group">
+            <label for="course">CourseId</label>
+            <input type="course" class="form-control" id="course" aria-describedby="courseHelp" placeholder={{ course_id }} disabled="true">
+            
+            <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Submit</button> -->
+      </form>
+    </div>
+{% endblock content %}
