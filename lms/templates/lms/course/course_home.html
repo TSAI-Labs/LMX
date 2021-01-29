@@ -1,0 +1,19 @@
+{% extends 'lms/course/course_base.html' %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+<div class='container'>
+    <h1 class='text-center'>{{ object.title }}</h1>
+    <article class="media content-section">
+        <div class="media-body">
+
+          <p class="article-content">{{ object.description }}</p>
+        </div>
+    </article>
+  </div>
+{% endblock content %}

@@ -46,7 +46,8 @@ class AssignmentHomeStudentView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object'] = StudentCourse.objects.get(id=self.kwargs['pkcourse'])
+        context['object1'] = StudentCourse.objects.get(id=self.kwargs['pkcourse'])
+        context['object'] = Course.objects.get(id=context['object1'].courses_id)
         context['is_student_view'] = True
         return context
 
@@ -64,7 +65,8 @@ class AssignmentDetailStudentView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['object'] = Course.objects.get(id=self.kwargs['pkcourse'])
+        context['object1'] = StudentCourse.objects.get(id=self.kwargs['pkcourse'])
+        context['object'] = Course.objects.get(id=context['object1'].courses_id)
         context['pk'] = self.kwargs['pk']
         context['is_student_view'] = True
         return context

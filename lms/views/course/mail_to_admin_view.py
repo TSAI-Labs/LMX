@@ -10,14 +10,14 @@ from django.views.generic import View
 # LMS app imports
 from lms.forms.course.mail_to_admin_form import MailToAdminForm
 # Models
-from lms.models.course_model import Course
+from lms.models.course_model import Course, StudentCourse
 from lms.models.user_role_model import Role
 
 
 class MailToAdminView(LoginRequiredMixin, View):
     """
-    Send Mail to admin/teacher. 
-    Ps : Since the mail is sent by centralised email, teacher will not know who sent the mail. 
+    Send Mail to admin/teacher.
+    Ps : Since the mail is sent by centralised email, teacher will not know who sent the mail.
     So in the body Added the username and course he is enrolled at the beginning
     """
 
@@ -29,6 +29,9 @@ class MailToAdminView(LoginRequiredMixin, View):
             pk = self.kwargs['pk']
             self.context_object = {"mail_to_admin_form": MailToAdminForm(pk=pk, user_id=request.user.id), "pk": pk,
                                    "object": Course.objects.get(id=int(pk))}
+
+            self.context_object['object1'] = StudentCourse.objects.filter(courses=self.context_object['object'].id).get(user = self.request.user)
+
             return render(request, self.template_name, self.context_object)
         else:
             messages.error(request, "Only Student can view this!!")

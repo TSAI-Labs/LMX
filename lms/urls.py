@@ -40,7 +40,7 @@ from lms.views.course.course_views import (
     GradeBookCourseView,
     table_download
 )
-from lms.views.course.course_views import (
+from lms.views.quiz.quiz_views import (
     compute_stats,
     fetch_questions_oneatatime,
     fetch_questions,
