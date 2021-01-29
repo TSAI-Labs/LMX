@@ -6,7 +6,7 @@ from .models.assignment_model import Assignment, StudentAssignment
 from .models.blog_model import Post
 
 from .models.course_model import Course, StudentCourse, GradingSchemeName, Section, GradingScheme, Group
-from .models.course_model import Quiz, Responses, Question
+from .models.quiz_model import Quiz, Responses, Question
 
 from .models.files_model import File
 from .models.notification_settings_model import NotificationSetting

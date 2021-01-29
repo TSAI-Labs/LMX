@@ -27,42 +27,42 @@
                                 <a href="javascript:" onclick="parentNode.submit();">Home</a>
                             </form>
                         </th>
-                        <td><a href="/"></a></td>
+                        <td><a href="#"></a></td>
                     </tr>
                     <tr class="model-group">
                         <th scope="row"><a href="{% url 'lms:assignment_home' object.id %}">Assignments</a></th>
                         <td><a href="{% url 'lms:assignment_create' object.id %}" class="addlink">Add</a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="/">Quizes</a></th>
-                        <td><a href="/" class="addlink">Add</a></td>
+                        <th scope="row"><a href="#">Quizes</a></th>
+                        <td><a href="#" class="addlink">Add</a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="/">Discussions</a></th>
+                        <th scope="row"><a href="#">Discussions</a></th>
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="/">Announcements</a></th>
+                        <th scope="row"><a href="#">Announcements</a></th>
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="/">Grades</a></th>
+                        <th scope="row"><a href="#">Grades</a></th>
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="/">Pages</a></th>
+                        <th scope="row"><a href="#">Pages</a></th>
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="/">People</a></th>
+                        <th scope="row"><a href="#">People</a></th>
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="/">Syllabus</a></th>
+                        <th scope="row"><a href="#">Syllabus</a></th>
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="/">Analytics</a></th>
+                        <th scope="row"><a href="#">Analytics</a></th>
                         <td><a href="#"> </a></td>
                     </tr>
                     <tr class="model-user">
@@ -76,17 +76,17 @@
                 {% else %}
                     <tr class="model-user">
                         <th scope="row">
-                            <form action="{% url 'lms:course-home' object.id %}" method="get"
+                            <form action="{% url 'lms:course-home' object1.id %}" method="get"
                                   style="display:inline">
                                 {% csrf_token %}
                                 <a href="javascript:" onclick="parentNode.submit();">Home</a>
                             </form>
                         </th>
-                        <td><a href="/"></a></td>
+                        <td><a href="#"></a></td>
                     </tr>
                     <tr class="model-group">
                         <th scope="row"><a
-                                href="{% url 'lms:assignment_student_home' object.id %}">Assignments</a>
+                                href="{% url 'lms:assignment_student_home' object1.id %}">Assignments</a>
                         </th>
                         <td><a href="#"></a></td>
                     </tr>
