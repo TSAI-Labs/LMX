@@ -156,9 +156,9 @@ LOGOUT_REDIRECT_URL = '/account/logout/'
 
 # Email Settings (Production)
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # env('EMAIL_HOST')
-EMAIL_HOST_USER = 'lmsjoe21@gmail.com'  # env('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = 'epaidjango!1'  # env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'reddypsusila9@gmail.com'
+EMAIL_HOST_PASSWORD = 'mjxkczlmtwcokvjv'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

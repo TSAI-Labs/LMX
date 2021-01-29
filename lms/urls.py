@@ -33,7 +33,7 @@ from lms.views.course.course_publish_views import (
     CourseUnPublishView
 )
 from lms.views.course.course_registration_views import (
-    CourseRegistraionView,
+    CourseRegistrationView,
 )
 from lms.views.course.course_views import (
     CourseListView_default,
@@ -200,7 +200,7 @@ urlpatterns = [
     # /author/course/register
     path(
         route="course/register/<int:pk>/",
-        view=CourseRegistraionView.as_view(),
+        view=CourseRegistrationView.as_view(),
         name="course_register"
     ),
 
