@@ -12,6 +12,7 @@ from lms.forms.course.course_section_forms import CourseSubscribeForm
 from lms.forms.dashboard.profile_form import ProfileUpdateForm
 from lms.models.assignment_model import Assignment, StudentAssignment
 from lms.models.course_model import Course, StudentCourse
+from lms.models.quiz_model import Quiz
 from lms.models.user_role_model import Role
 
 
@@ -41,11 +42,14 @@ class DashboardHomeView(LoginRequiredMixin, View):
                     self.context.update(is_profile_view=False)
                 else:
                     assignments = Assignment.objects.filter(created_by=request.user)
+                    quizzes = Quiz.objects.filter(created_by=request.user)
                     courses = Course.objects.filter(user=request.user)
                     self.context.update(published_courses=list(filter(lambda x: x.published, courses)))
-                    self.context.update(unpublished_courses=list(filter(lambda x: not x.published, courses)))
                     self.context.update(assignments=list(filter(lambda x: x.available_until > now(), assignments)))
+                    self.context.update(unpublished_courses=list(filter(lambda x: not x.published, courses)))
+                    self.context.update(quizzes=list(filter(lambda x: x.Until > now(), quizzes)))
                     self.context.update(is_profile_view=False)
+
                 self.context.update(is_student_view=role[0].is_student)
             else:
                 messages.error(request, "Contact Admin for Role Creation")
@@ -137,7 +141,10 @@ def dashboard_list(request):
     paginator = Paginator(course, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, 'dashboard/landing/home.html', {'course_list': page_obj})
+    if not request.user.is_authenticated:
+        return render(request, 'dashboard/landing/home.html', {'course_list': page_obj})
+    else:
+        return redirect('lms:dashboard_home')
 
 
 def dashboard_details(request, **kwargs):

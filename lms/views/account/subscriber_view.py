@@ -70,7 +70,6 @@ def subscribe_delete(request):
         sub.confirmed = False
         sub.is_subscribed = False
         sub.delete()
-        # sub.save()
         return render(request, 'account/unsubscriber.html', {'action': 'User Successfully Unsubscribed'})
     else:
         return render(request, 'account/unsubscriber.html', {'email': sub.email, 'action': 'denied'})
@@ -102,7 +101,6 @@ def sub_delete(request):
         except IntegrityError:
             return render(request, 'account/unsubscriber.html', {'form': SubscriberForm()})
         except:
-            return render(request, 'account/unsubscriber.html', {'action': 'User already unsubscribed'})
-        return render(request, 'account/unsubscriber.html', {'email': sub.email, 'action': 'Unsubscribed'})
+            return render(request, 'account/unsubscriber.html', {'action': 'User not found to unsubscribe'})
     else:
         return render(request, 'account/unsubscriber.html', {'form': SubscriberForm()})

@@ -4,15 +4,13 @@ from django.contrib import messages
 # LMS application imports.
 from .models.assignment_model import Assignment, StudentAssignment
 from .models.blog_model import Post
-
 from .models.course_model import Course, StudentCourse, GradingSchemeName, Section, GradingScheme, Group
-from .models.quiz_model import Quiz, Responses, Question
-
 from .models.files_model import File
 from .models.notification_settings_model import NotificationSetting
 from .models.profile_model import Profile
-from .models.user_role_model import Role
+from .models.quiz_model import Quiz, Responses, Question
 from .models.subscriber_model import Subscriber, Newsletter
+from .models.user_role_model import Role
 
 
 class NotificationSettingAdmin(admin.ModelAdmin):
@@ -45,15 +43,11 @@ class StudentCourseAdmin(admin.ModelAdmin):
 admin.site.register(StudentCourse, StudentCourseAdmin)
 
 
-
-
-
 class RoleAdmin(admin.ModelAdmin):
     list_display = ('user', 'is_admin', 'is_teacher', 'is_teaching_assistant', 'is_student')
     list_filter = ('is_admin', 'is_teacher', 'is_teaching_assistant', 'is_student')
     search_fields = ('user__username',)
     ordering = ['user__username', ]
-
 
 
 # Registers the staff profile model at the admin backend.
@@ -85,6 +79,7 @@ admin.site.register(Course, CourseAdmin)
 
 # Registers the course-section model at the admin backend.
 class SectionAdmin(admin.ModelAdmin):
+    list_display = ('section_name', 'course')
     list_filter = ('section_name', 'course')
     search_fields = ('section_name', 'course')
     ordering = ['section_name', 'course']
@@ -93,16 +88,14 @@ class SectionAdmin(admin.ModelAdmin):
 admin.site.register(Section, SectionAdmin)
 
 
-
 class GroupAdmin(admin.ModelAdmin):
+    list_display = ('group_name', 'course')
     list_filter = ('group_name', 'course')
     search_fields = ('group_name', 'course')
     ordering = ['group_name', 'course']
 
 
 admin.site.register(Group, GroupAdmin)
-
-
 
 
 # Registers the grading scheme name model at the admin backend.
@@ -117,6 +110,7 @@ admin.site.register(GradingSchemeName, GradingSchemeNameAdmin)
 
 # Registers the grading scheme model at the admin backend.
 class GradingSchemeAdmin(admin.ModelAdmin):
+    list_display = ('scheme_name', 'grade', 'score_range_begin', 'score_range_end')
     list_filter = ('scheme_name',)
     search_fields = ('scheme_name__name', 'grade')
     ordering = ['scheme_name__name', '-score_range_begin']
@@ -159,27 +153,46 @@ class StudentAssignmentAdmin(admin.ModelAdmin):
 
 
 class SubscriberAdmin(admin.ModelAdmin):
+    list_display = ('email',)
     list_filter = ('email',)
     search_fields = ('email',)
     ordering = ['email', ]
 
+
 admin.site.register(Subscriber, SubscriberAdmin)
 
-def send_newsletter(modeladmin, request, queryset):
-    for newsletter in queryset:
-        newsletter.send(request)
 
-send_newsletter.short_description = "Send selected Newsletters to all subscribers"
-
-class NewsletterAdmin(admin.ModelAdmin):
-    actions = [send_newsletter]
-
-admin.site.register(Newsletter, NewsletterAdmin)
-
-
+# def send_newsletter(modeladmin, request, queryset):
+#     for newsletter in queryset:
+#         newsletter.send(request)
+# send_newsletter.short_description = "Send selected Newsletters to all subscribers"
+#
+# class NewsletterAdmin(admin.ModelAdmin):
+#     actions = [send_newsletter]
+# admin.site.register(Newsletter, NewsletterAdmin)
 
 # By Quiz Teacher View Team [Start]
-admin.site.register(Question)
-admin.site.register(Quiz)
+
+
+class QuestionAdmin(admin.ModelAdmin):
+    list_display = ('question', 'questiontype', 'quiz',)
+    list_filter = ('questiontype', 'quiz',)
+    search_fields = ('questiontype', 'quiz',)
+    ordering = ['quiz', ]
+
+
+admin.site.register(Question, QuestionAdmin)
+
+
+class QuizAdmin(admin.ModelAdmin):
+    list_display = ('Quizname', 'course', 'created_by',)
+    list_filter = ('Quizname', 'course', 'created_by',)
+    search_fields = ('Quizname', 'course', 'created_by',)
+    ordering = ['course', 'Quizname']
+
+
+admin.site.register(Quiz, QuizAdmin)
+
+
 admin.site.register(Responses)
 # By Quiz Teacher View Team [Finish]

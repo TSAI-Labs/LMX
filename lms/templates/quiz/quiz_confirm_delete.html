@@ -5,12 +5,12 @@
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Delete Assignment</legend>
-                <h2>Are you sure you want to delete the assignment "{{ assignments.name }}"</h2>
+                <legend class="border-bottom mb-4">Delete Quiz</legend>
+                <h2>Are you sure you want to delete the quiz - {{ quiz_object.Quizname }}</h2>
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
-                <a class="btn btn-outline-secondary" href="{% url 'lms:assignment_detail' object.id assignments.id %}">Cancel</a>
+                <a class="btn btn-outline-secondary" href="{% url 'lms:quiz_home' course_id %}">Cancel</a>
             </div>
         </form>
     </div>

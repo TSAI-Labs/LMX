@@ -9,9 +9,9 @@
 
     <div class="container">
         {% if is_update_view %}
-            <h1 class="text-center pt-3 pb-3 border-bottom">Update Assignment</h1>
+            <h1 class="text-center pt-3 pb-3 border-bottom">Update Quiz Question</h1>
         {% else %}
-            <h1 class="text-center pt-3 pb-3 border-bottom">Create Assignment</h1>
+            <h1 class="text-center pt-3 pb-3 border-bottom">Create Quiz Question</h1>
         {% endif %}
 
         <form method="POST" enctype="multipart/form-data">
@@ -27,9 +27,9 @@
 
             <div class="form-group">
                 {% if is_update_view %}
-                    <button class="btn btn-secondary">Update Assignment</button>
+                    <button class="btn btn-secondary">Update Quiz Question</button>
                 {% else %}
-                    <button class="btn btn-secondary">Create Assignment</button>
+                    <button class="btn btn-secondary">Create Quiz Question</button>
                 {% endif %}
             </div>
 

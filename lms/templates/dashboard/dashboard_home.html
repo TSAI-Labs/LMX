@@ -112,7 +112,7 @@
     {% endif %}
 {% endblock dashboard-content %}
 
-{% block todo %}
+{% block right-panel %}
     {% if is_student_view %}
         <br>
         <div class='mx-2'>
@@ -135,7 +135,12 @@
                         <br><span>Course: </span><span>{{ assignment.for_course }}</span>
                         <br><span>Due Date: </span><span>{{ assignment.available_until }}</span></a>
                 {% endfor %}
+                {% for quiz in quizzes %}
+                    <a href="#" class="list-group-item list-group-item-action">{{ quiz.Quizname }}
+                        <br><span>Course: </span><span>{{ quiz.course }}</span>
+                        <br><span>Due Date: </span><span>{{ quiz.Until }}</span></a>
+                {% endfor %}
             </ul>
         </div>
     {% endif %}
-{% endblock todo %}
+{% endblock right-panel %}

@@ -1,0 +1,33 @@
+{% extends 'lms/course/course_base.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <h1 class="text-center pt-3 pb-3 border-bottom">Responses: Students Comments</h1>
+
+        <table style="width:80%" class="align:center" border="1">
+            <tr>
+                <th>course</th>
+                <th>student</th>
+                <th>QuestionId</th>
+                <th>answer</th>
+                <th>comments</th>
+                <th>status</th>
+            </tr>
+            {% for response in responses %}
+                <tr>
+                    <td>{{ response.course }}</td>
+                    <td>{{ response.student }}</td>
+                    <td>{{ response.Questionid }}</td>
+                    <td>{{ response.answer }}</td>
+                    <form action="enter_quiz_comment" method="POST">
+                        {% csrf_token %}
+                        <td><input type="text" name="comments" placeholder="Comment"></td>
+                        <td><input type="Submit"></td>
+                    </form>
+                </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+{% endblock content %}

@@ -72,14 +72,14 @@ from lms.views.notification.notification_settings_view import (
 )
 from lms.views.quiz.quiz_views import (
     compute_stats,
-    fetch_questions_oneatatime,
+    fetch_questions_one_at_a_time,
     fetch_questions,
-    quiz_lp,
-    display_lp,
-    Edit_quiz,
+    quiz_home,
+    quiz_detail,
     preview_quiz,
-    enter_comment,
-    quiz_publish
+    enter_quiz_comment,
+    quiz_publish, QuizCreateView, QuizUpdateView, QuizDeleteView,
+    QuizQuestionCreateView, QuizQuestionUpdateView, QuizQuestionDeleteView
 )
 
 # Specifies the app name for name spacing.
@@ -298,23 +298,29 @@ urlpatterns = [
     ),
 
     # By Quiz Teacher View Team.[Start]
-    path('lms/course_stats/', compute_stats, name="compute_stats"),
+    path('course/<int:course_id>/quiz/course_stats/', compute_stats, name="compute_stats"),
 
-    path('lms/quiz/', fetch_questions_oneatatime, name="fetch_questions_oneatatime"),
+    path('course/<int:course_id>/quiz/<int:pk>/one_at_a_time/', fetch_questions_one_at_a_time, name="fetch_questions_one_at_a_time"),
 
-    path('lms/quiz3/', fetch_questions, name="fetch_questions"),
+    path('course/<int:course_id>/quiz/<int:pk>/fetch_questions/', fetch_questions, name="fetch_questions"),
 
-    path('lms/quizlp/', quiz_lp, name="quiz_lp"),
+    path('course/<int:course_id>/quiz/home/', quiz_home, name="quiz_home"),
 
-    path('lms/quiz2/', display_lp, name="display_lp"),
+    path('course/<int:course_id>/quiz/create/', QuizCreateView.as_view(), name="quiz_create"),
+    path('course/<int:course_id>/quiz/<int:pk>/update/', QuizUpdateView.as_view(), name="quiz_update"),
+    path('course/<int:course_id>/quiz/<int:pk>/delete/', QuizDeleteView.as_view(), name="quiz_delete"),
 
-    path('admin/', Edit_quiz, name="Edit_quiz"),
+    path('course/<int:course_id>/quiz/<int:quiz_id>/question/create', QuizQuestionCreateView.as_view(), name="quiz_question_create"),
+    path('course/<int:course_id>/quiz/<int:quiz_id>/question/<int:pk>/update/', QuizQuestionUpdateView.as_view(), name="quiz_question_update"),
+    path('course/<int:course_id>/quiz/<int:quiz_id>/question/<int:pk>/delete/', QuizQuestionDeleteView.as_view(), name="quiz_question_delete"),
 
-    path('lms/quizs/', preview_quiz, name="preview_quiz"),
+    path('course/<int:course_id>/quiz/<int:pk>/detail/', quiz_detail, name="quiz_view"),
 
-    path('lms/enter_comment/', enter_comment, name="enter_comment"),
+    path('course/<int:course_id>/quiz/<int:pk>/preview/', preview_quiz, name="preview_quiz"),
 
-    path('lms/quiz_student_view/', quiz_publish, name='quiz_publish'),
+    path('course/<int:course_id>/quiz/<int:pk>/enter_quiz_comment/', enter_quiz_comment, name="enter_quiz_comment"),
+
+    path('course/<int:course_id>/quiz/<int:pk>/publish/', quiz_publish, name='quiz_publish'),
     # By Quiz Teacher View Team.[End]
 
     # Assignment Views

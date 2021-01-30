@@ -34,8 +34,8 @@
                         <td><a href="{% url 'lms:assignment_create' object.id %}" class="addlink">Add</a></td>
                     </tr>
                     <tr class="model-user">
-                        <th scope="row"><a href="#">Quizes</a></th>
-                        <td><a href="#" class="addlink">Add</a></td>
+                        <th scope="row"><a href="{% url 'lms:quiz_home' object.id %}">Quizzes</a></th>
+                        <td><a href="{% url 'lms:quiz_create' object.id %}" class="addlink">Add</a></td>
                     </tr>
                     <tr class="model-user">
                         <th scope="row"><a href="#">Discussions</a></th>

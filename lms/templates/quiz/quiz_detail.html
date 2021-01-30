@@ -1,0 +1,40 @@
+{% extends 'lms/course/course_base.html' %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center pt-3 pb-3 border-bottom">{{ quizs.Quizname }} - Quiz</h1>
+
+        <p style='margin-left:10px'><b>Points</b>{{ quizs.points }} &nbsp;&nbsp; <b>Questions {{ quizs.Questions }} </b>
+        </p>
+
+        <div id="xyz">
+            <form>
+                <labels style='margin-left:10px'><b> Time Limit</b></labels>
+                <select name="minutes" id="minutes">
+                    <option value="volvo">15</option>
+                    <option value="saab">30</option>
+                    <option value="opel">60</option>
+                    <option value="audi">90</option>
+                    <p> Minutes</p>
+                </select>
+            </form>
+        </div>
+
+        <div class="mt-lg-4">
+            {% if quizs.chooseview == 'All question at a time' %}
+                <a href="{% url 'lms:fetch_questions' course_id quizs.id %}">
+                    <button class="btn btn-secondary" id="previewbtn" type="submit">Quiz Details</button>
+                </a>
+            {% else %}
+                <a href="{% url 'lms:fetch_questions_one_at_a_time' course_id quizs.id %}">
+                    <button class="btn btn-secondary" id="previewbtn" type="submit">Quiz Details</button>
+                </a>
+            {% endif %}
+            <a href="{% url 'lms:quiz_question_create' course_id quizs.id %}">
+                <button class="btn btn-secondary" id="previewbtn" type="submit">Add a new question</button>
+            </a>
+
+        </div>
+
+    </div>
+{% endblock content %}

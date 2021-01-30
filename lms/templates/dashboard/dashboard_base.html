@@ -9,8 +9,9 @@
             </div>
             {% if not is_profile_view %}
                 <div class="col-md-3">
-                    <div class="content-section">
-                        {% block todo %}{% endblock todo %}
+                    <div class="pt-lg-4">
+                        {% block right-panel %}
+                        {% endblock right-panel %}
                     </div>
                 </div>
             {% endif %}

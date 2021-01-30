@@ -20,5 +20,9 @@ class NotificationSetting(models.Model):
     files = models.CharField(max_length=32, choices=NOTIFICATION_CHOICES, default='OFF')
     announcement = models.CharField(max_length=32, choices=NOTIFICATION_CHOICES, default='OFF')
 
+    def __str__(self):
+        return f"{self.user.username}'s notification settings"
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
+
