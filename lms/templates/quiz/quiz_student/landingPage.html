@@ -1,0 +1,40 @@
+ 
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Capstone Quiz App</title>
+                {% load static %}
+                <link rel="stylesheet" href="{% static 'style.css' %}">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+                <script src="{% static 'script.js' %}">
+                </script>
+            </head>
+            <body>
+              <div class="col-lg-8 border border-success p-4 m-4 mx-auto">
+                <h1>{{sessionName}} Quiz</h1>
+              </div>
+
+              <div class="col-lg-8 border border-success p-4 m-4 mx-auto">
+                <p><b>Due</b> Apr 29, 2019 at 5:30pm
+                <b>Points</b> 100 <br>
+                <b>Available</b> until Jan 29, 2021 at 5:30pm
+                <b>Time Limit</b> 30 Minutes</p>
+              </div>
+
+              <div class="col-lg-8 border border-success p-4 m-4 mx-auto">
+                <h2>Instructions</h2>
+                1. You have 30 minutes to attempt the quiz<br>
+                2. Once you start the quiz, you cannot go back and re-attempt it<br>
+                3. You will not find answers online, so please make sure you are ready for the quiz<br>
+                4. For Multiple Answer Questions, ALL the answers must be correct to score any point
+              </div>
+              <div>
+                <center><h1><a href="{% url 'lms:quiz' %}?sessName={{ sessionName}}">Start Quiz</a></h1></center>
+            </div>
+                <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>    
+            </body>
+            </html>  

@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'crispy_forms',
 
     # My apps
-    'lms.apps.LmsConfig',
+    'lms.apps.LmsConfig'
 ]
 
 AUTHENTICATION_BACKENDS = [
