@@ -71,7 +71,7 @@ class CourseSectionsView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
             if self.request.POST.get('create-section'):
                 context['section_create_form'] = SectionForm(self.request.POST)
             if self.request.POST.get('update-section'):
-                context['sections_list_form'] = sections_choice_form()(self.request.POST)
+                context['sections_list_form'] = sections_choice_form(self.object)(self.request.POST)
                 instance = Section.objects.get(id=int(self.request.POST['sections_list']))
                 context['section_update_form'] = SectionForm(self.request.POST, instance=instance)
             if self.request.POST.get('update-section-assignments'):

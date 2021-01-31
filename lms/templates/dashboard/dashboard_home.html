@@ -127,7 +127,10 @@
         </div>
     {% else %}
         <br>
-        <div class='mx-2'>
+        <div class="mx-2">
+            <a class="btn btn-outline-primary" href="{% url 'lms:course_create' %}">Add course</a>
+        </div>
+        <div class='mx-2 mt-lg-4'>
             <h3>Coming Up</h3>
             <ul class="list-group">
                 {% for assignment in assignments %}

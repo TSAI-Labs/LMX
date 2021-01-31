@@ -135,9 +135,9 @@ def dashboard_subscribe(request, **kwargs):
 def dashboard_list(request):
     search_post = request.GET.get('search')
     if search_post:
-        course = Course.objects.filter(Q(title__icontains=search_post))
+        course = Course.objects.filter(published=True).filter(Q(title__icontains=search_post))
     else:
-        course = Course.objects.all()
+        course = Course.objects.filter(published=True)
     paginator = Paginator(course, 6)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

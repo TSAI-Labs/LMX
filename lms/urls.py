@@ -38,7 +38,7 @@ from lms.views.course.course_registration_views import (
 from lms.views.course.course_views import (
     CourseListView,
     GradeBookCourseView,
-    StudentGradeBookCourseView
+    StudentGradeBookCourseView, CourseCreateView
     # table_download
 )
 from lms.views.course.grading_scheme_view import (
@@ -219,6 +219,11 @@ urlpatterns = [
         name="course_unpublish"
     ),
 
+    path(
+        route="course/create/",
+        view=CourseCreateView.as_view(),
+        name="course_create"
+    ),
     # /author/notification/
     path(
         route="notifications/",
@@ -300,7 +305,8 @@ urlpatterns = [
     # By Quiz Teacher View Team.[Start]
     path('course/<int:course_id>/quiz/course_stats/', compute_stats, name="compute_stats"),
 
-    path('course/<int:course_id>/quiz/<int:pk>/one_at_a_time/', fetch_questions_one_at_a_time, name="fetch_questions_one_at_a_time"),
+    path('course/<int:course_id>/quiz/<int:pk>/one_at_a_time/', fetch_questions_one_at_a_time,
+         name="fetch_questions_one_at_a_time"),
 
     path('course/<int:course_id>/quiz/<int:pk>/fetch_questions/', fetch_questions, name="fetch_questions"),
 
@@ -310,9 +316,12 @@ urlpatterns = [
     path('course/<int:course_id>/quiz/<int:pk>/update/', QuizUpdateView.as_view(), name="quiz_update"),
     path('course/<int:course_id>/quiz/<int:pk>/delete/', QuizDeleteView.as_view(), name="quiz_delete"),
 
-    path('course/<int:course_id>/quiz/<int:quiz_id>/question/create', QuizQuestionCreateView.as_view(), name="quiz_question_create"),
-    path('course/<int:course_id>/quiz/<int:quiz_id>/question/<int:pk>/update/', QuizQuestionUpdateView.as_view(), name="quiz_question_update"),
-    path('course/<int:course_id>/quiz/<int:quiz_id>/question/<int:pk>/delete/', QuizQuestionDeleteView.as_view(), name="quiz_question_delete"),
+    path('course/<int:course_id>/quiz/<int:quiz_id>/question/create', QuizQuestionCreateView.as_view(),
+         name="quiz_question_create"),
+    path('course/<int:course_id>/quiz/<int:quiz_id>/question/<int:pk>/update/', QuizQuestionUpdateView.as_view(),
+         name="quiz_question_update"),
+    path('course/<int:course_id>/quiz/<int:quiz_id>/question/<int:pk>/delete/', QuizQuestionDeleteView.as_view(),
+         name="quiz_question_delete"),
 
     path('course/<int:course_id>/quiz/<int:pk>/detail/', quiz_detail, name="quiz_view"),
 

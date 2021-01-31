@@ -104,7 +104,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+#.env
 .venv
 env/
 venv/
@@ -134,3 +134,4 @@ dmypy.json
 .DS_Store
 .idea/
 /media/course_thumbnails/
+/.vscode/

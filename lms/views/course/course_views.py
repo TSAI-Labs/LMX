@@ -1,12 +1,15 @@
 # Core Django imports.
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
-from django.views.generic import ListView
+from django.urls import reverse
+from django.views.generic import ListView, CreateView
 from django_filters.views import FilterView
 from django_tables2.export.views import ExportMixin
 from django_tables2.views import SingleTableMixin
 
+from lms.forms.course.course_create_form import CourseCreateForm
 from lms.models.assignment_model import StudentAssignment
 from lms.models.course_model import Course, StudentCourse
 from lms.models.user_role_model import Role
@@ -34,6 +37,49 @@ class CourseListView(ListView):
             self.context.update(object=selected_course)
 
         return render(request, self.template_name, self.context)
+
+
+class CourseCreateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, CreateView):
+    """
+    Class View to create a new course
+    """
+
+    model = Course
+    form_class = CourseCreateForm
+    template_name = "lms/course/course_create.html"
+    success_message = 'Course is successfully created!'
+
+    # url to redirect to on success
+    def get_success_url(self):
+        return reverse('lms:dashboard_home')
+
+    def get_initial(self, *args, **kwargs):
+        initial = super(CourseCreateView, self).get_initial(**kwargs)
+        initial['user'] = self.request.user
+        return initial
+
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(CourseCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+
+    # Restrict access to only course user (teacher) and admin
+    def test_func(self):
+        if self.request.user.role.is_admin:
+            return True
+        if self.request.user.role.is_teacher:
+            return True
+        if self.request.user.role.is_teaching_assistant:
+            return True
+        return False
+
+    # Redirect a logged in user, when they fail test_func()
+    def handle_no_permission(self):
+        messages.warning(self.request, 'Requested resource is not accessible!')
+        return redirect('lms:dashboard_home')
 
 
 class GradeBookCourseView(LoginRequiredMixin, UserPassesTestMixin, ExportMixin, SingleTableMixin, FilterView):
