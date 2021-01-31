@@ -21,6 +21,8 @@ from lms.views.account.register_view import \
 from lms.views.account.logout_view import UserLogoutView
 from lms.views.account.login_view import UserLoginView
 
+from lms.views.quiz.quiz_student import quizStudentView
+
 # Specifies the app name for name spacing.
 app_name = "lms"
 
@@ -77,6 +79,12 @@ urlpatterns = [
         view=DashboardHomeView.as_view(),
         name="dashboard_home"
     ),
+
+    path('quiz/quiz_student/', quizStudentView.GetSessionDetails, name='QuizAll'),
+    path('index', quizStudentView.index, name='index'),
+    path('quiz', quizStudentView.quiz, name='quiz'),
+    #path('user_search_from_group',views.user_search_from_group,name='user_search_from_group'),
+    path('SaveQuizAnswers', quizStudentView.SaveQuizAnswers, name='SaveQuizAnswers')
 
 ]
 

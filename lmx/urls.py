@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('lms.urls', namespace='lms')),
 
+
     # Url for password reset.
     path('account/password-reset/',
          auth_views.PasswordResetView.as_view(

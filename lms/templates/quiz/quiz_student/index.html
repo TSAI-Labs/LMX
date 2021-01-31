@@ -1,0 +1,220 @@
+ 
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Capstone Quiz App</title>
+                {% load static %}
+                <link rel="stylesheet" href="{% static 'style.css' %}">
+                <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+                <script src="{% static 'script.js' %}">
+                </script>
+                <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+              <script>
+
+              $(document).ready(function(){
+
+                  var count = 15;
+                  var interval = setInterval(function(){
+                    document.getElementById('timer').innerHTML=count + " seconds left";
+                    count--;
+                    if (count === 0){
+                      clearInterval(interval);
+                      document.getElementById('timer').innerHTML='Done';
+                      $(".rb").show();
+                    $(".rb").attr("disabled","true");  
+                    $("#submitBtn").attr("disabled","true");  
+
+                      var dict_obj = {};
+                  var radioBtns =  document.getElementsByTagName('input');
+                  for (i = 0; i<radioBtns.length; i++)
+                  {
+                    if( radioBtns[i].type =="radio")
+                    {
+                      if(radioBtns !=undefined && radioBtns[i].checked)
+                      {
+                        var question_name = radioBtns[i].name;
+                        //alert(question_name);
+                        dict_obj[question_name] = radioBtns[i].value;
+                      }
+                      else if(radioBtns !=undefined && radioBtns[i].checked == false)
+                      {
+                        var question_name = radioBtns[i].name;
+                        if (!(question_name in dict_obj))
+                        {
+                          dict_obj[question_name] = "";
+                        }
+                      }
+                    }
+                  }
+                  //alert(dict_obj);
+                  
+                  $.ajax({
+                    type: 'POST',
+                  url: 'SaveQuizAnswers',
+                  data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    "answers":JSON.stringify(dict_obj)
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                    if (data) {
+                      alert("success.");
+                    }
+                  }
+                });
+
+                      // or...
+                      alert("You're out of time!");
+                    }
+                  }, 1000);
+
+
+
+                  $("#submitBtn").click(function(){
+                    $(".rb").show();
+                    $(".rb").attr("disabled","true");   
+                    $("#submitBtn").attr("disabled","true");  
+                    clearInterval(interval);
+                    document.getElementById('timer').innerHTML='Done';                 
+
+                  var dict_obj = {};
+                  var radioBtns =  document.getElementsByTagName('input');
+                  for (i = 0; i<radioBtns.length; i++)
+                  {
+                    if( radioBtns[i].type =="radio")
+                    {
+                      if(radioBtns !=undefined && radioBtns[i].checked)
+                      {
+                        var question_name = radioBtns[i].name;
+                        //alert(question_name);
+                        dict_obj[question_name] = radioBtns[i].value;
+                      }
+                      else if(radioBtns !=undefined && radioBtns[i].checked == false)
+                      {
+                        var question_name = radioBtns[i].name;
+                        if (!(question_name in dict_obj))
+                        {
+                          dict_obj[question_name] = "";
+                        }
+                      }
+                    }
+                  }
+                  //alert(dict_obj);
+                  
+                  $.ajax({
+                    type: 'POST',
+                  url: 'SaveQuizAnswers',
+                  data: {
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    "answers":JSON.stringify(dict_obj)
+                  },
+                  dataType: 'json',
+                  success: function (data) {
+                    if (data) {
+                      alert("success.");
+                    }
+                  }
+                });
+
+              });
+
+            });
+                  function getAnswers()
+                  {                    
+                    document.getElementById("userAnswer").innerHTML = "";
+                    var e =  document.getElementsByTagName('input');
+                    for (i = 0;i<e.length;i++)
+                    {
+                      if( e[i].type =="radio")
+                      {
+                        if(e[i].checked)
+                        {
+                          document.getElementById("userAnswer").innetHTML+=e[i].name + "The Answer you have selected is : "+ e[i].value +"<br/>";
+
+                        }
+                      }
+                    }
+                    
+                  }
+
+              </script>
+
+            </head>
+
+
+
+            <body>
+                <center><h1>Session 1 Quiz</h1></center>
+                Time : <span id="timer"></span>
+                <!-- <form method="POST" action="/polls/user_search_from_group">
+                <div class="col-lg-8 border border-success p-4 m-4 mx-auto" id="myForm">
+                            {% for i in questions%}
+                            <h5>{{i.Question}}</h5>
+
+                            <form style="padding:25px;"  method="post">
+                              {% csrf_token %}
+                                <div class="radio">
+                                <label><input type="radio" name="name"  id="option1" value="{{i.option1}}">  {{i.option1}} </label> 
+                                </div>
+                                <div class="radio">
+                                <label > <input type="radio" name="name"  id="option2" value="{{i.option2}}">  {{i.option2}}</label>
+                              </div>
+                              <div class="radio">
+                                <label ><input type="radio" name="name" id="option3" value="{{i.option3}}">  {{i.option3}}</label>
+                              </div>
+                                <div class="radio">
+                                <label ><input type="radio" name="name"  id="option4" value="{{i.option4}}">  {{i.option4}} </label>
+                            </div>
+                            
+                        </form>
+                            {%endfor%}
+                            <div class="paginetor">
+                              <div class="form-group">
+                                <button type="submit" value="submit">Submit</button> -->
+                               <!-- <a href="#"><button class="btn form-control btn-success" id="submitAnswer">Submit Quiz</button></a>   -->
+                              <!-- </div>
+                             </div>  
+                </div>
+                <button type="submit" class="btn" name="submit">Submit Quiz</button>
+              </form> -->
+                <!-- <div>
+                  {% for i in questions %}
+                  <span class="radio">{{i.Question}}</span>
+                {% endfor %}
+                </div> -->
+
+                <div class="col-lg-8 border border-success p-4 m-4 mx-auto" id="myForm">
+                  {% for ques in questions%}
+                  {% csrf_token %}
+                  <table>
+                    <tr>
+                      <td>{{ques.Question}}</td>
+                    </tr>
+                    <tr>
+                      <td><input type="radio" name="{{ques.Question}}" class="rb"  id="option1" value="{{ques.option1}}">  {{ques.option1}}</td>
+                    </tr>
+                    <tr>
+                      <td><input type="radio" name="{{ques.Question}}" class="rb"  id="option2" value="{{ques.option2}}">  {{ques.option2}}</td>
+                    </tr>
+                    <tr>
+                      <td><input type="radio" name="{{ques.Question}}" class="rb"  id="option3" value="{{ques.option3}}">  {{ques.option3}}</td>
+                    </tr>
+                    <tr>
+                      <td><input type="radio" name="{{ques.Question}}" class="rb" id="option4" value="{{ques.option4}}">  {{ques.option4}}</td>
+                    </tr>
+                    <tr>
+                      <td><label id="correctAnswer" class="rb" style="display: none; color:green;"><b>Correct Answer:  {{ques.correct_answer}}</b> </td>
+                    </tr>
+                  </table>
+                  {% endfor %}
+                <hr/>
+                  <input type="submit" class="btn" id="submitBtn" value="Submit Quiz" onclick="getAnswers();"></button>
+                  <b id="userAnswer"></b>
+                </div>
+                
+                <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>    
+            </body>
+            </html>       
