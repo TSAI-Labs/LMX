@@ -1,0 +1,29 @@
+{% extends 'lms/lms_base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="col-12">
+            <h1>Email Newsletter</h1>
+        </div>
+        <div class="col-12">
+            {% if email %}
+                <p>{{ action }} mail sent to {{ email }} </p>
+            {% else %}
+                {% if action %}
+                    <p>{{ action }}</p>
+                {% endif %}
+            {% endif %}
+
+        </div>
+        {% if form %}
+            <div class="col-12 col-md-4">
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {{ form }}
+                    <br>
+                    <button type="submit" class="btn btn-success">UnSubscribe!</button>
+                </form>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,137 @@
+{% extends 'lms/lms_base.html' %}
+{% load static %}
+
+<!-- Stylesheets -->
+{% block stylesheet %}
+    {{ block.super }}
+    <link href="{% static 'lms/css/base.css' %}" rel="stylesheet">
+    <link href="{% static 'lms/css/nav_sidebar.css' %}" rel="stylesheet">
+{% endblock stylesheet %}
+
+
+<!-- Container -->
+{% block nav-side-bar %}
+    <button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar" aria-label="Toggle navigation">
+    </button>
+    <nav class="sticky" id="nav-sidebar">
+        <div class="app-course module">
+            <table>
+
+                <tbody>
+                {% if not request.user.role.is_student %}
+                    <tr class="model-user">
+                        <th scope="row">
+                            <form action="{% url 'lms:course-home' object.id %}" method="get"
+                                  style="display:inline">
+                                {% csrf_token %}
+                                <a href="javascript:" onclick="parentNode.submit();">Home</a>
+                            </form>
+                        </th>
+                        <td><a href="#"></a></td>
+                    </tr>
+                    <tr class="model-group">
+                        <th scope="row"><a href="{% url 'lms:assignment_home' object.id %}">Assignments</a></th>
+                        <td><a href="{% url 'lms:assignment_create' object.id %}" class="addlink">Add</a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="{% url 'lms:quiz_home' object.id %}">Quizzes</a></th>
+                        <td><a href="{% url 'lms:quiz_create' object.id %}" class="addlink">Add</a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="#">Discussions</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="#">Announcements</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="{% url 'lms:gradebook-course' object.id %}">Grades</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="#">Pages</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="#">People</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="#">Syllabus</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="#">Analytics</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="{% url 'lms:view_groups' object.id %}">Groups</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="{% url 'lms:course_details' object.id %}">Settings</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                {% else %}
+                    <tr class="model-user">
+                        <th scope="row">
+                            <form action="{% url 'lms:course-home' object1.id %}" method="get"
+                                  style="display:inline">
+                                {% csrf_token %}
+                                <a href="javascript:" onclick="parentNode.submit();">Home</a>
+                            </form>
+                        </th>
+                        <td><a href="#"></a></td>
+                    </tr>
+                    <tr class="model-group">
+                        <th scope="row"><a
+                                href="{% url 'lms:assignment_student_home' object1.id %}">Assignments</a>
+                        </th>
+                        <td><a href="#"></a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="#">Quizes</a></th>
+                        <td><a href="#"></a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="#">Discussions</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="{% url 'lms:gradebook-course-student' object1.id %}">Grades</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="#">Pages</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="{% url 'lms:view_groups' object.id %}">Groups</a></th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                    <tr class="model-user">
+                        <th scope="row"><a href="{% url 'lms:mail_to_admin' object.id %}">Mail to Admin</a>
+                        </th>
+                        <td><a href="#"> </a></td>
+                    </tr>
+                {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+    </nav>
+{% endblock nav-side-bar %}
+
+
+{% block footer %}
+    <br class="clear">
+    <div id="footer"></div>
+{% endblock footer %}
+
+
+<!-- SCRIPTS -->
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'lms/js/nav_sidebar.js' %}" defer></script>
+{% endblock scripts %}

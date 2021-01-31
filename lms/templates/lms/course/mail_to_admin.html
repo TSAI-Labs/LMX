@@ -1,0 +1,61 @@
+{% extends 'lms/course/course_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Mail To Admin
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center pt-3 pb-3 border-bottom">Mail To Admin</h1>
+    <div class="pt-3 pb-3>">
+		<div class="form-group">
+                <form action="{% url 'lms:mail_to_admin' pk %}"  class="form-horizontal" method="post" novalidate>
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        {{ form|as_crispy_errors }}
+                        <div class="row mb-lg-3 mt-lg-3">
+                            <div class="col">
+                                Subject
+                            </div>
+
+                            <div class="col-lg-9">
+                                {{ mail_to_admin_form.subject|as_crispy_field }}
+                            </div>
+                        </div>
+
+                            <div class="row mb-lg-3 mt-lg-3">
+                                <div class="col">
+                                    Mail body
+                                </div>
+    
+                                <div class="col-lg-9">
+                                    {{ mail_to_admin_form.media}}
+                                    {{ mail_to_admin_form.body|safe }}
+                                </div>
+                            </div>
+
+                            <div class="row mb-lg-3 mt-lg-3">
+                                <div class="col">
+                                    Teacher
+                                </div>
+    
+                                <div class="col-lg-9">
+                                    {{ mail_to_admin_form.staff_email |as_crispy_field }}
+                                </div>
+                            </div>
+                    
+					
+                    
+                   </fieldset>
+                   <div class="border-top  pt-3 pb-5">
+                    
+                    <button class="btn btn-outline-success" type="submit">Send Mail</button>
+                </div>
+
+                   
+		</form>
+		</div>
+
+{% endblock content %}

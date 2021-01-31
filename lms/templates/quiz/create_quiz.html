@@ -1,0 +1,38 @@
+{% extends 'lms/course/course_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <div class="container">
+        {% if is_update_view %}
+            <h1 class="text-center pt-3 pb-3 border-bottom">Update Quiz</h1>
+        {% else %}
+            <h1 class="text-center pt-3 pb-3 border-bottom">Create Quiz</h1>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-2"></legend>
+                {{ form.media }}
+                {{ form.as_p|safe }}
+                <!-- <table>
+                    {{ form.as_table}}
+                </table> -->
+            </fieldset>
+
+            <div class="form-group">
+                {% if is_update_view %}
+                    <button class="btn btn-secondary">Update Quiz</button>
+                {% else %}
+                    <button class="btn btn-secondary">Create Quiz</button>
+                {% endif %}
+            </div>
+
+        </form>
+    </div>
+{% endblock content %}

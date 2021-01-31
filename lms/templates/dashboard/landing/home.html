@@ -1,0 +1,139 @@
+{% extends 'dashboard/landing_base.html' %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+
+{% block content %}
+
+    <div class="container text-dark">
+        <h1 class="text-center pt-3 pb-3 mb-lg-5 mt-lg-3 border-bottom">Welcome to LMX</h1>
+
+        <div class="row">
+            {% for course in course_list %}
+                <div class="col-md-3 d-flex align-items-stretch">
+                    <div class="card mb-3" style="width: 15rem;" id={{ course.id }}>
+                        <div class="card-body">
+                            <h6 class="card-title alert alert-success">{{ forloop.counter0|add:"1" }}. {{ course.title }}</h6>
+
+                            <img class="card-img-top embed-responsive-item"
+                                 src={{ course.thumbnail.url }} alt={{ course.thumbnail.url }}>
+                            <h6 class="card-text text-center">Self Enroll
+                                {% if course.allow_self_enroll == True %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                {% else %}
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                         class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                                    </svg>
+                                {% endif %}
+                            </h6>
+                        </div>
+                        <div class="card-footer bg-success border-success">
+                            <!-- <h6 class="card-subtitle mb-2">created by- {{course.user}}</h6> -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="card-text" style="transform: rotate(0);"><a style="text-decoration: none"
+                                                                                          href="coursedetails/{{ course.id }}"
+                                                                                          class="stretched-link text-light">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                             fill="currentColor" class="bi bi-menu-app" viewBox="0 0 16 16">
+                                            <path d="M0 1.5A1.5 1.5 0 0 1 1.5 0h2A1.5 1.5 0 0 1 5 1.5v2A1.5 1.5 0 0 1 3.5 5h-2A1.5 1.5 0 0 1 0 3.5v-2zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5h-2zM0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2H1zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2h14zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                                        </svg>&nbsp;More Info</a>
+                                    </p>
+                                </div>
+                                <div class="col-md-6 align-self-end">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            data-target="#cModal" onclick="subscribe({{ course.id }})">
+                                        subscribe
+                                    </button>
+
+                                    <!-- basic modal -->
+                                    <div class="modal fade" id="cModal" tabindex="-1" role="dialog"
+                                         aria-labelledby="cModal" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="myModalLabel">{{ course.title }}</h4>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <h3>Modal content</h3>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                                                        Close
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <script>
+                                        $(document).ready(function () {
+                                            $("#cModal").modal();
+                                        });
+
+                                        function subscribe(id) {
+                                            console.log('id is', id);
+                                            location.href = `subscribe/${id}`;
+                                        }
+                                    </script>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+
+        <div class="mt-lg-4">
+            <!--Pagination-->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if course_list.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ movies.previous_page_number }}">Previous</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% for i in course_list.paginator.page_range %}
+                        {% if course_list.number == i %}
+                            <li class="page-item active" aria-current="page">
+              <span class="page-link">
+                {{ i }}
+                <span class="sr-only">(current)</span>
+              </span>
+                            </li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if course_list.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ course_list.next_page_number }}">Next</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+{% endblock content %}

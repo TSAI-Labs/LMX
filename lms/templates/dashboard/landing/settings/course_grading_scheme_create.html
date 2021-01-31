@@ -1,0 +1,78 @@
+{% extends 'lms/course/settings/settings_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block main-content %}
+
+    <div class="container">
+        <h1 class="text-center pt-3 pb-3 border-bottom">Create Grading Schemes</h1>
+
+        <div class="pb-3">
+            <h5 class="pt-3 pb-1 text-muted">Switch to updating an existing Scheme</h5>
+            <a type="button" class="btn btn-outline-secondary"
+               href="{% url 'lms:course_grading_scheme_update' object.id %}">
+                Update existing
+            </a>
+        </div>
+
+
+        <div class="pt-3 pb-1">
+            <h5>Populate the fields below to generate a new Grading Scheme: </h5>
+        </div>
+
+        <form action="{% url 'lms:course_grading_scheme_create' object.id %}" class="form-horizontal" method="POST">
+            {% csrf_token %}
+            {{ grade_formset.management_form }}
+
+            <fieldset class="form-group">
+
+                {{ scheme_name|crispy }}
+
+                <div class="pt-4">
+                    <table class="table table-sm">
+                        <caption>Note: Enter complete grade details in each row. Leave blank any additional rows
+                        </caption>
+                        <thead>
+                        <tr>
+                            <th scope="col">Grade</th>
+                            <th scope="col">Score begin range</th>
+                            <th scope="col">Score end range</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        {% for form in grade_formset.forms %}
+                            <div>
+                                <tr>
+                                    {{ form|as_crispy_errors }}
+                                    {{ form.id|as_crispy_field }}
+
+                                    {# fixme: remove the labels from the fields #}
+                                    <td scope="row" class="fieldWrapper">
+                                        {{ form.grade|as_crispy_field }}
+                                    </td>
+                                    <td scope="row" class="fieldWrapper">
+                                        {{ form.score_range_begin|as_crispy_field }}
+                                    </td>
+                                    <td scope="row" class="fieldWrapper">
+                                        {{ form.score_range_end|as_crispy_field }}
+                                    </td>
+                                </tr>
+                            </div>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </fieldset>
+
+            <div class="border-top  pt-3 pb-5">
+
+                <button class="btn btn-outline-success" type="submit">Create Scheme</button>
+
+            </div>
+    </div>
+    </form>
+
+    </div>
+{% endblock main-content %}

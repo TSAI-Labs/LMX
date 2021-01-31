@@ -1,0 +1,52 @@
+{% extends 'lms/course/course_base.html' %}
+
+{% block content %}
+    <div class="container">
+    <h1 class="text-center pt-3 pb-3 border-bottom">Assignments</h1>
+
+    <div class="navbar-nav">
+    {% if user.is_authenticated %}
+
+        {% if is_student_view %}
+            {% for student_assignment in object_list %}
+                <article class="media content-section">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            <small class="text-muted">
+                                {{ student_assignment.assignment.available_from|date:"F d, Y" }}
+                            </small>
+                        </div>
+                        <h2><a class="article-title"
+                               href="{% url 'lms:assignment_student_detail' object1.id student_assignment.assignment.id %}">
+                            {{ student_assignment.assignment.name }}
+                        </a>
+                        </h2>
+                        <p class="article-content"> {{ student_assignment.assignment.description|safe }} </p>
+                    </div>
+                </article>
+            {% endfor %}
+
+        {% else %}
+            {% for assignment in object_list %}
+                <article class="media content-section">
+                    <div class="media-body">
+                        <div class="article-metadata">
+                            <small class="text-muted">{{ assignment.available_from|date:"F d, Y" }}</small>
+                        </div>
+                        <h2><a class="article-title"
+                               href="{% url 'lms:assignment_detail' object.id assignment.id %}">{{ assignment.name }}</a>
+                        </h2>
+                        <p class="article-content"> {{ assignment.description|safe }} </p>
+                    </div>
+                </article>
+            {% endfor %}
+        {% endif %}
+
+    {% else %}
+        <p>Login to view your assignments</p>
+    {% endif %}
+{% endblock content %}
+</div>
+
+
+</div>

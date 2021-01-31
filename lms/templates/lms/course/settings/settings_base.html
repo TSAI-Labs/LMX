@@ -1,0 +1,50 @@
+{% extends 'lms/course/course_base.html' %}
+
+{% block title %}
+    Course Settings Page
+{% endblock title %}
+
+{% block content %}
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'course_details' %}active{% endif %}"
+               href="{% url 'lms:course_details' object.id %}">
+                Course Details
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'course_sections' %}active{% endif %}"
+               href="{% url 'lms:course_sections' object.id %}">
+                Sections
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'course_manage' %}active{% endif %}"
+               href="{% url 'lms:course_manage' object.id %}">
+                Manage
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {% if request.resolver_match.url_name == 'course_statistics' %}active{% endif %}"
+               href="{% url 'lms:course_statistics' object.id %}">
+                Statistics
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link
+                {% if request.resolver_match.url_name == 'course_grading_scheme_update' %}
+                    active
+                {% elif request.resolver_match.url_name == 'course_grading_scheme_create' %}
+                    active
+                {% endif %}"
+               href="{% url 'lms:course_grading_scheme_update' object.id %}">
+                Manage Grading Schemes
+            </a>
+        </li>
+    </ul>
+
+    {% block main-content %}
+        <h1 class="text-center">Course Settings</h1>
+    {% endblock main-content %}
+
+{% endblock content %}

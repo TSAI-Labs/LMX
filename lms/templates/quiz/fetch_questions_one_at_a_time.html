@@ -1,0 +1,247 @@
+{% extends 'lms/course/course_base.html' %}
+
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center pt-3 pb-3 border-bottom"> {{ quizs.Quizname }} - Quiz </h1>
+        <left>
+            <hr>
+            <p style='margin-left:10px'><b>Points</b>{{ quizs.points }} &nbsp;&nbsp;
+                <b>Questions {{ quizs.Questions }} </b></p>
+
+            <a href="{% url 'lms:preview_quiz' course_id pk %}">
+                <button class="btn-btn-primary" style="float:right" id="previewbtn" type="submit">Preview</button>
+            </a>
+            <a href="{% url 'lms:quiz_publish' course_id pk %}">
+                <button class="btn-btn-primary" style="float:right ;margin-right:10px;">Publish</button>
+            </a>
+            <div id="xyz">
+                <form>
+                    <labels style='margin-left:10px'><b> Time Limit</b></labels>
+                    <select name="minutes" id="minutes">
+                        <option value="volvo">15</option>
+                        <option value="saab">30</option>
+                        <option value="opel">60</option>
+                        <option value="audi">90</option>
+                        <p>Minutes</p>
+                    </select>
+                </form>
+                <br>
+                <div class='col-sm-3'>
+                    <div class="form-group">
+                        <label class="control-label" style="float:left">Available From &nbsp;</label>
+                        <p>{{ quizs.Availablefrom }}</p>
+                        <p> Until {{ quizs.Until }}</p>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <hr>
+
+        </left>
+
+
+        <div class="container mb-lg-4">
+
+            <div class="row">
+
+                <div class="col-10">
+                    <a href="{% url 'lms:compute_stats' course_id %}">
+                        <button class="btn btn-success" id="previewbtn" type="submit">
+                            Moderate Quiz tab
+                        </button>
+                    </a>
+                    <a href="{% url 'lms:enter_quiz_comment' course_id pk %}">
+                        <button class="btn btn-success" id="previewbtn" type="submit">
+                            Speed Grading tab
+                        </button>
+                    </a>
+                </div>
+                <div class="col-2">
+                    <div class="row">
+                        <div class="col">
+                            <b>Total time</b>
+                        </div>
+                        <div class="col">
+                            <p id='limit' style="float:right"> 5 </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <b>Time left</b>
+                        </div>
+                        <div class="col">
+                            <p id='countdown' style="float:right">0:0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="masterContent" class=container style="width:800px; margin-left:200px;">
+            <div class=row>
+                {% for quest in questions %}
+                    <article class="media content-section">
+                        <div class="media-body">
+
+                            <h2 class="article-title">Question {{ questions.number }}
+                                <label style="display:inline;float:right;">
+                                    <h4>{{ quest.points }} pts</h4>
+                                </label>
+                            </h2>
+
+                            <div class="pb-lg-2">
+                                <p><b> {{ quest.question | safe }} </b></p>
+                                <p> {{ quest.description | safe }} </p>
+                            </div>
+
+                            <div>
+                                <div class="lmn mb-lg-3">
+                                    {% if quest.img %}
+                                        <img src="{{ quest.img.url }}" alt="">
+                                    {% endif %}
+                                </div>
+
+                                {% if quest.questiontype == "Multiple choice" %}
+                                    <p><input style="margin-left:30px;" type="radio" class="rb" name="{{ quest.id }}"
+                                              id="option1"
+                                              value="{{ quest.option1 }}">&nbsp;{{ quest.option1 }}</p>
+                                    <p><input style="margin-left:30px;" type="radio" class="rb" name="{{ quest.id }}"
+                                              id="option2"
+                                              value="{{ quest.option2 }}">&nbsp;{{ quest.option2 }}</p>
+
+                                    {% if quest.option3 != "" %}
+                                        <p><input style="margin-left:30px;" type="radio" class="rb"
+                                                  name="{{ quest.id }}"
+                                                  id="option3" value="{{ quest.option2 }}">&nbsp;{{ quest.option3 }}</p>
+                                    {% endif %}
+                                    {% if quest.option4 != "" %}
+                                        <p><input style="margin-left:30px;" type="radio" class="rb"
+                                                  name="{{ quest.id }}"
+                                                  id="option4" value="{{ quest.option2 }}">&nbsp;{{ quest.option4 }}</p>
+                                    {% endif %}
+                                {% elif quest.questiontype == "Multiple correct" %}
+
+                                    <p><input style="margin-left:30px;" type="radio" class="rb" id="option1"
+                                              value="{{ quest.option1 }}">&nbsp;{{ quest.option1 }}</p>
+                                    <p><input style="margin-left:30px;" type="radio" class="rb" id="option2"
+                                              value="{{ quest.option2 }}">&nbsp;{{ quest.option2 }}</p>
+
+                                    {% if quest.option3 != "" %}
+                                        <p><input style="margin-left:30px;" type="radio" class="rb"
+                                                  name="{{ quest.id }}"
+                                                  id="option3" value="{{ quest.option2 }}">&nbsp;{{ quest.option3 }}</p>
+                                    {% endif %}
+                                    {% if quest.option4 != "" %}
+                                        <p><input style="margin-left:30px;" type="radio" class="rb"
+                                                  name="{{ quest.id }}"
+                                                  id="option4" value="{{ quest.option2 }}">&nbsp;{{ quest.option4 }}</p>
+                                    {% endif %}
+                                {% elif quest.questiontype == "True or False" %}
+
+                                    <p><input style="margin-left:30px;" type="radio" class="rb" name="{{ quest.id }}"
+                                              id="option1"
+                                              value="{{ quest.option1 }}">&nbsp;{{ quest.option1 }}</p>
+                                    <p><input style="margin-left:30px;" type="radio" class="rb" name="{{ quest.id }}"
+                                              id="option2"
+                                              value="{{ quest.option2 }}">&nbsp;{{ quest.option2 }}</p>
+
+                                {% endif %}
+
+                                <div class="row">
+                                <textarea rows="2" cols="50" name="comment" form="usrform"
+                                          style="float:right;">Enter comments here
+                                </textarea>
+                                </div>
+                                <div class="row">
+                                    <div style="float:right;">
+                                        <a class="btn btn-outline-secondary btn-sm mt-1 mb-1"
+                                           href="{% url 'lms:quiz_question_update' course_id quizs.id quest.id %}">Update</a>
+                                        <a class="btn btn-outline-danger btn-sm mt-1 mb-1"
+                                           href="{% url 'lms:quiz_question_delete' course_id quizs.id quest.id %}">Delete</a>
+                                    </div>
+                                </div>
+
+                                <p><label class="rb" style="display:none;color:green"> <b>Answer:</b> {{ quest.answer }}
+                                </label></p>
+                            </div>
+                            </p>
+                        </div>
+                    </article>
+                {% endfor %}
+
+                <div class="paginetor">
+                    <div class="form-group">
+                        {% if questions.has_next %}
+                            <a href="?page={{ questions.next_page_number }}">
+                                <button class="btn form-control btn-primary" id="submitAnswer">Next</button>
+                            </a>
+                        {% else %}
+                            <a href="">
+                                <button class="btn form-control btn-success" id="submitAnswer">Submit Quiz</button>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr/>
+        <button type="submit" class="btn btn-success" id="b1">Show Answer</button>
+    </div>
+{% endblock content %}
+
+
+{% block scripts %}
+    {{ block.super }}
+    <script type="text/javascript" async
+            src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+    </script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css">
+
+    <script>
+        $(document).ready(function () {
+            $("#b1").click(function () {
+                $(".rb").show();
+                $(".rb").attr("disabled", true);
+            });
+        });
+    </script>
+
+    <script>
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+    </script>
+
+    <script type="text/javascript">
+        const startingMinutes = document.getElementById('limit').innerHTML;
+        let time = startingMinutes * 60;
+        const countDownEl = document.getElementById("countdown");
+        setInterval(updateCountdown, 1000);
+
+        function updateCountdown() {
+            const minutes = Math.floor(time / 60)
+            let seconds = time % 60;
+            if (time > 0) {
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                countDownEl.innerHTML = `${minutes}:${seconds}`;
+                time--;
+            }
+            if (time == 0) {
+                countDownEl.innerHTML = "Time Out";
+            }
+        }
+    </script>
+
+{% endblock scripts %}

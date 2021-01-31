@@ -1,0 +1,10 @@
+{% extends 'lms/lms_base.html' %}
+{% block content %}
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col-md-8">
+                {% block notification-content %}{% endblock notification-content %}
+            </div>
+        </div>
+    </main>
+{% endblock content %}

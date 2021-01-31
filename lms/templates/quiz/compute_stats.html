@@ -1,0 +1,33 @@
+{% extends 'lms/course/course_base.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <h1 class="text-center pt-3 pb-3 border-bottom">Quiz Statistics</h1>
+
+        <div class="mb-lg-5 pb-lg-5 border-bottom">
+            <table style="width:80%" border="1" ;>
+                <tr>
+                    <th>Student Name</th>
+                    <th>attempts</th>
+                    <th>attempts left</th>
+                    <th>score</th>
+                </tr>
+                {% for profile in profiles %}
+                    <tr>
+                        <td>{{ profile.user }}</td>
+                        <td>{{ profile.number_of_attempts }}</td>
+                        <td>{{ profile.Attempts_left }}</td>
+                        <td>{{ profile.marks }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="mt-lg-6">
+            <h3><label>The average mark is :</label> {{ marks__avg }} </h3>
+            <h3><label>The Max mark is :</label> {{ marks__max }} </h3>
+            <h3><label>The Minimum mark is :</label> {{ marks__min }} </h3>
+        </div>
+    </div>
+{% endblock content %}

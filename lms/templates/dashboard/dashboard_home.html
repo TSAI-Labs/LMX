@@ -1,0 +1,149 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block dashboard-content %}
+    <br>
+    <h1 class="text-center">Dashboard</h1>
+    <br>
+    {% if is_student_view %}
+        <h3 class="text-left">Registered Courses</h3>
+        <div class="container-fluid">
+            <div class="row">
+                {% for student_course in registered_courses %}
+                    <div class="col-sm-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ student_course.courses.title }}</h5>
+                                <p class="card-text">{{ student_course.courses.description }}</p>
+                                <form action="{% url 'lms:course-home' student_course.id %}" method="get"
+                                      style="display:inline">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary">View</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <br>
+        <h3 class="text-left">Un-Registered Courses</h3>
+        <div class="container-fluid">
+            <div class="row">
+                {% for course in unregistered_courses %}
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ course.title }}</h5>
+                                <p class="card-text">{{ course.description }}</p>
+                                <!-- <form action="{% url 'lms:course-home' course.id %}" method="get" style="display:inline">
+                    {% csrf_token %}
+                    <button class="btn btn-primary">View</button>
+                  </form> -->
+                                <form action="{% url 'lms:course_register' course.id %}" method="post"
+                                      style="display:inline">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary">Register</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    {% else %}
+        <h3 class="text-left">Published Courses</h3>
+        <div class="container-fluid">
+            <div class="row">
+                {% for course in published_courses %}
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ course.title }}</h5>
+                                <p class="card-text">{{ course.description }}</p>
+                                <form action="{% url 'lms:course-home' course.id %}" method="get"
+                                      style="display:inline">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary">View</button>
+                                </form>
+                                <form action="{% url 'lms:course_unpublish' course.id %}" method="post"
+                                      style="display:inline">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary">Un-Publish</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <br>
+        <h3 class="text-left">Un-Published Courses</h3>
+        <div class="container-fluid">
+            <div class="row">
+                {% for course in unpublished_courses %}
+                    <div class="col-sm-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ course.title }}</h5>
+                                <p class="card-text">{{ course.description }}</p>
+                                <form action="{% url 'lms:course-home' course.id %}" method="get"
+                                      style="display:inline">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary">View</button>
+                                </form>
+                                <form action="{% url 'lms:course_publish' course.id %}" method="post"
+                                      style="display:inline">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary">Publish</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+{% endblock dashboard-content %}
+
+{% block right-panel %}
+    {% if is_student_view %}
+        <br>
+        <div class='mx-2'>
+            <h3>To Do</h3>
+            <ul class="list-group">
+                {% for student_assignment in assignments %}
+                    <a href="#" class="list-group-item list-group-item-action">{{ student_assignment.assignment.name }}
+                        <br><span>Course: </span><span>{{ student_assignment.assignment.for_course }}</span>
+                        <br><span>Due Date: </span><span>{{ student_assignment.assignment.available_until }}</span></a>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <br>
+        <div class="mx-2">
+            <a class="btn btn-outline-primary" href="{% url 'lms:course_create' %}">Add course</a>
+        </div>
+        <div class='mx-2 mt-lg-4'>
+            <h3>Coming Up</h3>
+            <ul class="list-group">
+                {% for assignment in assignments %}
+                    <a href="#" class="list-group-item list-group-item-action">{{ assignment.name }}
+                        <br><span>Course: </span><span>{{ assignment.for_course }}</span>
+                        <br><span>Due Date: </span><span>{{ assignment.available_until }}</span></a>
+                {% endfor %}
+                {% for quiz in quizzes %}
+                    <a href="#" class="list-group-item list-group-item-action">{{ quiz.Quizname }}
+                        <br><span>Course: </span><span>{{ quiz.course }}</span>
+                        <br><span>Due Date: </span><span>{{ quiz.Until }}</span></a>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endblock right-panel %}

@@ -1,0 +1,31 @@
+{% extends 'lms/course/course_base.html' %}
+
+{% block content %}
+    <div class="container">
+
+        <h1 class="text-center pt-3 pb-3 border-bottom">Quizzes</h1>
+
+        {% for quiz in quizs %}
+            <article class="media content-section">
+                <div class="media-body">
+                    <div class="article-metadata">
+                        <small class="text-muted">{{ quiz.Availablefrom|date:"F d, Y" }}</small>
+                    </div>
+                    <h2><a class="article-title"
+                           href="{% url 'lms:quiz_view' course_id quiz.id %}">{{ quiz.Quizname }}</a>
+                    </h2>
+                    <p class="article-content"> {{ quiz.Quiztype|safe }} </p>
+                    <div>
+                        <a href="{% url 'lms:quiz_update' course_id quiz.id %}">
+                            <button class="btn btn-secondary" type="submit">Update Quiz</button>
+                        </a>
+                        <a href="{% url 'lms:quiz_delete' course_id quiz.id %}">
+                            <button class="btn btn-danger" type="submit">Delete Quiz</button>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+
+{% endblock content %}

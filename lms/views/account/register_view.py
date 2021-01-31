@@ -1,17 +1,29 @@
 # Django imports.
-from django.utils.encoding import force_bytes, force_text
-from django.contrib.sites.shortcuts import get_current_site
-from django.contrib.auth import login
+import random
+
 from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.db import IntegrityError
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string
-from django.contrib.auth.models import User
+from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.views.generic import View
 
+from lms.forms.account.register_form import UserRegisterForm
+from lms.forms.account.subscriber_form import SubscriberForm
+from lms.models.subscriber_model import Subscriber
+from lms.models.user_role_model import Role
 # LMS app imports.
 from lms.token import account_activation_token
-from lms.forms.account.register_form import UserRegisterForm
+from lmx import settings
+
+
+def random_digits():
+    return "%0.12d" % random.randint(0, 999999999999)
 
 
 class UserRegisterView(View):
@@ -20,8 +32,8 @@ class UserRegisterView(View):
     """
     template_name = 'account/register.html'
     context_object = {
-                       "register_form": UserRegisterForm()
-                      }
+        "register_form": UserRegisterForm()
+    }
 
     def get(self, request):
         return render(request, self.template_name, self.context_object)
@@ -34,16 +46,50 @@ class UserRegisterView(View):
             user = register_form.save(commit=False)
             user.is_active = False
             user.save()
+            role = register_form.cleaned_data['role']
+            if role == '2':
+                user_role = Role(user=user, is_teacher=True)
+            elif role == '3':
+                user_role = Role(user=user, is_teaching_assistant=True)
+            elif role == '1':
+                user_role = Role(user=user, is_student=True)
+
+            user_role.save()
 
             current_site = get_current_site(request)
             subject = 'Activate Your LMX Account'
             message = render_to_string('account/account_activation_email.html',
-            {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': account_activation_token.make_token(user),
-            })
+                                       {
+                                           'user': user,
+                                           'domain': current_site.domain,
+                                           'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                                           'token': account_activation_token.make_token(user),
+                                       })
+
+            try:
+                sub = Subscriber(email=user.email, conf_num=random_digits())
+                sub.confirmed = False
+                sub.is_subscribed = True
+                sub.save()
+                messages.success(request, 'User successfully added to auto-subscribed!')
+            except IntegrityError:
+                messages.error(request, 'User already subscribed!')
+
+            try:
+                newsletter_subject = "Newsletter Confirmation"
+                newsletter_message = 'Thank you for signing up for my email newsletter! \
+                                        Please complete the process by \
+                                        <a href="{}?email={}&conf_num={}"> clicking here to \
+                                        confirm your registration</a>.'.format(
+                    request.build_absolute_uri('/account/subscribe_confirm'),
+                    sub.email,
+                    sub.conf_num)
+                email_from = settings.EMAIL_HOST_USER
+                recipient_list = [sub.email]
+                send_mail(newsletter_subject, newsletter_message, email_from, recipient_list)
+            except:
+                messages.error(request, 'Subscription confirmation email failed!')
+
             user.email_user(subject, message)
 
             return redirect('lms:account_activation_sent')
