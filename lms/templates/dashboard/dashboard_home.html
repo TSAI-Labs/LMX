@@ -1,0 +1,109 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+<br>
+<h1 class="text-center">Dashboard</h1>
+<br>
+{% if is_student_view %}
+  <h3 class="mx-5 text-left">Registered Courses</h3>
+  <div class="mx-5 container-fluid">
+      <div class="row">
+         {% for student_course in registered_courses %}
+            <div class="col-sm-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ student_course.courses.title }}</h5>
+                  <p class="card-text">{{ student_course.courses.description }}</p>
+                  <a href="/" class="btn btn-primary">View</a>
+                </div>
+              </div>
+            </div>
+         {% endfor %}
+      </div>
+  </div>
+
+  <br>
+  <h3 class="mx-5 text-left">Un-Registered Courses</h3>
+  <div class="mx-5 container-fluid">
+      <div class="row">
+         {% for student_course in unregistered_courses %}
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ student_course.courses.title }}</h5>
+                  <p class="card-text">{{ student_course.courses.description }}</p>
+                  <a href="/" class="btn btn-primary">View</a>
+                  <a href="#" class="btn btn-primary">Register</a>
+                </div>
+              </div>
+            </div>
+         {% endfor %}
+      </div>
+  </div>
+
+{% else %}
+  <h3 class="mx-5 text-left">Published Courses</h3>
+  <div class="mx-5 container-fluid">
+      <div class="row">
+         {% for course in published_courses %}
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ course.title }}</h5>
+                  <p class="card-text">{{ course.description }}</p>
+                  <a href="/" class="btn btn-primary">View</a>
+                  <a href="#" class="btn btn-primary">Un-Publish</a>
+                </div>
+              </div>
+            </div>
+         {% endfor %}
+      </div>
+  </div>
+
+  <br>
+  <h3 class="mx-5 text-left">Un-Published Courses</h3>
+  <div class="mx-5 container-fluid">
+      <div class="row">
+         {% for course in unpublished_courses %}
+            <div class="col-sm-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ course.title }}</h5>
+                  <p class="card-text">{{ course.description }}</p>
+                  <a href="/" class="btn btn-primary">View</a>
+                  <a href="#" class="btn btn-primary">Publish</a>
+                </div>
+              </div>
+            </div>
+         {% endfor %}
+      </div>
+  </div>
+{% endif %}
+
+{% endblock content %}
+
+{% block todo %}
+  {% if is_student_view %}
+      <br>
+      <h3>To Do</h3>
+      <ul class="list-group">
+         {% for student_assignment in assignments %}
+              <a href="#" class="list-group-item list-group-item-action">{{ student_assignment.assignment.name }} <br><span>Course: </span><span>{{ student_assignment.assignment.for_course }}</span>
+                  <br><span>Due Date: </span><span>{{ student_assignment.assignment.available_until }}</span></a>
+         {% endfor %}
+      </ul>
+  {% else %}
+      <br>
+      <h3>Coming Up</h3>
+      <ul class="list-group">
+         {% for assignment in assignments %}
+              <a href="#" class="list-group-item list-group-item-action">{{ assignment.name }} <br><span>Course: </span><span>{{ assignment.for_course }}</span>
+                  <br><span>Due Date: </span><span>{{ assignment.available_until }}</span></a>
+         {% endfor %}
+      </ul>
+  {% endif %}
+{% endblock todo %}

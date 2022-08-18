@@ -12,6 +12,7 @@ from django.views.generic import View
 # LMS app imports.
 from lms.token import account_activation_token
 from lms.forms.account.register_form import UserRegisterForm
+from lms.models.user_role_model import Role
 
 
 class UserRegisterView(View):
@@ -34,6 +35,15 @@ class UserRegisterView(View):
             user = register_form.save(commit=False)
             user.is_active = False
             user.save()
+            role = register_form.cleaned_data['role']
+            if role == '2':
+                user_role = Role(user=user, is_teacher=True)
+            elif role == '3':
+                user_role = Role(user=user, is_teaching_assistant=True)
+            elif role == '1':
+                user_role = Role(user=user, is_student=True)
+
+            user_role.save()
 
             current_site = get_current_site(request)
             subject = 'Activate Your LMX Account'
@@ -44,7 +54,9 @@ class UserRegisterView(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             })
-            user.email_user(subject, message)
+
+            print(subject, message)
+            # user.email_user(subject, message)
 
             return redirect('lms:account_activation_sent')
 

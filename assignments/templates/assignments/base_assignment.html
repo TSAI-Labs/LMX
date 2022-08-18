@@ -1,0 +1,13 @@
+{% block content %}
+     <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'assignments:assignment_create' %}">
+                + Assignment
+            </a>
+        </li>
+    </ul> 
+
+    {% block content1 %}
+    {% endblock content1 %}
+
+{% endblock content %}
